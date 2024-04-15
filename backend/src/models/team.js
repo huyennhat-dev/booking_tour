@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Team.init({
-    id_team: DataTypes.INTEGER,
+    id_team: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     id_manager: DataTypes.INTEGER,
     id_staff: DataTypes.INTEGER,
     work_day: DataTypes.INTEGER

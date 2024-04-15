@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Customer.init({
-    id_customer: DataTypes.INTEGER,
+    id_customer: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     full_name: DataTypes.STRING,
     birth_day: DataTypes.STRING,
     point_evaluation: DataTypes.INTEGER

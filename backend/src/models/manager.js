@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Manager.init({
-    id_manager: DataTypes.INTEGER,
+    id_manager: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     company_name: DataTypes.STRING,
     point_evaluation: DataTypes.INTEGER,
     full_name: DataTypes.STRING,

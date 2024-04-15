@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 const {
   Model
-} = require('sequelize');
+} = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
     /**
@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Book.init({
-    id_booked_tour: DataTypes.INTEGER,
+    id_booked_tour: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     id_tour: DataTypes.INTEGER,
     id_customer: DataTypes.INTEGER,
     guest_number: DataTypes.INTEGER,
@@ -24,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     point_evaluate: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'Book',
-  });
-  return Book;
-};
+    modelName: 'Book'
+  })
+  return Book
+}

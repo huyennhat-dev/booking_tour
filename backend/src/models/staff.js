@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Staff.init({
-    id_staff: DataTypes.INTEGER,
+    id_staff: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     id_manager: DataTypes.INTEGER,
     full_name: DataTypes.STRING,
     birth_day: DataTypes.STRING,

@@ -48,11 +48,11 @@ point_evaluate
 
 
 
-# team ( đổi tên lại của assigns)
-id_team
-id_manager
-id_staff
-work_day (??? chưa hiểu ý nghĩa lắm)
+    # team ( đổi tên lại của assigns)
+    id_team
+    id_manager
+    id_staff
+    work_day (??? chưa hiểu ý nghĩa lắm)
 
 
 

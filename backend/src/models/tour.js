@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Tour.init({
-    id_tour: DataTypes.INTEGER,
+    id_tour: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     id_manager: DataTypes.INTEGER,
     id_staff: DataTypes.INTEGER,
     departure_day: DataTypes.INTEGER,
