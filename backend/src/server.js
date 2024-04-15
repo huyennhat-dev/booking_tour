@@ -7,7 +7,7 @@ import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
 const RUN_SERVER = () => {
   const app = express()
   const hostname = env.APP_HOST
-  const port = env.APP_PORT || 3000
+  const port = env.APP_PORT || 8000
 
   app.use(cors(corsOptions))
   app.use(express.json())
