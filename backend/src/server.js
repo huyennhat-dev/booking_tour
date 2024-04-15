@@ -2,7 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import { corsOptions } from './config/cors'
 import env from '~/config/environment'
+import connectDatabase from '~/config/connect_database'
 import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
+import db from '~/models'
 
 const RUN_SERVER = () => {
   const app = express()
@@ -11,9 +13,12 @@ const RUN_SERVER = () => {
 
   app.use(cors(corsOptions))
   app.use(express.json())
-  app.use('/api/v1', (req, res) => {
-    return res.json({ message: 'Welcome to API v1' })
+  app.use('/api/v1', async (req, res) => {
+    return res.json({ message: 'Welcome to API v1', db : await db.User.findOne({
+
+    }) })
   })
+
 
   app.use(errorHandlingMiddleware)
 
@@ -22,7 +27,7 @@ const RUN_SERVER = () => {
   })
 }
 
-
+connectDatabase()
 RUN_SERVER()
 
 
