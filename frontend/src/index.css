@@ -3,14 +3,40 @@
 @tailwind utilities;
 
 :root {
-    --color-body-bg: #222;
-    --color-primary-bg: #bbcdff;
-    --color-text: #fff;
-    --color-primary: #FFB61A;
-    --color-secondary-bg: #323232;
-    --color-secondary-bg-for-transparent: hsla(0, 0%, 100%, 0.08);
-    --color-primary-bg-for-transparent: hsla(0, 0%, 100%, 0.12);
-    --color-navbar-bg: #ffffff;
-    --color-player-slider: hsla(0, 0%, 50.2%, .18);
+  --color-body-bg: #222;
+  --color-primary-bg: #bbcdff;
+  --color-text: #2d4271;
+  --color-primary: #ffb61a;
+  --color-secondary-bg: #323232;
+  --color-secondary-bg-for-transparent: hsla(0, 0%, 100%, 0.08);
+  --color-primary-bg-for-transparent: hsla(0, 0%, 100%, 0.12);
+  --color-navbar-bg: #ffffff;
+  --color-player-slider: hsla(0, 0%, 50.2%, 0.18);
 }
 
+.shadow-custom {
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+select,
+button {
+  color: var(--color-text);
+}
+
+.title:hover {
+  color: #4d4aef;
+}
+
+.footer-bg {
+  background-image: url(../src/assets/images/footer-bg.png);
+  object-fit: contain;
+}

@@ -1,14 +1,20 @@
-import { Route, Routes } from "react-router-dom";
-import HomePage from "../pages/HomePage";
-import NotFound from "../pages/NotFound";
+import DetailPage from "../pages/UserPage/DetailPage";
+import HomePage from "../pages/UserPage/HomePage";
+import SearchPage from "../pages/UserPage/SearchPage";
 
-const RouterPage = () => {
-  return (
-    <Routes>
-      <Route path="*" element={<NotFound />} />
-      <Route index element={<HomePage />} />
-    </Routes>
-  );
-};
+const publicRoutes = [
+  {
+    path: "/",
+    component: HomePage,
+  },
+  {
+    path: "/search",
+    component: SearchPage,
+  },
+  {
+    path: "/detail/:id",
+    component: DetailPage,
+  },
+];
 
-export default RouterPage;
+export { publicRoutes };
