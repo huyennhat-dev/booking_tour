@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      name_tour: {
+        type: Sequelize.STRING
+      },
       id_manager: {
         type: Sequelize.INTEGER
       },

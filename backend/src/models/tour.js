@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
+    name_tour: DataTypes.STRING,
     id_manager: DataTypes.INTEGER,
     id_staff: DataTypes.INTEGER,
     departure_day: DataTypes.INTEGER,

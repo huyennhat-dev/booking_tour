@@ -4,7 +4,7 @@ import { corsOptions } from './config/cors'
 import env from '~/config/environment'
 import connectDatabase from '~/config/connect_database'
 import { errorHandlingMiddleware } from '~/middlewares/errorHandlingMiddleware'
-import db from '~/models'
+import { API_V1 } from '~/routes/v1'
 
 const RUN_SERVER = () => {
   const app = express()
@@ -13,12 +13,7 @@ const RUN_SERVER = () => {
 
   app.use(cors(corsOptions))
   app.use(express.json())
-  app.use('/api/v1', async (req, res) => {
-    return res.json({ message: 'Welcome to API v1', db : await db.User.findOne({
-
-    }) })
-  })
-
+  app.use('/api/v1', API_V1)
 
   app.use(errorHandlingMiddleware)
 
