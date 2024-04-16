@@ -1,23 +1,22 @@
 import express from 'express'
-import SinhVienRouter from '~/routes/v1/SinhVienRouter'
-import GiaoVienAuthRouter from '~/routes/v1/auth/GiaoVienAuthRouter'
-import KhoaAuthRouter from '~/routes/v1/auth/KhoaAuthRouter'
-import SinhVienAuthRouter from '~/routes/v1/auth/SinhVienAuthRouter'
-import GiangVienRouter from '~/routes/v1/GiangVienRouter'
-import KhoaRouter from '~/routes/v1/KhoaRouter'
+import { userRouter } from '~/routes/v1/user'
+import { customerRouter } from '~/routes/v1/customer'
+import { tourRouter } from '~/routes/v1/tour'
+import { bookRouter } from '~/routes/v1/book'
+import { teamRouter } from '~/routes/v1/team'
+import { managerRouter } from '~/routes/v1/manager'
+import { staffRouter } from '~/routes/v1/staff'
 
-const API_V1 = express.Router()
+const router = express.Router()
 
-
-
-API_V1.use('/khoa', KhoaRouter)
-API_V1.use('/sinhvien', SinhVienRouter)
-API_V1.use('/giangvien', GiangVienRouter)
-
-
-API_V1.use('/auth/gv', GiaoVienAuthRouter)
-API_V1.use('/auth/sv', SinhVienAuthRouter)
-API_V1.use('/auth/khoa', KhoaAuthRouter)
+router.use('/user', userRouter)
+router.use('/customer', customerRouter)
+router.use('/tour', tourRouter)
+router.use('/book', bookRouter)
+router.use('/team', teamRouter)
+router.use('/staff', staffRouter)
+router.use('/manager', managerRouter)
 
 
-export default API_V1
+export const API_V1 = router
+export default router
