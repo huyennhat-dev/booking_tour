@@ -16,7 +16,7 @@ const Recommend = () => {
 
   return (
     <>
-      <p className="px-3 font-semibold title text-[16px]">Đề xuất cho bạn</p>
+      <p className="px-3 font-semibold  text-[20px]">Đề xuất cho bạn</p>
       {recommends.map((tour, index) => (
         <div key={index} className="my-1 mb-2">
           <img src={tour.img} alt="" className="rounded-sm" />

@@ -6,7 +6,7 @@
   --color-body-bg: #222;
   --color-primary-bg: #bbcdff;
   --color-text: #2d4271;
-  --color-primary: #ffb61a;
+  --color-primary: #FFB61A;
   --color-secondary-bg: #323232;
   --color-secondary-bg-for-transparent: hsla(0, 0%, 100%, 0.08);
   --color-primary-bg-for-transparent: hsla(0, 0%, 100%, 0.12);
@@ -39,4 +39,13 @@ button {
 .footer-bg {
   background-image: url(../src/assets/images/footer-bg.png);
   object-fit: contain;
+}
+
+
+@media (max-width: 1180px) {
+  .px-28{
+    padding-left: 40px;
+    padding-right: 40px;
+    
+  }
 }
