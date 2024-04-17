@@ -36,7 +36,6 @@ const createManager = async (req, res, next) => {
 const updateManager = async (req, res, next) => {
   try {
     const { ...updateData } = req.body
-    console.log(updateData)
     const updatedManager = await managerService.updateManager(updateData)
     return res.status(200).json({
       statusCode: 200,

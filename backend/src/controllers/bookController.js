@@ -36,7 +36,6 @@ const createBook = async (req, res, next) => {
 const updateBook = async (req, res, next) => {
   try {
     const { ...updateData } = req.body
-    console.log(updateData)
     const updatedBook = await bookService.updateBook(updateData)
     return res.status(200).json({
       statusCode: 200,
@@ -53,8 +52,8 @@ const updateBook = async (req, res, next) => {
 
 const deleteBook = async (req, res, next) => {
   try {
-    const { id_book } = req.body
-    const deletedBook = await bookService.deleteBook(id_book)
+    const { id_booked_tour } = req.body
+    const deletedBook = await bookService.deleteBook(id_booked_tour)
     return res.status(200).json({
       statusCode: 200,
       message: 'Xóa book thành công',

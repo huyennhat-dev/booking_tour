@@ -38,7 +38,6 @@ const createTour = async (req, res, next) => {
 const updateTour = async (req, res, next) => {
   try {
     const { ...updateData } = req.body
-    console.log(updateData)
     const updatedTour = await tourService.updateTour(updateData)
     return res.status(200).json({
       statusCode: 200,
