@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useRef, useState } from "react";
 import { styles } from "../../styles/styles";
 import { Logo } from "../../assets/export";
@@ -6,6 +7,7 @@ import { Link } from "react-router-dom";
 import { TbMenuDeep } from "react-icons/tb";
 import LoginPopup from "./LoginPopup";
 import SignUpPopup from "./SignUpPopup";
+import LogoComponent from "./Logo";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -19,21 +21,21 @@ const Navbar = () => {
 
   return (
     <div
-      className={`w-full h-20 ${styles.horizontalPadding} flex justify-between items-center py-2`}
+      className={`w-full shadow-md h-20 ${styles.horizontalPadding} flex justify-between items-center py-2`}
     >
       <div>
         <Link to="/">
-          <img src={Logo} alt="" className="w-[167px] h-[32px]" />
+          <LogoComponent className="w-[167px] h-[32px]" />
         </Link>
       </div>
       <div
         className="hidden md:flex items-center justify-end gap-12"
         id="navbar"
       >
-        <NavLink path={"/"} title={"Home"} />
-        <NavLink path={"/tours"} title={"Find Tours"} />
+        <NavLink path={"/"} title={"Trang Chủ"} />
+        <NavLink path={"/contact"} title={"Liên Hệ"} />
         <SignUpPopup />
-        <LoginPopup />
+        <LoginPopup />  
       </div>
       <div
         onClick={toggleSidebar}
@@ -49,8 +51,8 @@ const Navbar = () => {
             <img src={Logo} alt="" className="w-3/5" />
           </div>
           <div className="flex flex-col gap-y-3">
-            <NavLink path={"/"} title={"Home"} setOpen={setOpen} />
-            <NavLink path={"/tours"} title={"Find Tours"} setOpen={setOpen} />
+            <NavLink path={"/"} title={"Trang Chủ"} setOpen={setOpen} />
+            <NavLink path={"/contact"} title={"Liên Hệ"} setOpen={setOpen} />
             <SignUpPopup />
           </div>
         </div>

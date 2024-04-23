@@ -15,9 +15,9 @@ const LoginPopup = () => {
     <div className="">
       <button
         onClick={handleToggle}
-        className={`${styles.bgOrange} tex-sm font-normal text-white h-[44px] w-[83px] rounded-lg`}
+        className={`${styles.bgOrange} tex-sm font-normal text-white h-[44px] px-3 rounded-lg`}
       >
-        Login
+        Đăng Nhập
       </button>
 
       {showModal && (
@@ -34,36 +34,36 @@ const LoginPopup = () => {
               />
             </div>
             <div className="w-full">
-              <h3 className="text-2xl font-semibold">Welcome back!</h3>
+              <h3 className="text-2xl font-semibold">Chào mừng quay trởi lại!</h3>
             </div>
             <div className="w-full">
               <input
                 type="email"
                 className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
-                placeholder="Enter your email"
+                placeholder="Nhập email của bạn"
               />
             </div>
             <div className="w-full">
               <input
                 type="password"
                 className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
-                placeholder="Enter your password"
+                placeholder="Nhập mật khẩu của bạn"
               />
             </div>
             <div className="w-full py-0 text-right">
-              <Link className="text-sm">Forgot Password?</Link>
+              <Link className="text-sm">Quên mật khẩu?</Link>
             </div>
             <div className="w-full py-0 my-0">
               <button
                 className={`w-full py-3 text-white text-sm font-medium rounded-xl ${styles.bgOrange}`}
               >
-                Login
+                Đăng Nhập
               </button>
             </div>
             <div className="w-full flex items-center justify-center md:px-1">
               <div className="border w-full border-slate-200"></div>
               <div className="w-full text-center">
-                <p className="text-sm">Or login with</p>
+                <p className="text-sm">Phương thức khác</p>
               </div>
               <div className="border w-full border-slate-200"></div>
             </div>
@@ -72,7 +72,7 @@ const LoginPopup = () => {
                 className={`w-full py-3 text-sm font-medium rounded-xl border border-slate-200 flex items-center justify-center gap-x-3`}
               >
                 <img src={GoogleLogo} alt="" className="w-5 h-5" />
-                Login in with Google
+                Đăng nhập với tài khoản Google
               </button>
             </div>
           </div>

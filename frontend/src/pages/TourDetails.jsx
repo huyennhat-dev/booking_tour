@@ -10,7 +10,6 @@ import CommentForm from "../components/TourDetails/CommentForm";
 
 const TourDetails = () => {
   const { title } = useSearchParams();
-  console.log("title: ", title);
   return (
     <div className={`${styles.horizontalPadding} py-6 px-2`}>
       <div className="flex flex-col gap-y-12 px-2 md:px-0">

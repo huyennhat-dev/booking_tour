@@ -1,8 +1,5 @@
 import { lazy } from "react";
 import Layout from "../Layout";
-// import ContactUs from "../pages/ContactUs";
-// import Tours from "../pages/Tours";
-// import TourDetails from "../pages/TourDetails";
 
 const Home = lazy(() => import("../pages/Home"));
 const Tours = lazy(() => import("../pages/Tours"));

@@ -14,8 +14,10 @@ export const tourlist = [
     title:
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
-    price: "144",
-    duration: "2 Days 1 Night",
+    price: 344,
+    rating: 5,
+ 
+ ratingQuantity:300,   duration: "2 Days 1 Night",
   },
   {
     image: TourImag2,
@@ -23,7 +25,9 @@ export const tourlist = [
     title:
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
-    price: "144",
+    price: 294,
+    rating: 4.9,
+    ratingQuantity:300,
     duration: "2 Days 1 Night",
   },
   {
@@ -32,8 +36,10 @@ export const tourlist = [
     title:
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
-    price: "144",
-    duration: "2 Days 1 Night",
+    price: 124,
+    rating:4.1,
+
+ratingQuantity:300,    duration: "2 Days 1 Night",
   },
   {
     image: TourImag4,
@@ -41,7 +47,9 @@ export const tourlist = [
     title:
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
-    price: "144",
+    price: 140,
+    rating: 4.7,
+    ratingQuantity:300,
     duration: "2 Days 1 Night",
   },
   {
@@ -50,7 +58,9 @@ export const tourlist = [
     title:
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
-    price: "144",
+    price: 184,
+    rating: 4.8,
+    ratingQuantity:300,
     duration: "2 Days 1 Night",
   },
   {
@@ -59,7 +69,9 @@ export const tourlist = [
     title:
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
-    price: "144",
-    duration: "2 Days 1 Night",
+    price: 143,
+    rating: 5,
+ 
+ ratingQuantity:300,   duration: "2 Days 1 Night",
   },
 ];

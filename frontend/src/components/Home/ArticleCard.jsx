@@ -1,10 +1,12 @@
 import React from "react";
-import { Article1 } from "../../assets/export";
+import { Link } from "react-router-dom";
 
 const ArticleCard = ({ article }) => {
   return (
     <div className={`flex flex-col gap-y-2`}>
-      <img src={article?.image} alt="" className="w-full" />
+      <Link to="/">
+        <img src={article?.image} alt="" className="w-full" />
+      </Link>
       <div className="flex gap-3 md:gap-x-6 lg:gap-x-6 xl:gap-x-6">
         <span className="text-xs text-[05073C] font-normal">
           {article?.date}
@@ -13,7 +15,11 @@ const ArticleCard = ({ article }) => {
           {article.author}
         </span>
       </div>
-      <p className="text-[05073C] font-medium text-base">{article.title}</p>
+      <Link to="/">
+        <p className="text-[05073C] font-medium text-base text-ellipsis line-clamp-2">
+          {article.title}
+        </p>
+      </Link>
     </div>
   );
 };

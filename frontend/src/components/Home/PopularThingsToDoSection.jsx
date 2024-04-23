@@ -1,7 +1,5 @@
 import React from "react";
 import { styles } from "../../styles/styles";
-import { Link } from "react-router-dom";
-import { popularthings } from "../../constants/whychoosetours";
 import {
   PopularThing1,
   PopularThing2,
@@ -15,10 +13,7 @@ const PopularThingsToDoSection = () => {
   return (
     <div className={`py-16 ${styles.horizontalPadding} flex flex-col gap-y-12`}>
       <div className="w-full flex items-center justify-between">
-        <h2 className={`${styles.headingSize}`}>Popular things to do</h2>
-        <Link to="/" className="text-sm font-normal">
-          See All
-        </Link>
+        <h2 className={`${styles.headingSize}`}>Những việc làm phổ biến</h2>
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-9 lg:grid-cols-9 xl:gird-cols-9 grid-rows-1 gap-4">
         <div className="col-span-2 row-span-1 flex flex-col gap-4">
@@ -33,7 +28,6 @@ const PopularThingsToDoSection = () => {
             className="h-[220px] mx-auto md:mx-0"
           />
         </div>
-        {/* <div className="col-span-1 row-span-1"></div> */}
         <div className="col-span-3">
           <img src={PopularThing3} alt="" className="w-[390px] mx-auto" />
         </div>
