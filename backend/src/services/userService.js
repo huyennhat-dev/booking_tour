@@ -49,7 +49,7 @@ const getUser = async (query) => {
 
 const createUser = async (body) => {
   try {
-    const newUser = await apifeature(db.Users, 'craeate', { ...body })
+    const newUser = await apifeature(db.User, 'create', { ...body })
     return newUser
   } catch (error) {
     throw new ApiError(error.message)

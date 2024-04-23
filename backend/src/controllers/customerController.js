@@ -36,7 +36,6 @@ const createCustomer = async (req, res, next) => {
 const updateCustomer = async (req, res, next) => {
   try {
     const { ...updateData } = req.body
-    console.log(updateData)
     const updatedCustomer = await customerService.updateCustomer(updateData)
     return res.status(200).json({
       statusCode: 200,

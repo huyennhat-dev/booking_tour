@@ -36,7 +36,6 @@ const createStaff = async (req, res, next) => {
 const updateStaff = async (req, res, next) => {
   try {
     const { ...updateData } = req.body
-    console.log(updateData)
     const updatedStaff = await staffService.updateStaff(updateData)
     return res.status(200).json({
       statusCode: 200,

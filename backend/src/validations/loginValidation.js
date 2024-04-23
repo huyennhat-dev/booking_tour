@@ -18,6 +18,4 @@ const LoginValidation = async (req, res, next) => {
   }
 }
 
-
-
 export default LoginValidation

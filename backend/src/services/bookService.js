@@ -16,7 +16,7 @@ const getBook = async (query) => {
     if (search) {
       whereClause = {
         [Op.or]: [
-          { name_book: { [Op.like]: `%${search}%` } },
+          { name_book: { [Op.like]: `%${search}%` } }
         ]
       }
     }
@@ -28,7 +28,7 @@ const getBook = async (query) => {
         whereClause[key] = filters[key]
       }
     }
-
+    
     // Thực hiện truy vấn
     const books = await db.Book.findAndCountAll({
       where: whereClause,
@@ -36,7 +36,6 @@ const getBook = async (query) => {
       limit: parseInt(limit),
       offset: parseInt(skip)
     })
-
     return books
   } catch (error) {
     throw new ApiError(error.message)
@@ -54,16 +53,16 @@ const createBook = async (body) => {
 
 const updateBook = async (updateData) => {
   try {
-    const updatedBook = await apifeature(db.Book, 'update', { ...updateData } , 'id_book')
+    const updatedBook = await apifeature(db.Book, 'update', { ...updateData }, 'id_booked_tour')
     return updatedBook
   } catch (error) {
     throw new ApiError(error.message)
   }
 }
 
-const deleteBook = async (id_book) => {
+const deleteBook = async (id_booked_tour) => {
   try {
-    const deletedBook = await apifeature(db.Book, 'delete', { id_book } , 'id_book')
+    const deletedBook = await apifeature(db.Book, 'delete', { id_booked_tour }, 'id_booked_tour')
     return deletedBook
   } catch (error) {
     throw new ApiError(error.message)
