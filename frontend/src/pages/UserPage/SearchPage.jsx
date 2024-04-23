@@ -178,7 +178,6 @@ const SearchPage = () => {
                           <p className=" ml-2 my-1 font-bold text-[color:var(--color-primary)] text-[20px]">
                             {tour.price - tour.price * tour.sale} đ
                             <span className="text-red-500 ml-4 text-[16px]">
-                              {" "}
                               Giảm {tour.sale * 100}%
                             </span>
                           </p>
