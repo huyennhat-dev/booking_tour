@@ -9,16 +9,50 @@ import { alpha } from '@mui/material/styles';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 
-import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
 
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ post, index }) {
-  const { cover, title, view, comment, share, author, createdAt } = post;
+// [
+//   {
+//       "id_tour": 4,
+//       "name_tour": "Hành Trình Khám Phá Đảo Phú Quốc",
+//       "id_manager": 4,
+//       "id_staff": 5,
+//       "departure_day": 123140,
+//       "departure": "17/5/2024",
+//       "end_tour_day": 123143,
+//       "end_tour": "20/5/2024",
+//       "destination": "Phú Quốc",
+//       "initial_price": 2200000,
+//       "promotional_price": 1800000,
+//       "promotional": 20,
+//       "introduce": "Đảo Phú Quốc, được biết đến với bãi biển xanh ngắt, cát trắng mịn và bờ biển dài không ngớt, là một trong những điểm đến nổi tiếng nhất của Việt Nam. Hành trình này sẽ dẫn bạn khám phá những bãi biển tuyệt vời như Sao, Kem, và Ông Lang, tham quan các điểm",
+//       "highlight": "Tận hưởng bình minh trên bãi biển Sao, tham gia các hoạt động thể thao dưới nước như lặn ngắm san hô, thưởng thức món hải sản tươi ngon tại chợ đêm Dinh Cậu, và tham quan Vườn Tiên và Suối Tranh.",
+//       "insurance": true,
+//       "bus": false,
+//       "bicycle": false,
+//       "taxi": false,
+//       "plane": true,
+//       "meal": true,
+//       "photos": "https://example.com/du-lich-phu-quoc.jpg",
+//       "tour_guide": true,
+//       "createdAt": "2024-04-23T14:39:43.000Z",
+//       "updatedAt": "2024-04-23T14:39:43.000Z"
+//   }
+// ]
+
+// photos -> photos
+// name_tour -> name_tour
+// departure -> departure
+// initial_price -> initial_price
+// promotional_price -> promotional_price
+// destination -> destination
+
+export default function PostCard({ post, index , onClick }) {
+  const { photos, name_tour, initial_price, destination, promotional_price, author, departure } = post;
 
   const latestPostLarge = index === 0;
 
@@ -26,8 +60,8 @@ export default function PostCard({ post, index }) {
 
   const renderAvatar = (
     <Avatar
-      alt={author.name}
-      src={author.avatarUrl}
+      alt=""
+      src=""
       sx={{
         zIndex: 9,
         width: 32,
@@ -49,7 +83,7 @@ export default function PostCard({ post, index }) {
   const renderTitle = (
     <Link
       color="inherit"
-      variant="subtitle2"
+      variant="subname_tour2"
       underline="hover"
       sx={{
         height: 44,
@@ -63,7 +97,7 @@ export default function PostCard({ post, index }) {
         }),
       }}
     >
-      {title}
+      {name_tour}
     </Link>
   );
 
@@ -79,9 +113,9 @@ export default function PostCard({ post, index }) {
       }}
     >
       {[
-        { number: comment, icon: 'eva:message-circle-fill' },
-        { number: view, icon: 'eva:eye-fill' },
-        { number: share, icon: 'eva:share-fill' },
+        { number: destination, icon: 'eva:message-circle-fill' },
+        { number: initial_price, icon: 'eva:eye-fill' },
+        { number: promotional_price, icon: 'eva:promotional_price-fill' },
       ].map((info, _index) => (
         <Stack
           key={_index}
@@ -94,7 +128,7 @@ export default function PostCard({ post, index }) {
           }}
         >
           <Iconify width={16} icon={info.icon} sx={{ mr: 0.5 }} />
-          <Typography variant="caption">{fShortenNumber(info.number)}</Typography>
+          <Typography variant="caption">{info.number}</Typography>
         </Stack>
       ))}
     </Stack>
@@ -103,13 +137,13 @@ export default function PostCard({ post, index }) {
   const renderCover = (
     <Box
       component="img"
-      alt={title}
-      src={cover}
+      alt={name_tour}
+      src={photos}
       sx={{
         top: 0,
         width: 1,
         height: 1,
-        objectFit: 'cover',
+        objectFit: 'photos',
         position: 'absolute',
       }}
     />
@@ -128,7 +162,7 @@ export default function PostCard({ post, index }) {
         }),
       }}
     >
-      {fDate(createdAt)}
+      {departure}
     </Typography>
   );
 
@@ -182,6 +216,7 @@ export default function PostCard({ post, index }) {
         </Box>
 
         <Box
+          onClick={onClick}
           sx={{
             p: (theme) => theme.spacing(4, 3, 3, 3),
             ...((latestPostLarge || latestPost) && {
