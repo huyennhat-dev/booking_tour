@@ -4,7 +4,8 @@ import Layout from "../Layout";
 const Home = lazy(() => import("../pages/Home"));
 const Tours = lazy(() => import("../pages/Tours"));
 const TourDetails = lazy(() => import("../pages/TourDetails"));
-const Popup = lazy(() => import("../pages/Modal"));
+const BookingPage = lazy(() => import("../pages/BookingPage"));
+const CheckoutPage = lazy(() => import("../pages/CheckoutPage"));
 
 export const routes = [
   {
@@ -19,12 +20,18 @@ export const routes = [
   },
   {
     title: "Tour Details Page",
-    url: "/tours/:tourname",
+    url: "/tours/:tourId",
     page: <Layout page={<TourDetails />} />,
   },
   {
-    title: "Popup Page",
-    url: "/popup",
-    page: <Layout page={<Popup />} />,
+    title: "Tour Booking Page",
+    url: "/booking/:tourId",
+    page: <Layout page={<BookingPage />} />,
   },
+  {
+    title: "Tour Checkout Page",
+    url: "/checkout/:tourId",
+    page: <Layout page={<CheckoutPage />} />,
+  },
+
 ];

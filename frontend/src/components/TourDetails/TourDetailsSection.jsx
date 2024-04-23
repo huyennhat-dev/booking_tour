@@ -24,7 +24,6 @@ const TourDetailsSection = ({ introduce, highlight }) => {
           dangerouslySetInnerHTML={{ __html: highlight }}
         />
       </div>
-      <div className="border w-full"></div>
       
     </div>
   );

@@ -36,13 +36,14 @@ const TourListCard = ({ tour }) => {
       </div>
       <div className="md:ps-3 flex flex-col justify-center py-3 items-center gap-5 md:border-l">
         <p className="text-sm font-normal">{tour?.duration}</p>
-        <p className="text-base font-medium">Chỉ với <strong className={styles.orangeText}>{tour?.price}</strong> đ</p>
+        <p className="text-base font-medium">
+          Chỉ với <strong className={styles.orangeText}>{tour?.price}</strong> đ
+        </p>
         <Button
           title="Xem Chi Tiết"
           onclick={handleNavigate}
-          classes={`${styles.orangeText} hover:text-white hover:${styles.bgOrange} transition-all duration-300 rounded-lg border border-[#EB662B] w-full py-2 text-base font-medium`}
+          classes={`${styles.orangeText} hover:text-white hover:bg-[color:#EB662B] transition-all duration-300 rounded-lg border border-[#EB662B] w-full py-2 text-base font-medium`}
         />
-      
       </div>
     </div>
   );

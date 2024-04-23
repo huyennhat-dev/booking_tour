@@ -1,5 +1,5 @@
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { styles } from "../styles/styles";
 import HeaderSection from "../components/TourDetails/HeaderSection";
 import TourDetailsSection from "../components/TourDetails/TourDetailsSection";
@@ -16,6 +16,7 @@ const TourDetails = () => {
     tourDetail.departure,
     tourDetail.end_tour
   );
+
   return (
     <div className={`${styles.horizontalPadding} py-6 px-2 mb-10`}>
       <div className="flex flex-col gap-y-12 px-2 md:px-0">
