@@ -9,7 +9,7 @@ import appData from "../../_mock/appData";
 
 const Hero = () => {
   return (
-    <div className={`w-full h-screen relative ${styles.horizontalPadding} `}>
+    <div className={`w-full h-screen relative ${styles.horizontalPadding} mt-3`}>
       <img src={HeroImage} alt="" className="w-full h-full rounded-xl " />
       <div className="w-full absolute px-4 md:px-28 text-center center-div flex flex-col items-center gap-y-3">
         <div className="flex flex-col md:gap-y-6 lg:gap-y-10">
