@@ -33,6 +33,7 @@
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -83,6 +84,28 @@
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5); /* Màu đen với độ mờ là 0.5 */
-  pointer-events: none; /* Đảm bảo không ảnh hưởng đến sự kiện */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Màu đen với độ mờ là 0.5 */
+  pointer-events: none;
+  /* Đảm bảo không ảnh hưởng đến sự kiện */
+}
+
+.img-full {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  bottom: -5.5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 5px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 6px solid #1f2937;
+  opacity: 0.45;
 }
