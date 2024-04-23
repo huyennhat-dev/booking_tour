@@ -42,6 +42,12 @@
     }
   },
   "rules": {
+    "import/no-unresolved": [
+      2,
+      {
+        "caseSensitive": false
+      }
+    ],
     "no-alert": 0,
     "camelcase": 0,
     "no-console": 0,
