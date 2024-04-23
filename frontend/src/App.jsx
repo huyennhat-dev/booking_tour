@@ -1,17 +1,21 @@
 import { Route, Routes } from "react-router-dom";
-import { publicRoutes } from "./routes";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import "./App.css";
+import { routes } from "./constants/routes";
+import { Suspense } from "react";
+import SplashPage from "./components/global/SplashPage";
 
-export default function App() {
+function App() {
   return (
-    <Provider store={store}>
+    <Suspense fallback={<SplashPage />}>
       <Routes>
-        {publicRoutes.map((route, index) => {
-          const Page = route.component;
-          return <Route key={index} path={route.path} element={<Page />} />;
+        {routes.map((route) => {
+          return (
+            <Route path={route.url} element={route.page} key={route.url} />
+          );
         })}
       </Routes>
-    </Provider>
+    </Suspense>
   );
 }
+
+export default App;
