@@ -7,7 +7,7 @@ const BookingForm = (params) => {
 
       <div className="grid grid-cols-12 gap-2">
         <div className="col-span-6 text-sm">
-          <label htmlFor="bookingName" className="w-full">
+          <label htmlFor="bookingName" className="w-full mb-1">
             Họ và tên:
           </label>
           <input
@@ -18,7 +18,7 @@ const BookingForm = (params) => {
           />
         </div>
         <div className="col-span-6 text-sm">
-          <label htmlFor="bookingEmail" className="w-full">
+          <label htmlFor="bookingEmail" className="w-full mb-1">
             Email:
           </label>
           <input
@@ -29,7 +29,7 @@ const BookingForm = (params) => {
           />
         </div>
         <div className="col-span-6 text-sm">
-          <label htmlFor="bookingPhone" className="w-full">
+          <label htmlFor="bookingPhone" className="w-full mb-1">
             Số điện thoại:
           </label>
           <input
@@ -40,7 +40,7 @@ const BookingForm = (params) => {
           />
         </div>
         <div className="col-span-6 text-sm">
-          <label htmlFor="bookingProvince" className="w-full">
+          <label htmlFor="bookingProvince" className="w-full mb-1">
             Tỉnh/ Thành phố:
           </label>
           <input
@@ -51,7 +51,7 @@ const BookingForm = (params) => {
           />
         </div>
         <div className="col-span-6 text-sm">
-          <label htmlFor="bookingDistrict" className="w-full">
+          <label htmlFor="bookingDistrict" className="w-full mb-1">
             Quận/ Huyện:
           </label>
           <input
@@ -62,7 +62,7 @@ const BookingForm = (params) => {
           />
         </div>
         <div className="col-span-6 text-sm">
-          <label htmlFor="bookingWard" className="w-full">
+          <label htmlFor="bookingWard" className="w-full mb-1">
             Phường/ Xã:
           </label>
           <input
@@ -73,7 +73,7 @@ const BookingForm = (params) => {
           />
         </div>
         <div className="col-span-12 text-sm">
-          <label htmlFor="bookingAddress" className="w-full">
+          <label htmlFor="bookingAddress" className="w-full mb-1">
             Địa chỉ chi tiết
           </label>
           <input
@@ -85,7 +85,7 @@ const BookingForm = (params) => {
         </div>
 
         <div className="col-span-12 text-sm">
-          <label htmlFor="bookingMessage" className="w-full">
+          <label htmlFor="bookingMessage" className="w-full mb-1">
             Lời nhắn:
           </label>
           <textarea
