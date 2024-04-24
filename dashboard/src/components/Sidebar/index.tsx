@@ -1,7 +1,8 @@
 import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../images/logo/logo.svg';
-import SidebarData from './SidebarData';
+import { ArrowDownIcon, DashboardIcon, UserIcon } from '../Icon';
+import SidebarLinkGroup from './SidebarLinkGroup';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -53,7 +54,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     }
   }, [sidebarExpanded]);
   const navigate = useNavigate();
-  const handleClick = (path: string) => {
+  const handleClickNavigate = (path: string) => {
     startTransition(() => {
       navigate(path);
     });
@@ -102,23 +103,92 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              {
-                SidebarData.map((nav) => (
-                  <li key={nav.path} onClick={() => handleClick(nav.path)} >
-                    <div
-                      className={`group cursor-pointer relative flex items-center  gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes(`${nav.path}`) && 'bg-graydark dark:bg-meta-4'
-                        }`}
-                    >
-                      {nav.icon}
-                      {nav.title}
-                    </div>
-                  </li>
-                ))
-              }
+
+              <li onClick={() => handleClickNavigate('/')} >
+                <div
+                  className={`group cursor-pointer relative flex items-center  gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                    pathname == 'dashboard') && 'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  {DashboardIcon}
+                  Dashboard
+                </div>
+              </li>
+
+              <li onClick={() => handleClickNavigate('/account')}>
+                <div
+                  className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('/account') &&
+                    'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  {UserIcon}
+                  Calendar
+                </div>
+              </li>
+
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname.includes('/tour') || pathname.includes('/tour/create')
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <div
+                        className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                          pathname == 'dashboard') &&
+                          'bg-graydark dark:bg-meta-4'
+                          }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        {DashboardIcon}
+                        Tour
+                        {ArrowDownIcon(open)}
+                      </div>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
+                      >
+                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li onClick={() => handleClickNavigate('/tour')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname === "/tour") &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Danh sách tour
+                            </div>
+                          </li>
+
+                          <li onClick={() => handleClickNavigate('/tour/create')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname == '/tour/create') &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Tạo mới tour
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
 
             </ul>
           </div>
-
 
         </nav>
       </div>
