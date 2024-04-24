@@ -32,6 +32,63 @@ const getBook = async (query) => {
     // Thực hiện truy vấn
     const books = await db.Book.findAndCountAll({
       where: whereClause,
+      include: [
+        {
+          model: db.Customer,
+          as : 'customerData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [
+            {
+              model: db.User,
+              as : 'userData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model: db.Tour,
+          as : 'tourData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [
+            {
+              model: db.Manager,
+              as : 'managerData',
+              attributes: { exclude: ['createdAt', 'updatedAt'] },
+              include: [
+                {
+                  model: db.User,
+                  as : 'userData',
+                  attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+              ]
+            },
+            {
+              model: db.Staff,
+              as : 'staffData',
+              attributes: { exclude: ['createdAt', 'updatedAt'] },
+              include: [
+                {
+                  model: db.User,
+                  as : 'userData',
+                  attributes: { exclude: ['createdAt', 'updatedAt'] }
+                },
+                {
+                  model: db.Manager,
+                  as : 'managerData',
+                  exclude: ['createdAt', 'updatedAt'],
+                  include: [
+                    {
+                      model: db.User,
+                      as : 'userData',
+                      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit),
       offset: parseInt(skip)

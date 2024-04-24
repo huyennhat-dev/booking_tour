@@ -1,6 +1,7 @@
 import express from 'express'
 import db from '~/models'
 import validateToken from '~/middlewares/validationJwt'
+import e from 'express'
 
 
 const router = express.Router()
@@ -35,39 +36,58 @@ const test = async (req, res, next) => {
   })
 
   const book = await db.Book.findAll({
+
     include: [
       {
         model: db.Customer,
         as : 'customerData',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [
           {
             model: db.User,
-            as : 'userData'
-
+            as : 'userData',
+            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
           }
         ]
       },
       {
         model: db.Tour,
         as : 'tourData',
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
         include: [
           {
             model: db.Manager,
             as : 'managerData',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [
               {
                 model: db.User,
-                as : 'userData'
+                as : 'userData',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
               }
             ]
           },
           {
             model: db.Staff,
             as : 'staffData',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
             include: [
               {
                 model: db.User,
-                as : 'userData'
+                as : 'userData',
+                attributes: { exclude: ['createdAt', 'updatedAt'] }
+              },
+              {
+                model: db.Manager,
+                as : 'managerData',
+                exclude: ['createdAt', 'updatedAt'],
+                include: [
+                  {
+                    model: db.User,
+                    as : 'userData',
+                    attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+                  }
+                ]
               }
             ]
           }

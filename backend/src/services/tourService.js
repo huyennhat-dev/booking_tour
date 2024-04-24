@@ -16,7 +16,7 @@ const getTour = async (query) => {
     if (search) {
       whereClause = {
         [Op.or]: [
-          { name_tour: { [Op.like]: `%${search}%` } },
+          { name_tour: { [Op.like]: `%${search}%` } }
         ]
       }
     }
@@ -32,6 +32,44 @@ const getTour = async (query) => {
     // Thực hiện truy vấn
     const tours = await db.Tour.findAndCountAll({
       where: whereClause,
+      include: [
+        {
+          model: db.Manager,
+          as : 'managerData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [
+            {
+              model: db.User,
+              as : 'userData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model: db.Staff,
+          as : 'staffData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include: [
+            {
+              model: db.User,
+              as : 'userData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            },
+            {
+              model: db.Manager,
+              as : 'managerData',
+              exclude: ['createdAt', 'updatedAt'],
+              include: [
+                {
+                  model: db.User,
+                  as : 'userData',
+                  attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+                }
+              ]
+            }
+          ]
+        }
+      ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit),
       offset: parseInt(skip)
@@ -54,7 +92,7 @@ const createTour = async (body) => {
 
 const updateTour = async (updateData) => {
   try {
-    const updatedTour = await apifeature(db.Tour, 'update', { ...updateData } , 'id_tour')
+    const updatedTour = await apifeature(db.Tour, 'update', { ...updateData }, 'id_tour')
     return updatedTour
   } catch (error) {
     throw new ApiError(error.message)
@@ -63,7 +101,7 @@ const updateTour = async (updateData) => {
 
 const deleteTour = async (id_tour) => {
   try {
-    const deletedTour = await apifeature(db.Tour, 'delete', { id_tour } , 'id_tour')
+    const deletedTour = await apifeature(db.Tour, 'delete', { id_tour }, 'id_tour')
     return deletedTour
   } catch (error) {
     throw new ApiError(error.message)

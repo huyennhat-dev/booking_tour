@@ -32,6 +32,13 @@ const getManager = async (query) => {
     // Thực hiện truy vấn
     const managers = await db.Manager.findAndCountAll({
       where: whereClause,
+      include: [
+        {
+          model: db.User,
+          as : 'userData',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+        }
+      ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit),
       offset: parseInt(skip)

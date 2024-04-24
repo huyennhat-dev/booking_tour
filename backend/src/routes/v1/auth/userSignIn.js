@@ -4,14 +4,14 @@ import ApiError from '~/utils/ApiError'
 import bcrypt from 'bcryptjs'
 import apifeature from '~/helpers/apifeature'
 import jwt from 'jsonwebtoken'
-import authValidation from '~/validations/loginValidaton'
+import authValidation from '~/validations/loginValidation'
 
 const router = express.Router()
 
 const SignInFuc = async (req, res, next) => {
-  const { email, password, phone_number, username, birth_day } = req.body
+  const { email, password, phone_number = '', username, birth_day= '' } = req.body
 
-  if (!email || !password || !phone_number || !username || !birth_day) {
+  if (!email || !password || !username) {
     return next(new ApiError(404, 'Vui lòng điền đầy đủ thông tin.'))
   }
 
@@ -42,6 +42,7 @@ const SignInFuc = async (req, res, next) => {
       email : user.dataValues.email,
       username : user.dataValues.username,
       phone_number : user.dataValues.phone_number,
+      role : 'customer'
     }, 'mysecretkey')
 
     return res.status(200).json({
@@ -52,6 +53,7 @@ const SignInFuc = async (req, res, next) => {
         email : user.dataValues.email,
         username : user.dataValues.username,
         phone_number : user.dataValues.phone_number,
+        role : 'customer'
       }
     })
 
@@ -63,6 +65,6 @@ const SignInFuc = async (req, res, next) => {
 }
 
 
-router.route('/').post(authValidation.signIn,SignInFuc)
+router.route('/').post(authValidation.signIn, SignInFuc)
 
 export const SignInRouter = router

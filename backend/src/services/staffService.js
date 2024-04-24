@@ -16,7 +16,7 @@ const getStaff = async (query) => {
     if (search) {
       whereClause = {
         [Op.or]: [
-          { name_staff: { [Op.like]: `%${search}%` } },
+          { name_staff: { [Op.like]: `%${search}%` } }
         ]
       }
     }
@@ -32,6 +32,20 @@ const getStaff = async (query) => {
     // Thực hiện truy vấn
     const staffs = await db.Staff.findAndCountAll({
       where: whereClause,
+      include:[
+        {
+          model: db.Manager,
+          as : 'managerData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          include:[
+            {
+              model: db.User,
+              as : 'userData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        }
+      ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit),
       offset: parseInt(skip)
@@ -54,7 +68,7 @@ const createStaff = async (body) => {
 
 const updateStaff = async (updateData) => {
   try {
-    const updatedStaff = await apifeature(db.Staff, 'update', { ...updateData } , 'id_staff')
+    const updatedStaff = await apifeature(db.Staff, 'update', { ...updateData }, 'id_staff')
     return updatedStaff
   } catch (error) {
     throw new ApiError(error.message)
@@ -63,7 +77,7 @@ const updateStaff = async (updateData) => {
 
 const deleteStaff = async (id_staff) => {
   try {
-    const deletedStaff = await apifeature(db.Staff, 'delete', { id_staff } , 'id_staff')
+    const deletedStaff = await apifeature(db.Staff, 'delete', { id_staff }, 'id_staff')
     return deletedStaff
   } catch (error) {
     throw new ApiError(error.message)

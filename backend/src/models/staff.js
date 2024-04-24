@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_staff',
         as: 'userData'
       })
+
+      Staff.belongsTo(models.Manager, {
+        foreignKey: 'id_manager',
+        as: 'managerData'
+      })
     }
   }
   Staff.init({

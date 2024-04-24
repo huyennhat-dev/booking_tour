@@ -3,7 +3,7 @@ import db from '~/models'
 import ApiError from '~/utils/ApiError'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import authValidation from '~/validations/loginValidaton'
+import authValidation from '~/validations/loginValidation'
 
 
 const router = express.Router()
@@ -35,7 +35,8 @@ const loginFuc = async (req, res, next) => {
       id : user.dataValues.id,
       email : user.dataValues.email,
       username : user.dataValues.username,
-      phone_number : user.dataValues.phone_number
+      phone_number : user.dataValues.phone_number,
+      role : user.dataValues.role
     }, 'mysecretkey')
 
     return res.status(200).json({
@@ -45,7 +46,8 @@ const loginFuc = async (req, res, next) => {
         id: user.id,
         email: user.email,
         username: user.username,
-        phone_number: user.phone_number
+        phone_number: user.phone_number,
+        role : user.dataValues.role
       }
     })
   } catch (error) {
