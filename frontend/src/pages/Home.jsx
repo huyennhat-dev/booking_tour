@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import Hero from "../components/Home/Hero";
 import FindPopularTours from "../components/Home/FindPopularTours";
@@ -6,8 +7,6 @@ import TrendingDestinationsSection from "../components/Home/TrendingDestinations
 import GrabSaleSection from "../components/Home/GrabSaleSection";
 import PopularThingsToDoSection from "../components/Home/PopularThingsToDoSection";
 import TopTrending from "../components/Home/TopTrending";
-import ReviewsSection from "../components/Home/ReviewsSection";
-import BookingSection from "../components/Home/BookingSection";
 import ArticlesSection from "../components/Home/ArticlesSection";
 
 const Home = () => {
@@ -20,8 +19,6 @@ const Home = () => {
       <GrabSaleSection />
       <PopularThingsToDoSection />
       <TopTrending />
-      <ReviewsSection />
-      {/* <BookingSection /> */}
       <ArticlesSection />
     </>
   );

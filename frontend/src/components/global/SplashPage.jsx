@@ -1,11 +1,10 @@
 import React from "react";
-import { styles } from "../../styles/styles";
-import { Logo } from "../../assets/export";
+import LogoComponent from "./Logo";
 
 const SplashPage = () => {
   return (
     <div className={`w-screen h-screen flex justify-center items-center`}>
-      <img src={Logo} alt="" className="" />
+     <LogoComponent/>
     </div>
   );
 };

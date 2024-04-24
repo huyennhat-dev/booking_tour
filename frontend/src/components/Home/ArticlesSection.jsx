@@ -10,9 +10,9 @@ const ArticlesSection = () => {
       className={`py-16 ${styles.horizontalPadding} flex flex-col gap-y-12 relative`}
     >
       <div className="w-full flex items-center justify-between">
-        <h2 className={`${styles.headingSize}`}>Travel Articles</h2>
+        <h2 className={`${styles.headingSize}`}>Blog du lịch</h2>
         <Link to="/" className="text-sm font-normal">
-          See All
+          Xem tất cả
         </Link>
       </div>
       <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">

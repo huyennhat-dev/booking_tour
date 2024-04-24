@@ -9,15 +9,16 @@ const GrabSaleSection = () => {
       <div className="w-full md:h-1/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
         <div className="h-full flex flex-col gap-y-5 justify-center items-start p-6 md:px-12 bg-pink-50 rounded-t-xl md:rounded-t-none md:rounded-l-xl">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">
-            Grab up to <span className="text-[#EB662B]">35% off</span> on your
-            favorite Destination
+            Tận hưởng giảm giá tới
+            <span className="text-[#EB662B] "> 35% </span> tại điểm đến yêu
+            thích của bạn
           </h1>
-          <p className="text-[#05073C] text-sm">
-            Limited time offer, don't miss the opportunity
+          <p className="text-[#05073C] text-xl px-2">
+            Ưu đãi có hạn, đừng bỏ lỡ cơ hội
           </p>
           <Button
-            title={"Book Now"}
-            classes={`${styles.bgOrange} px-4 py-3 text-white text-lg font-medium rounded-lg`}
+            title={"Đặt ngay"}
+            classes={`${styles.bgOrange} px-4 py-3 text-white text-lg font-medium rounded-lg mx-2`}
           />
         </div>
         <div className="md:h-1/2 h-full">

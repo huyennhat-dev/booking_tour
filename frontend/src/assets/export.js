@@ -1,4 +1,5 @@
 import Logo from "./logo.png";
+import NotFound from "./notfound.svg";
 import HeroImage from "./hero-bg-hero.png";
 import Main from "./main.png";
 import Tour1 from "./tour1.png";
@@ -53,6 +54,7 @@ import TourDetailsImage4 from "./tour-details-img-4.png";
 import GoogleLogo from "./google-logo.png";
 
 export {
+  NotFound,
   Logo,
   HeroImage,
   Main,

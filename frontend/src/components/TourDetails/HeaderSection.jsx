@@ -6,56 +6,122 @@ import {
   TourDetailsImage3,
   TourDetailsImage4,
 } from "../../assets/export";
+import ImageSection from "./ImageSection";
+import { CiLocationOn } from "react-icons/ci";
+import {
+  FaBus,
+  FaPlane,
+  FaClock,
+  FaStar,
+  FaTaxi,
+  FaTrain,
+} from "react-icons/fa6";
+const HeaderSection = ({
+  nameTour,
+  destination,
+  vehicles,
+  photos,
+  differenceInDays,
+}) => {
+  const vehicleComponent = ({ data }) => {
+    if (data.plane)
+      return (
+        <div className="group relative  flex justify-center px-16 cursor-pointer">
+          <p className="text-md font-normal flex items-center">
+            Phương tiện: <FaPlane className="mx-2" />
+            Máy bay
+          </p>
+          <span className="tooltip absolute bottom-6 scale-0 text-center rounded bg-gray-800 bg-opacity-45 p-2 text-xs text-white group-hover:scale-100">
+            Tour này sẽ dùng
+            <strong className="text-white mx-1">Máy bay</strong>
+            để di chuyển
+          </span>
+        </div>
+      );
+    if (data.bus)
+      return (
+        <div className="group relative  flex justify-center px-16 cursor-pointer">
+          <p className="text-md font-normal flex items-center">
+            Phương tiện: <FaBus className="mx-2" />
+            Xe bus
+          </p>
+          <span className="tooltip absolute bottom-6 scale-0 text-center rounded bg-gray-800 bg-opacity-45 p-2 text-xs text-white group-hover:scale-100">
+            Tour này sẽ dùng
+            <strong className="text-white mx-1">Xe bus</strong>
+            để di chuyển
+          </span>
+        </div>
+      );
+    if (data.train)
+      return (
+        <div className="group relative  flex justify-center px-16 cursor-pointer">
+          <p className="text-md font-normal flex items-center">
+            Phương tiện: <FaTrain className="mx-2" />
+            Tàu hỏa
+          </p>
+          <span className="tooltip absolute bottom-6 scale-0 text-center rounded bg-gray-800 bg-opacity-45 p-2 text-xs text-white group-hover:scale-100">
+            Tour này sẽ dùng
+            <strong className="text-white mx-1">Tàu hỏa</strong>
+            để di chuyển
+          </span>
+        </div>
+      );
+    if (data.taxi)
+      return (
+        <div className="group relative  flex justify-center px-16 cursor-pointer">
+          <p className="text-md font-normal flex items-center">
+            Phương tiện: <FaTaxi className="mx-2" />
+            Taxi
+          </p>
+          <span className="tooltip absolute bottom-6 scale-0 text-center rounded bg-gray-800 bg-opacity-45 p-2 text-xs text-white group-hover:scale-100">
+            Tour này sẽ dùng
+            <strong className="text-white mx-1">Taxi</strong>
+            để di chuyển
+          </span>
+        </div>
+      );
 
-const HeaderSection = () => {
+    return null;
+  };
+
   return (
     <div className="flex flex-col gap-y-6">
-      <div className="flex items-center gap-4">
-        <span
-          className={`px-8 py-3 rounded-full bg-pink-50 text-sm font-medium ${styles.orangeText}`}
-        >
-          Best Seller
-        </span>
-        <span className="px-8 py-3 rounded-full text-sm font-medium bg-slate-100">
-          Free Cancellation
-        </span>
-      </div>
-      <h1 className="text-4xl font-semibold w-full md:w-1/2 leading-24">
-        Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour
+      <h1 className="text-4xl font-semibold w-full md:w-2/3 leading-24 text-wrap">
+        {nameTour}
       </h1>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between my-2">
         <div className="flex items-center gap-8">
-          <p className="text-sm font-normal">4 (242)</p>
-          <p className="text-sm font-normal">Paris, France</p>
-        </div>
-        <div className="flex items-center gap-8">
-          <p className="text-sm font-normal">Share</p>
-          <p className="text-sm font-normal">Whishlist</p>
+          <p className="text-md px-2 flex items-center">
+            <strong>4.9</strong>
+            <FaStar className="mx-1 mb-[1px]" fill="#efc816" />
+            (100) lượt đánh giá
+          </p>
+          <div className="group relative  flex justify-center px-16 cursor-pointer">
+            <p className="text-md font-normal flex items-center">
+              <CiLocationOn strokeWidth="1.5px" className="mr-1" />
+              Địa điểm: {destination}
+            </p>
+            <span className="tooltip absolute bottom-6 text-center scale-0 rounded bg-gray-800 bg-opacity-45   p-2 text-xs text-white group-hover:scale-100">
+              Tour này có điểm đến sẽ là
+              <p className="text-white mx-1 font-semibold">{destination}</p>
+            </span>
+          </div>
+
+          {vehicleComponent({ data: vehicles })}
+          <div className="group relative  flex justify-center px-16 cursor-pointer">
+            <p className="text-md font-normal flex items-center">
+              <FaClock className="mr-1" />
+              Thời gian: {differenceInDays} Ngày
+            </p>
+            <span className="tooltip absolute bottom-6 text-center scale-0 rounded bg-gray-800 bg-opacity-45   p-2 text-xs text-white group-hover:scale-100">
+              Tour này có thời gian là
+              <p className="text-white mx-1 font-semibold">3 Ngày</p>
+            </span>
+          </div>
         </div>
       </div>
-      <div className="w-full grid grid-cols-1 md:grid-cols-12 lg:grid-cols-12 md:grid-rows-2 gap-x-2">
-        <div className="row-span-2 col-span-7">
-          <img src={TourDetailsImage1} alt="" className="rounded-lg" />
-        </div>
-        <div className="row-span-2 col-span-5 flex flex-col gap-y-2">
-          <div className="w-full row-span-1 col-span-5">
-            <img
-              src={TourDetailsImage2}
-              alt=""
-              className="rounded-lg mt-2 md:mt-0"
-            />
-          </div>
-          <div className="row-span-1 col-span-5 flex gap-2">
-            <div className="row-span-1 col-span-2">
-              <img src={TourDetailsImage3} alt="" className="rounded-lg" />
-            </div>
-            <div className="row-span-1 col-span-2">
-              <img src={TourDetailsImage4} alt="" className="rounded-lg" />
-            </div>
-          </div>
-        </div>
-      </div>
+      <ImageSection images={photos} />
     </div>
   );
 };
