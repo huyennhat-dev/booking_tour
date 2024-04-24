@@ -11,6 +11,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Tour.belongsTo(models.Manager, {
+        foreignKey: 'id_manager',
+        as: 'managerData'
+      })
+
+      Tour.belongsTo(models.Staff, {
+        foreignKey: 'id_staff',
+        as: 'staffData'
+      })
     }
   }
   Tour.init({

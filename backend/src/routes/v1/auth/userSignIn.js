@@ -1,47 +1,68 @@
 import express from 'express'
 import db from '~/models'
 import ApiError from '~/utils/ApiError'
+import bcrypt from 'bcryptjs'
+import apifeature from '~/helpers/apifeature'
+import jwt from 'jsonwebtoken'
+import authValidation from '~/validations/loginValidaton'
 
 const router = express.Router()
 
-const loginFuc = async (req, res, next) => {
-  const { email, password ,  } = req.body
+const SignInFuc = async (req, res, next) => {
+  const { email, password, phone_number, username, birth_day } = req.body
 
-  if (!email || !password) {
-    return next(new ApiError(404, 'Email and password are required.'))
+  if (!email || !password || !phone_number || !username || !birth_day) {
+    return next(new ApiError(404, 'Vui lòng điền đầy đủ thông tin.'))
   }
 
+  // Hash the password
+  const hashedPassword = await bcrypt.hash(password, 10)
+
   try {
-    // Tìm người dùng dựa trên email
-    const user = await db.User.findOne({ where: { email } })
+    const user = await apifeature(db.User, 'create', {
+      email,
+      password: hashedPassword,
+      phone_number,
+      username,
+      role : 'customer'
+    })
 
+    const customer = await apifeature(db.Customer, 'create', {
+      id_customer : user.dataValues.id,
+      full_name : username,
+      birth_day : birth_day,
+      point_evaluation : 1
+    })
 
-    // Nếu không tìm thấy người dùng
-    if (!user) {
-      return next(new ApiError(403, 'Unauthorized'))
-    }
+    console.log(user)
+    console.log(customer)
 
-    if (password !== user.password) {
-      return next(new ApiError(403, 'Unauthorized'))
-    }
+    const token = jwt.sign({
+      id : user.dataValues.id,
+      email : user.dataValues.email,
+      username : user.dataValues.username,
+      phone_number : user.dataValues.phone_number,
+    }, 'mysecretkey')
 
     return res.status(200).json({
-      jwt : 'con cac',
+      statusCode : 200,
+      token : token,
       user: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        phone_number: user.phone_number
+        id : user.dataValues.id,
+        email : user.dataValues.email,
+        username : user.dataValues.username,
+        phone_number : user.dataValues.phone_number,
       }
     })
+
+
   } catch (error) {
     console.error(error)
-    return next(new ApiError(403, 'Unauthorized'))
+    return next(new ApiError(403, 'Tài khoản đã tồn tại trong hệ thống.'))
   }
 }
 
 
-router.route('/')
-  .post(loginFuc)
+router.route('/').post(authValidation.signIn,SignInFuc)
 
-export const authRouter = router
+export const SignInRouter = router

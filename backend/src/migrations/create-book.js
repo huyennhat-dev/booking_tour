@@ -2,6 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // associate models
     await queryInterface.createTable('Books', {
       id_booked_tour: {
         allowNull: false,

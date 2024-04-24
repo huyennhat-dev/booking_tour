@@ -1,6 +1,10 @@
 import express from 'express'
 import db from '~/models'
 import ApiError from '~/utils/ApiError'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import authValidation from '~/validations/loginValidaton'
+
 
 const router = express.Router()
 
@@ -21,12 +25,22 @@ const loginFuc = async (req, res, next) => {
       return next(new ApiError(403, 'Unauthorized'))
     }
 
-    if (password !== user.password) {
+    const match = await bcrypt.compare(password, user.dataValues.password)
+
+    if (!match) {
       return next(new ApiError(403, 'Unauthorized'))
     }
 
+    const token = jwt.sign({
+      id : user.dataValues.id,
+      email : user.dataValues.email,
+      username : user.dataValues.username,
+      phone_number : user.dataValues.phone_number
+    }, 'mysecretkey')
+
     return res.status(200).json({
-      jwt : 'con cac',
+      statusCode : 200,
+      token : token,
       user: {
         id: user.id,
         email: user.email,
@@ -41,7 +55,6 @@ const loginFuc = async (req, res, next) => {
 }
 
 
-router.route('/')
-  .post(loginFuc)
+router.route('/').post(authValidation.login,loginFuc)
 
 export const authRouter = router
