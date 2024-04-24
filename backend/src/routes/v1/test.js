@@ -1,5 +1,6 @@
 import express from 'express'
 import db from '~/models'
+import validateToken from '~/middlewares/validationJwt'
 
 
 const router = express.Router()
@@ -12,11 +13,23 @@ const test = async (req, res, next) => {
     include: [
       {
         model: db.Manager,
-        as : 'managerData'
+        as : 'managerData',
+        include: [
+          {
+            model: db.User,
+            as : 'userData'
+          }
+        ]
       },
       {
         model: db.Staff,
-        as : 'staffData'
+        as : 'staffData',
+        include: [
+          {
+            model: db.User,
+            as : 'userData'
+          }
+        ]
       }
     ]
   })
@@ -30,6 +43,7 @@ const test = async (req, res, next) => {
           {
             model: db.User,
             as : 'userData'
+
           }
         ]
       },
@@ -39,11 +53,23 @@ const test = async (req, res, next) => {
         include: [
           {
             model: db.Manager,
-            as : 'managerData'
+            as : 'managerData',
+            include: [
+              {
+                model: db.User,
+                as : 'userData'
+              }
+            ]
           },
           {
             model: db.Staff,
-            as : 'staffData'
+            as : 'staffData',
+            include: [
+              {
+                model: db.User,
+                as : 'userData'
+              }
+            ]
           }
         ]
       }
@@ -60,6 +86,6 @@ const test = async (req, res, next) => {
 
 }
 
-router.get('/', test)
+router.get('/', validateToken, test)
 
 export const testRouter = router
