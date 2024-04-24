@@ -9,6 +9,7 @@ import { staffRouter } from '~/routes/v1/staff'
 import { authRouter } from '~/routes/v1/auth/userAuth'
 import { SignInRouter } from '~/routes/v1/auth/userSignIn'
 import { testRouter } from '~/routes/v1/test'
+import { uploadRouter } from '~/routes/v1/upload'
 
 
 const router = express.Router()
@@ -25,6 +26,7 @@ router.use('/login', authRouter)
 router.use('/signIn', SignInRouter)
 
 router.use('/test', testRouter)
+router.use('/upload', uploadRouter)
 
 
 export const API_V1 = router

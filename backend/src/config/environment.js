@@ -1,13 +1,11 @@
 import 'dotenv/config'
 
-
 const env = {
-  USERNAME_DB : process.env.USERNAME_DB,
-  PASSWORD :  process.env.PASSWORD,
-  SERVER_NAME: process.env.SERVER_NAME,
-  DATABASENAME: process.env.DATABASENAME,
-  APP_HOST: process.env.APP_HOST,
-  APP_PORT: process.env.APP_PORT,
+  JWT_SECRETKEY : process.env.JWT_SECRETKEY,
+  APP_PORT :  process.env.APP_PORT,
+  CLOUD_NAME: process.env.CLOUD_NAME,
+  CLOUD_API_KEY: process.env.CLOUD_API_KEY,
+  CLOUD_API_SECRET: process.env.CLOUD_API_SECRET,
   BUILD_MODE: process.env.BUILD_MODE
 }
 

@@ -7,7 +7,7 @@ import ApiError from '~/utils/ApiError'
 const getUser = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } =query
+    const { page = 1, limit = 1000, sortBy = 'role', sortOrder = 'desc', search = '', filters = {} } =query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
@@ -35,6 +35,11 @@ const getUser = async (query) => {
     // Thực hiện truy vấn
     const users = await db.User.findAndCountAll({
       where: whereClause,
+      include: [
+        { model: db.Customer, as: 'customerData' },
+        { model: db.Staff, as: 'staffData', include: [{ model: db.User, as: 'userData', attributes: { exclude: ['createdAt', 'updatedAt' , 'password'] } }] },
+        { model: db.Manager, as: 'managerData', include: [{ model: db.User, as: 'userData', attributes: { exclude: ['createdAt', 'updatedAt' , 'password'] } }] }
+      ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit),
       offset: parseInt(skip),
@@ -43,6 +48,7 @@ const getUser = async (query) => {
 
     return users
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }
@@ -56,7 +62,7 @@ const createUser = async (body) => {
   }
 }
 
-const updateUser = async (id , updateData) => {
+const updateUser = async (id, updateData) => {
   try {
     const updatedUser = await apifeature(db.User, 'update', { id, ...updateData })
     return updatedUser
