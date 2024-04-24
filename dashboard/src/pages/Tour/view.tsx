@@ -1,258 +1,134 @@
-import { CiLock } from 'react-icons/ci';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { useState } from 'react';
-import { Modal, Select } from 'antd';
-import { Link } from 'react-router-dom';
-
-export type Package = {
-  name: string;
-  photo: string;
-  role: number;
-  email: string;
-  phone: string;
-  status: number;
-};
-
-const packageData: Package[] = [
-  {
-    name: 'John Doe',
-    photo: 'john.jpg',
-    role: 123,
-    email: 'john@example.com',
-    phone: '123-456-7890',
-    status: 1,
-  },
-  {
-    name: 'Jane Smith',
-    photo: 'jane.jpg',
-    role: 456,
-    email: 'jane@example.com',
-    phone: '987-654-3210',
-    status: 2,
-  },
-  {
-    name: 'Alice Johnson',
-    photo: 'alice.jpg',
-    role: 789,
-    email: 'alice@example.com',
-    phone: '555-555-5555',
-    status: 1,
-  },
-  {
-    name: 'Bob Brown',
-    photo: 'bob.jpg',
-    role: 101,
-    email: 'bob@example.com',
-    phone: '222-333-4444',
-    status: 2,
-  },
-  {
-    name: 'Emma Davis',
-    photo: 'emma.jpg',
-    role: 202,
-    email: 'emma@example.com',
-    phone: '777-888-9999',
-    status: 1,
-  },
-  {
-    name: 'Michael Wilson',
-    photo: 'michael.jpg',
-    role: 303,
-    email: 'michael@example.com',
-    phone: '666-666-6666',
-    status: 1,
-  },
-  {
-    name: 'Sarah Taylor',
-    photo: 'sarah.jpg',
-    role: 404,
-    email: 'sarah@example.com',
-    phone: '123-123-1234',
-    status: 2,
-  },
-  {
-    name: 'David Clark',
-    photo: 'david.jpg',
-    role: 505,
-    email: 'david@example.com',
-    phone: '999-999-9999',
-    status: 1,
-  },
-  {
-    name: 'Olivia Martinez',
-    photo: 'olivia.jpg',
-    role: 606,
-    email: 'olivia@example.com',
-    phone: '444-444-4444',
-    status: 2,
-  },
-  {
-    name: 'James Rodriguez',
-    photo: 'james.jpg',
-    role: 707,
-    email: 'james@example.com',
-    phone: '888-888-8888',
-    status: 1,
-  },
-];
 
 const ViewTour = () => {
-  const [accountFormModal, setAccountFormModal] = useState(false);
-  const handleCreateAccount = () => {
-    setAccountFormModal(false);
-  };
-
-  const handleSelectRole = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const renderModal = () => {
-    return (
-      <Modal
-        title="Vertically centered modal dialog"
-        centered
-        okText="Thêm tài khoản"
-        cancelText="Hủy"
-        open={accountFormModal}
-        onOk={handleCreateAccount}
-        onCancel={() => setAccountFormModal(false)}
-      >
-        <form action="#">
-          <div className="py-6.5">
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Họ và tên
-              </label>
-              <input
-                type="text"
-                placeholder="Nhập họ và tên"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Nhập email"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Số điện thoại
-              </label>
-              <input
-                type="number"
-                placeholder="Nhập số điện thoại"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Vai trò
-              </label>
-
-              <Select
-                defaultValue="staff"
-                className="w-full "
-                onChange={handleSelectRole}
-                options={[
-                  { label: <span>Quản trị viên</span>, value: 'manager' },
-                  { label: <span>Hướng dẫn viên</span>, value: 'staff' },
-                ]}
-              />
-            </div>
-          </div>
-        </form>
-      </Modal>
-    );
-  };
-
   return (
     <DefaultLayout>
-      {renderModal()}
-      <Breadcrumb pageName="Tour" key={'tour'} />
-      <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-          <div className="max-w-full overflow-x-auto">
-            <div className="w-full">
-              <button
-                onClick={() => setAccountFormModal(true)}
-                className="float-end px-4 py-1 hover:bg-orange-400 hover:text-white duration-100 ease-in-out rounded-md border-[1.5px] border-r-slate-300 mx-2 mb-4"
+      <div className="w-full rounded-md bg-white p-15 md:flex items-start justify-center 2xl:px-20 md:px-6 text-black">
+        <div className="xl:w-2/6 lg:w-2/5 w-80 md:block hidden">
+          <img
+            className="w-full"
+            alt="image of a girl posing"
+            src="https://i.ibb.co/QMdWfzX/component-image-one.png"
+          />
+          <img
+            className="mt-6 w-full"
+            alt="image of a girl posing"
+            src="https://i.ibb.co/qxkRXSq/component-image-two.png"
+          />
+        </div>
+        <div className="md:hidden">
+          <img
+            className="w-full"
+            alt="image of a girl posing"
+            src="https://i.ibb.co/QMdWfzX/component-image-one.png"
+          />
+          <div className="flex items-center justify-between mt-3 space-x-4 md:space-x-0">
+            <img
+              alt="image-tag-one"
+              className="md:w-48 md:h-48 w-full"
+              src="https://i.ibb.co/cYDrVGh/Rectangle-245.png"
+            />
+            <img
+              alt="image-tag-one"
+              className="md:w-48 md:h-48 w-full"
+              src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
+            />
+            <img
+              alt="image-tag-one"
+              className="md:w-48 md:h-48 w-full"
+              src="https://i.ibb.co/cYDrVGh/Rectangle-245.png"
+            />
+            <img
+              alt="image-tag-one"
+              className="md:w-48 md:h-48 w-full"
+              src="https://i.ibb.co/f17NXrW/Rectangle-244.png"
+            />
+          </div>
+        </div>
+
+        <div className="xl:w-2/5 md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6">
+          <div className="border-b border-gray-200 pb-6">
+            <p className="text-sm leading-none text-gray-600 dark:text-gray-300 ">
+              Huế - Đà Nẵng - Hội An
+            </p>
+            <h1 className="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 dark:text-white mt-2">
+            Thừa Thiên Huế: Thêm nhiều hoạt động hút khách đến vịnh đẹp Lăng Cô 
+            </h1>
+          </div>
+          <div className="py-2 border-b border-gray-200 flex items-center justify-between">
+            <p className="text-base leading-4 text-gray-800 dark:text-gray-300">
+              <b>Dẫn Đoàn</b>
+            </p>
+            <div className="flex items-center justify-center">
+              <p className="text-sm leading-none text-gray-600 dark:text-gray-300">
+                Nguyễn Đức Bảo
+              </p>
+              <div className="w-6 h-6 bg-gradient-to-b from-gray-900 to-indigo-500 ml-3 mr-4 cursor-pointer"></div>
+              <svg
+                className="cursor-pointer text-gray-300 dark:text-white"
+                width="6"
+                height="10"
+                viewBox="0 0 6 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                Thêm Tour
-              </button>
+                <path
+                  d="M1 1L5 5L1 9"
+                  stroke="currentColor"
+                  stroke-width="1.25"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
             </div>
-
-            <table className="w-full table-auto">
-              <thead>
-                <tr className="bg-gray-2 text-left dark:bg-meta-4">
-                  <th className="max-w-[30px] py-4 text-center font-medium text-black dark:text-white ">
-                    STT
-                  </th>
-                  <th className="min-w-[150px] py-4 px-4 text-left font-medium text-black dark:text-white">
-                    Hình ảnh
-                  </th>
-                  <th className="min-w-[120px] py-4 px-4 text-left font-medium text-black dark:text-white">
-                    Thông tin Tour
-                  </th>
-                  <th className="min-w-[120px] py-4 px-4 text-left font-medium text-black dark:text-white"></th>
-
-                  <th className="py-4 px-4 text-left font-medium text-black dark:text-white"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {packageData.map((data, index) => (
-                  <tr key={index}>
-                    <td className="border-b text-center border-[#eee] py-5 px-4  dark:border-strokedark ">
-                      <p className="text-sm">{index + 1}</p>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
-                      <img
-                        src="https://tailwindcss.com/img/card-top.jpg"
-                        alt=""
-                        className="w-[80px] h-[80px] rounded-sm"
-                      />
-                    </td>
-                    <td className="border-b border-[#eee] text-black py-5 px-4  dark:border-strokedark ">
-                      <h4 className="font-semibold text-base">
-                        Thừa Thiên Huế Thêm nhiều hoạt động hút khách đến vịnh
-                        đẹp Lăng Cô
-                      </h4>
-                      <h6 className="text-sm mt-1">
-                        <b>Hướng Dẫn Viên :</b> Nguyễn Đức Bảo
-                      </h6>
-                      <h6 className="text-sm mt-1">
-                        <b>Giá ban đầu :</b> 900.000 VND / Người
-                      </h6>
-                      <h6 className="text-sm mt-1">
-                        <b>Điểm đến :</b>Huế - Đà Nẵng - Hội An
-                      </h6>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
-                      <div></div>
-                    </td>
-                    <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
-                      <Link to="edit/123">
-                        <button
-                          className={`flex items-center rounded-md text-white px-2 py-1 ${
-                            data.status == 0 ? 'bg-orange-600' : 'bg-sky-500'
-                          }`}
-                        >
-                          <CiLock strokeWidth={1.5} className="mr-2" />
-                          <span>Chỉnh sữa</span>
-                        </button>
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          </div>
+          <div className="py-2  flex items-center justify-between">
+            <p className="text-base leading-4 text-gray-800 dark:text-gray-300">
+              Giá ban đầu
+            </p>
+            <div className="flex items-center justify-center">
+              <p className="text-sm leading-none text-gray-600 dark:text-gray-300 mr-3">
+                2000000 VND / Người
+              </p>
+              
+            </div>
+          </div>
+          <div className="py-2 border-b border-gray-200 flex items-center justify-between">
+            <p className="text-base leading-4 text-gray-800 dark:text-gray-300">
+              <b>Khuyến mãi</b>
+            </p>
+            <div className="flex items-center justify-center">
+              <p className="text-sm leading-none text-gray-600 dark:text-gray-300 mr-3">
+                2000000 VND / Người
+              </p>
+            </div>
+          </div>
+          <div>
+            <p className=" text-base lg:leading-tight leading-normal text-gray-600 dark:text-gray-300 mt-7">
+              Nhiều hoạt động hấp dẫn du khách Với vẻ đẹp thiên nhiên ban tặng,
+              vào ngày 16/5/2009, tại Setubal - Bồ Đào Nha, vịnh Lăng Cô được
+              kết nạp vào Câu lạc bộ các vịnh đẹp nhất thế giới. Tròn 15 năm
+              được công nhận là vịnh đẹp thế giới, UBND huyện Phú Lộc sẽ tổ chức
+              nhiều hoạt động kỷ niệm gắn với quảng bá hình ảnh vịnh Lăng Cô gắn
+              với tiềm năng, thế mạnh phát triển du lịch của huyện Phú Lộc đến
+              với đông đảo du khách trong và ngoài nước, thu hút nguồn lực đầu
+              tư, thúc đẩy du lịch phát triển. Ông Nguyễn Hải Đăng, Phó Chủ tịch
+            </p>
+            <p className="text-base leading-4 mt-7 text-gray-600 dark:text-gray-300">
+              <b>Thời gian</b> : 20/10/2021 - 25/10/2021
+            </p>
+            <p className="text-base leading-4 mt-4 text-gray-600 dark:text-gray-300">
+              <b>Bảo hiểm</b> : Khôpng bao gồm
+            </p>
+            <p className="text-base leading-4 mt-4 text-gray-600 dark:text-gray-300">
+              <b>Phương tiện</b> : Ô tô / Máy bay / Tàu hỏa 
+            </p>
+            <p className="text-base leading-4 mt-4 text-gray-600 dark:text-gray-300">
+              <b>Ăn uống</b> : Không hổ trợ ăn uống
+            </p>
+            <h4 className="md:w-96 text-xl font-bold leading-normal text-gray-600 dark:text-gray-300 mt-4">
+              Thông tin người dẫn đoàn
+            </h4>
           </div>
         </div>
       </div>

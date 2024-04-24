@@ -1,8 +1,6 @@
 import { CiLock } from 'react-icons/ci';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
-import { useState } from 'react';
-import { Modal, Select } from 'antd';
 import { Link } from 'react-router-dom';
 
 export type Package = {
@@ -98,96 +96,13 @@ const packageData: Package[] = [
 ];
 
 const ListTours = () => {
-  const [accountFormModal, setAccountFormModal] = useState(false);
-  const handleCreateAccount = () => {
-    setAccountFormModal(false);
-  };
-
-  const handleSelectRole = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const renderModal = () => {
-    return (
-      <Modal
-        title="Vertically centered modal dialog"
-        centered
-        okText="Thêm tài khoản"
-        cancelText="Hủy"
-        open={accountFormModal}
-        onOk={handleCreateAccount}
-        onCancel={() => setAccountFormModal(false)}
-      >
-        <form action="#">
-          <div className="py-6.5">
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Họ và tên
-              </label>
-              <input
-                type="text"
-                placeholder="Nhập họ và tên"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Email
-              </label>
-              <input
-                type="email"
-                placeholder="Nhập email"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Số điện thoại
-              </label>
-              <input
-                type="number"
-                placeholder="Nhập số điện thoại"
-                className="w-full rounded border-[1.5px] border-stroke bg-transparent py-2 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-              />
-            </div>
-
-            <div className="mb-4.5">
-              <label className="mb-2.5 block text-black dark:text-white">
-                Vai trò
-              </label>
-
-              <Select
-                defaultValue="staff"
-                className="w-full "
-                onChange={handleSelectRole}
-                options={[
-                  { label: <span>Quản trị viên</span>, value: 'manager' },
-                  { label: <span>Hướng dẫn viên</span>, value: 'staff' },
-                ]}
-              />
-            </div>
-          </div>
-        </form>
-      </Modal>
-    );
-  };
-
   return (
     <DefaultLayout>
-      {renderModal()}
       <Breadcrumb pageName="Tour" key={'tour'} />
       <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
           <div className="max-w-full overflow-x-auto">
-            <div className="w-full">
-              <button
-                onClick={() => setAccountFormModal(true)}
-                className="float-end px-4 py-1 hover:bg-orange-400 hover:text-white duration-100 ease-in-out rounded-md border-[1.5px] border-r-slate-300 mx-2 mb-4"
-              >
-                Thêm Tour
-              </button>
-            </div>
+          
 
             <table className="w-full table-auto">
               <thead>
