@@ -7,6 +7,8 @@ const Account = lazy(() => import("../pages/Account"));
 const ListTours = lazy(() => import("../pages/Tour/index"));
 const CreateTour = lazy(() => import("../pages/Tour/create"));
 const EditTour = lazy(() => import("../pages/Tour/edit"));
+const ViewTour = lazy(() => import("../pages/Tour/view"));
+
 
 
 export const routes = [
@@ -27,6 +29,11 @@ export const routes = [
         pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
         url: "/tour",
         page: <ListTours />,
+    },
+    {
+        pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/tour/view/:id",
+        page: <ViewTour />,
     },
 
     {

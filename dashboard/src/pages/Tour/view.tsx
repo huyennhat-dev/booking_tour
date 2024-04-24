@@ -97,7 +97,7 @@ const packageData: Package[] = [
   },
 ];
 
-const ListTours = () => {
+const ViewTour = () => {
   const [accountFormModal, setAccountFormModal] = useState(false);
   const handleCreateAccount = () => {
     setAccountFormModal(false);
@@ -260,4 +260,4 @@ const ListTours = () => {
   );
 };
 
-export default ListTours;
+export default ViewTour;
