@@ -14,12 +14,18 @@
     "url": "https://tailadmin.com"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^41.3.1",
+    "@ckeditor/ckeditor5-react": "^6.2.0",
     "antd": "^5.16.4",
+    "antd-img-crop": "^4.21.0",
     "apexcharts": "^3.41.0",
+    "axios": "^1.6.8",
+    "cloudinary": "^2.2.0",
     "flatpickr": "^4.6.13",
     "headlessui": "^0.0.0",
     "jsvectormap": "^1.5.3",
     "match-sorter": "^6.3.1",
+    "query-string": "^9.0.0",
     "react": "^18.2.0",
     "react-apexcharts": "^1.4.1",
     "react-dom": "^18.2.0",
