@@ -8,8 +8,10 @@ import { TbMenuDeep } from "react-icons/tb";
 import LoginPopup from "./LoginPopup";
 import SignUpPopup from "./SignUpPopup";
 import LogoComponent from "./Logo";
+import UserInfo from "./Info";
 
 const Navbar = () => {
+  const [logged] = useState(true);
   const [open, setOpen] = useState(false);
   const sidebarRef = useRef();
 
@@ -34,8 +36,8 @@ const Navbar = () => {
       >
         <NavLink path={"/"} title={"Trang Chủ"} />
         <NavLink path={"/contact"} title={"Liên Hệ"} />
-        <SignUpPopup />
-        <LoginPopup />  
+        {logged ? null : <SignUpPopup />}
+        {logged ? <UserInfo /> : <LoginPopup />}
       </div>
       <div
         onClick={toggleSidebar}
