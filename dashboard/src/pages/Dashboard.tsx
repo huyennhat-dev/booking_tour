@@ -1,7 +1,7 @@
 import React from 'react';
-import CardDataStats from '../../components/CardDataStats';
-import ChartOne from '../../components/Charts/ChartOne';
-import DefaultLayout from '../../layout/DefaultLayout';
+import CardDataStats from '../components/CardDataStats';
+import ChartOne from '../components/Charts/ChartOne';
+import DefaultLayout from '../layout/DefaultLayout';
 
 const Dashboard: React.FC = () => {
   return (
