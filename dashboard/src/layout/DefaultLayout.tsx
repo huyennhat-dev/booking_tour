@@ -1,8 +1,19 @@
-import React, { useState, ReactNode } from 'react';
+import React, { useState, ReactNode, useEffect } from 'react';
 import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
+import { useDispatch } from 'react-redux';
+import { getToken } from '../utils/tokenUtils';
+import { setToken } from '../redux/feature/authSlice';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = getToken()
+    if (token) dispatch(setToken({ token }))
+
+  }, []);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
