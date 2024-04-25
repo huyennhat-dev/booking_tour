@@ -6,6 +6,7 @@ async function performCRUD(model, action, data, id_index = 'id') {
       const createdRecord = await model.create(data)
       return createdRecord
     } catch (error) {
+      console.log(error)
       return ApiError(`Error creating record: ${error.message}`)
     }
   case 'update':

@@ -14,30 +14,26 @@ const createTour = async (req, res, next) => {
       id_staff: Joi.number().required().messages({
         'any.required': 'Vui lòng cung cấp ID của nhân viên'
       }),
-      departure_day: Joi.number().required().messages({
+      departure_day: Joi.string().messages(),
+      departure: Joi.string().messages({
         'any.required': 'Vui lòng cung cấp ngày khởi hành'
       }),
-      departure: Joi.string().required().messages({
-        'any.required': 'Vui lòng cung cấp điểm khởi hành'
-      }),
-      end_tour_day: Joi.number().required().messages({
+      end_tour_day: Joi.string().messages({
         'any.required': 'Vui lòng cung cấp ngày kết thúc tour'
       }),
-      end_tour: Joi.string().required().messages({
-        'any.required': 'Vui lòng cung cấp điểm kết thúc tour'
-      }),
+      end_tour: Joi.string().messages(),
       destination: Joi.string().required().messages({
         'any.required': 'Vui lòng cung cấp điểm đến'
       }),
       initial_price: Joi.number().required().messages({
         'any.required': 'Vui lòng cung cấp giá ban đầu'
       }),
-      promotional_price: Joi.number().required().less(Joi.ref('initial_price')).messages({
+      promotional_price: Joi.number().less(Joi.ref('initial_price')).messages({
         'any.required': 'Vui lòng cung cấp giá khuyến mãi',
         'number.less': 'Giá khuyến mãi phải nhỏ hơn giá ban đầu'
       }),
       promotional: Joi.number().required().messages({
-        'any.required': 'Vui lòng cung cấp giá khuyến mãi'
+        'any.required': 'Vui lòng cung cấp khuyến mãi'
       }),
       introduce: Joi.string().required().messages({
         'any.required': 'Vui lòng cung cấp mô tả'
@@ -45,28 +41,19 @@ const createTour = async (req, res, next) => {
       highlight: Joi.string().required().messages({
         'any.required': 'Vui lòng cung cấp điểm nổi bật'
       }),
-      insurance: Joi.boolean().required().messages({
+      insurance: Joi.boolean().messages({
         'any.required': 'Vui lòng chỉ định có bảo hiểm hay không'
       }),
-      bus: Joi.boolean().required().messages({
-        'any.required': 'Vui lòng chỉ định có xe buýt hay không'
+      vehicle: Joi.string().required().messages({
+        'any.required': 'Vui lòng cung cấp phương tiện vận chuyển'
       }),
-      bicycle: Joi.boolean().required().messages({
-        'any.required': 'Vui lòng chỉ định có xe đạp hay không'
-      }),
-      taxi: Joi.boolean().required().messages({
-        'any.required': 'Vui lòng chỉ định có taxi hay không'
-      }),
-      plane: Joi.boolean().required().messages({
-        'any.required': 'Vui lòng chỉ định có máy bay hay không'
-      }),
-      meal: Joi.boolean().required().messages({
+      meal: Joi.boolean().messages({
         'any.required': 'Vui lòng chỉ định có bữa ăn hay không'
       }),
-      photos: Joi.string().required().messages({
+      photos: Joi.array().required().messages({
         'any.required': 'Vui lòng cung cấp ảnh cho tour'
       }),
-      tour_guide: Joi.boolean().required().messages({
+      tour_guide: Joi.boolean().messages({
         'any.required': 'Vui lòng chỉ định có hướng dẫn viên hay không'
       })
     })
@@ -94,10 +81,7 @@ const updateTour = async (req, res, next) => {
       introduce: Joi.string(),
       highlight: Joi.string(),
       insurance: Joi.boolean(),
-      bus: Joi.boolean(),
-      bicycle: Joi.boolean(),
-      taxi: Joi.boolean(),
-      plane: Joi.boolean(),
+      vehicle: Joi.string(),
       meal: Joi.boolean(),
       photos: Joi.string(),
       tour_guide: Joi.boolean()

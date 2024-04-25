@@ -1,7 +1,8 @@
 import db from '~/models'
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
+import sendMailWithHtml from './mailService'
 
 const getBook = async (query) => {
   try {
@@ -28,7 +29,7 @@ const getBook = async (query) => {
         whereClause[key] = filters[key]
       }
     }
-    
+
     // Thực hiện truy vấn
     const books = await db.Book.findAndCountAll({
       where: whereClause,
@@ -58,7 +59,7 @@ const getBook = async (query) => {
                 {
                   model: db.User,
                   as : 'userData',
-                  attributes: { exclude: ['createdAt', 'updatedAt'] }
+                  attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
                 }
               ]
             },
@@ -70,7 +71,7 @@ const getBook = async (query) => {
                 {
                   model: db.User,
                   as : 'userData',
-                  attributes: { exclude: ['createdAt', 'updatedAt'] }
+                  attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
                 },
                 {
                   model: db.Manager,
@@ -93,6 +94,8 @@ const getBook = async (query) => {
       limit: parseInt(limit),
       offset: parseInt(skip)
     })
+
+
     return books
   } catch (error) {
     throw new ApiError(error.message)
@@ -101,9 +104,109 @@ const getBook = async (query) => {
 
 const createBook = async (body) => {
   try {
-    const newBook = await apifeature(db.Book, 'create', { ...body })
-    return newBook
+    // kiểm tra người dùng đã book tour này chưa
+    const isBooked = await db.Book.findOne({
+      where: {
+        id_tour: body.id_tour,
+        id_customer: body.id_customer
+      }
+    })
+
+    if (isBooked == null) {
+      const newBook = await apifeature(db.Book, 'create', { ...body })
+
+      // trã về thông tin book
+      const book = await db.Book.findOne({
+        where: {
+          id_booked_tour: newBook.dataValues.id_booked_tour
+        },
+        include: [
+          {
+            model: db.Customer,
+            as : 'customerData',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+              {
+                model: db.User,
+                as : 'userData',
+                attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+              }
+            ]
+          },
+          {
+            model: db.Tour,
+            as : 'tourData',
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            include: [
+              {
+                model: db.Manager,
+                as : 'managerData',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [
+                  {
+                    model: db.User,
+                    as : 'userData',
+                    attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+                  }
+                ]
+              },
+              {
+                model: db.Staff,
+                as : 'staffData',
+                attributes: { exclude: ['createdAt', 'updatedAt'] },
+                include: [
+                  {
+                    model: db.User,
+                    as : 'userData',
+                    attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+                  },
+                  {
+                    model: db.Manager,
+                    as : 'managerData',
+                    exclude: ['createdAt', 'updatedAt'],
+                    include: [
+                      {
+                        model: db.User,
+                        as : 'userData',
+                        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      })
+
+      const { customerData, tourData, guest_number } = book.dataValues
+      console.log(book)
+      // gửi mail xác nhận đặt tour
+      console.log(`
+        <h2>Đặt tour thành công</h2>
+        <p>Xin chào ${customerData.full_name},</p>
+        <p>Cảm ơn bạn đã đặt tour "${tourData.name_tour}" tại công ty du lịch ${tourData?.managerData?.company_name}.</p>
+        <p>Thông tin chi tiết:</p>
+        <ul>
+            <li>Tên tour: ${tourData.name_tour}</li>
+            <li>Địa điểm: ${tourData.destination}</li>
+            <li>Ngày khởi hành: ${tourData.departure}</li>
+            <li>Ngày kết thúc: ${tourData.end_tour}</li>
+            <li>Số lượng khách: ${guest_number}</li>
+        </ul>
+        <p>Bạn có thể xem thông tin chi tiết của tour tại <a href="{{tour_link}}">đây</a>.</p>
+        <p>Chúng tôi rất mong chờ chuyến đi của bạn!</p>
+        <p>Trân trọng,</p>
+        <p>${tourData?.managerData?.company_name}</p>
+      `, customerData.userData.email)
+
+      return book
+    } else {
+      throw new ApiError('Bạn đã book tour này rồi')
+    }
+
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }

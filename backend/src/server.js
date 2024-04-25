@@ -9,7 +9,7 @@ import { API_V1 } from '~/routes/v1'
 const RUN_SERVER = () => {
   const app = express()
   const hostname = env.APP_HOST
-  const port = env.APP_PORT || 8000
+  const port = env.BACKEND_PORT || 8000
 
   app.use(cors(corsOptions))
   app.use(express.json())

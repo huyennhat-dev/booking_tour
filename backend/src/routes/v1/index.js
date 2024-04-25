@@ -8,7 +8,7 @@ import { managerRouter } from '~/routes/v1/manager'
 import { staffRouter } from '~/routes/v1/staff'
 import { authRouter } from '~/routes/v1/auth/userAuth'
 import { SignInRouter } from '~/routes/v1/auth/userSignIn'
-import { testRouter } from '~/routes/v1/test'
+import { paymentRouter } from '~/routes/v1/payment'
 import { uploadRouter } from '~/routes/v1/upload'
 
 
@@ -25,7 +25,7 @@ router.use('/manager', managerRouter)
 router.use('/login', authRouter)
 router.use('/signIn', SignInRouter)
 
-router.use('/test', testRouter)
+router.use('/payment', paymentRouter)
 router.use('/upload', uploadRouter)
 
 

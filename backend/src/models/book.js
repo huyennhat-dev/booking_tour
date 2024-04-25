@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     id_booked_tour: {
       type: DataTypes.INTEGER,
       primaryKey: true,
-      autoIncrement: true
+      autoIncrement: true,
     },
     id_tour: DataTypes.INTEGER,
     id_customer: DataTypes.INTEGER,

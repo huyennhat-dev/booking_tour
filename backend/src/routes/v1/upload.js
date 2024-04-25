@@ -2,6 +2,7 @@ import express from 'express'
 import multer from 'multer'
 import cloudinary from 'cloudinary'
 import env from '~/config/environment'
+import tokenValidation from '~/middlewares/jwtMiddleware'
 
 const cloudinaryV2 = cloudinary.v2
 const router = express.Router()
@@ -18,8 +19,7 @@ const publicId = (imageURL) => {
   return imageURL.split('/').pop().split('.')[0]
 }
 
-router.post('/', upload.single('file'), async (req, res) => {
-  console.log(req.file)
+router.post('/', tokenValidation.authToken, upload.single('file'), async (req, res) => {
   try {
     await cloudinaryV2.uploader.upload_stream(
       {
@@ -46,7 +46,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     console.log(error)
   }
 })
-router.delete('/', async (req, res) => {
+router.delete('/', tokenValidation.authToken, async (req, res) => {
   try {
     const rs = await cloudinary.uploader.destroy(`images/booking_tour/${publicId(req.body.photo)}`)
     return res.status(200).json({
@@ -56,9 +56,9 @@ router.delete('/', async (req, res) => {
     })
   } catch (error) {
     console.log(error)
+    res.status(401).json(error)
   }
 })
-
 
 
 export const uploadRouter = router

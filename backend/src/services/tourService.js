@@ -28,7 +28,7 @@ const getTour = async (query) => {
         whereClause[key] = filters[key]
       }
     }
-
+    console.log('--------------------------------')
     // Thực hiện truy vấn
     const tours = await db.Tour.findAndCountAll({
       where: whereClause,
@@ -75,15 +75,24 @@ const getTour = async (query) => {
       offset: parseInt(skip)
     })
 
+    console.log(tours)
+
     return tours
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }
 
 const createTour = async (body) => {
   try {
-    const newTour = await apifeature(db.Tour, 'create', { ...body })
+    console.log(body)
+    const newTour = await apifeature(db.Tour, 'create',
+      { ...body,
+        promotional : (body.promotional / 100),
+        photos : body.photos.join(',')
+      }
+    )
     return newTour
   } catch (error) {
     throw new ApiError(error.message)

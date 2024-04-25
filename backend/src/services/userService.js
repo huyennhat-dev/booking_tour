@@ -37,8 +37,8 @@ const getUser = async (query) => {
       where: whereClause,
       include: [
         { model: db.Customer, as: 'customerData' },
-        { model: db.Staff, as: 'staffData', include: [{ model: db.User, as: 'userData', attributes: { exclude: ['createdAt', 'updatedAt' , 'password'] } }] },
-        { model: db.Manager, as: 'managerData', include: [{ model: db.User, as: 'userData', attributes: { exclude: ['createdAt', 'updatedAt' , 'password'] } }] }
+        { model: db.Staff, as: 'staffData', include: [{ model: db.User, as: 'userData', include : [{ model : db.Manager, as : 'managerData', attributes: { exclude: ['createdAt', 'updatedAt', 'password'] } }], attributes: { exclude: ['createdAt', 'updatedAt', 'password'] } }] },
+        { model: db.Manager, as: 'managerData', include: [{ model: db.User, as: 'userData', attributes: { exclude: ['createdAt', 'updatedAt', 'password'] } }] }
       ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit),

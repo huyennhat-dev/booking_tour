@@ -34,8 +34,6 @@ const SignInFuc = async (req, res, next) => {
       point_evaluation : 1
     })
 
-    console.log(user)
-    console.log(customer)
 
     const token = jwt.sign({
       id : user.dataValues.id,

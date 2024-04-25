@@ -1,5 +1,3 @@
-import db from '~/models'
-import { Op } from 'sequelize'
 import tourService from '~/services/tourService'
 import ApiError from '~/utils/ApiError'
 

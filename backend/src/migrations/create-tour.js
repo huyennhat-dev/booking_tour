@@ -19,15 +19,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       departure_day: {
-        type: Sequelize.INTEGER
-      },
-      departure: {
         type: Sequelize.STRING
       },
       end_tour_day: {
-        type: Sequelize.INTEGER
-      },
-      end_tour: {
         type: Sequelize.STRING
       },
       destination: {
@@ -36,41 +30,26 @@ module.exports = {
       initial_price: {
         type: Sequelize.FLOAT
       },
-      promotional_price: {
-        type: Sequelize.FLOAT
-      },
       promotional: {
         type: Sequelize.FLOAT
       },
       introduce: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT('long')
       },
       highlight: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT('long')
       },
       insurance: {
         type: Sequelize.BOOLEAN
       },
-      bus: {
-        type: Sequelize.BOOLEAN
-      },
-      bicycle: {
-        type: Sequelize.BOOLEAN
-      },
-      taxi: {
-        type: Sequelize.BOOLEAN
-      },
-      plane: {
-        type: Sequelize.BOOLEAN
+      vehicle: {
+        type: Sequelize.STRING
       },
       meal: {
         type: Sequelize.BOOLEAN
       },
       photos: {
-        type: Sequelize.STRING
-      },
-      tour_guide: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.TEXT('long')
       },
       createdAt: {
         allowNull: false,
