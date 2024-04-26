@@ -1,6 +1,6 @@
 import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import Logo from '../../images/logo/logo.svg';
+import Logo from '../../assets/images/logo/logo.svg';
 import { ArrowDownIcon, DashboardIcon, UserIcon } from '../Icon';
 import SidebarLinkGroup from './SidebarLinkGroup';
 

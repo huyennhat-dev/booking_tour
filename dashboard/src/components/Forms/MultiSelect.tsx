@@ -10,7 +10,7 @@ interface Option {
 interface DropdownProps {
   id: string;
   title: string;
-  selectData: { id: string; name: string }[];
+  selectData: { id: string; username: string }[];
 }
 
 const MultiSelect: React.FC<DropdownProps> = ({ id, title, selectData }) => {
@@ -100,9 +100,9 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, title, selectData }) => {
       <label className="mb-2.5 block text-black dark:text-white">{title}</label>
       <div>
         <select className="hidden" id={id}>
-          {selectData.map((e, index) => (
-            <option key={index} value={e.id}>
-              {e.name}
+          {selectData.map((e) => (
+            <option key={e.id} value={e.id}>
+              {e.username}
             </option>
           ))}
         </select>

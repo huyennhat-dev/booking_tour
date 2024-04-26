@@ -3,41 +3,46 @@ import type { GetProp, UploadFile, UploadProps } from 'antd';
 import ImgCrop from 'antd-img-crop';
 import axios from 'axios';
 import { useState } from 'react';
+import { env } from '../../configs/envConfig';
+import { getToken } from '../../utils/tokenUtils';
+import uploadApi from '../../apis/uploadApi';
 
 type FileType = Parameters<GetProp<UploadProps, 'beforeUpload'>>[0];
 
 const getBase64 = (file: FileType): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
-  
-const UploadImage = ({ title }: { title: string }) => {
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
 
+const UploadImage = ({
+    title,
+    onChangeImageUrl,
+    onRemoveImageUrl
+}: {
+    title: string;
+    onChangeImageUrl: (ImageUrl: string) => void;
+    onRemoveImageUrl: (ImageUrl: string) => void;
+}) => {
     const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
 
 
     const onRemove: UploadProps<any>['onRemove'] = (info) => {
-        const photo = info.response?.url
-        if (photo)
-            axios.delete('http://192.168.1.2:8000/api/v1/test', { data: { photo } })
-                .then(rs => { console.log(rs) })
-                .catch(err => {
-                    console.log(err)
-                })
+        const photo = info.response?.url;
+        if (photo) uploadApi.removePhoto(photo);
+        onRemoveImageUrl(photo);
+
     };
 
     const onChange: UploadProps<any>['onChange'] = (info) => {
         const { fileList: newFileList, file } = info;
         setFileList(newFileList);
-        console.log(file.status);
-        console.log(newFileList);
+        onChangeImageUrl(file.response?.url);
     };
-
 
     const handlePreview = async (file: UploadFile) => {
         if (!file.url && !file.preview) {
@@ -48,21 +53,19 @@ const UploadImage = ({ title }: { title: string }) => {
         setPreviewOpen(true);
     };
 
-
     return (
         <>
-            <label className="mb-2.5 block text-black dark:text-white">
-                {title}
-            </label>
+            <label className="mb-2.5 block text-black dark:text-white">{title}</label>
             <div>
                 <ImgCrop rotationSlider>
                     <Upload
-                        action={`http://192.168.1.2:8000/api/v1/upload`}
+                        action={`${env.apiUrl}/upload`}
                         listType="picture-card"
                         fileList={fileList}
                         onChange={onChange}
                         onPreview={handlePreview}
                         onRemove={onRemove}
+                        headers={{ Authorization: getToken()! }}
                     >
                         {fileList.length < 5 && '+ Upload'}
                     </Upload>
@@ -78,12 +81,9 @@ const UploadImage = ({ title }: { title: string }) => {
                         src={previewImage}
                     />
                 )}
-
             </div>
         </>
-    )
-}
+    );
+};
 
-export default UploadImage
-
-
+export default UploadImage;
