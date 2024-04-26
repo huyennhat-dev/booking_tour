@@ -10,11 +10,14 @@ const getUser = async (req, res, next) => {
 
     // Trả về kết quả
     return res.status(200).json({
+      statusCode: 200,
       page: parseInt(page),
       totalPages: Math.ceil(users.count / limit),
-      users: users.rows
+      limit: parseInt(limit),
+      data : users.rows
     })
   } catch (error) {
+
     return next(new ApiError(404, error.message))
   }
 }
@@ -36,6 +39,7 @@ const createUser = async (req, res, next) => {
 }
 
 const updateUser = async (req, res, next) => {
+  console.log(req.body)
   try {
     const { id, ...updateData } = req.body
     const updatedUser = await userService.updateUser(id, updateData)
@@ -47,7 +51,7 @@ const updateUser = async (req, res, next) => {
   } catch (error) {
     return res.status(404).json({
       statusCode : 404,
-      message: `Cập nhật người dùng thất bại ${error.message}`
+      message: `Cập nhật người dùng thất bại hoặc là trường cập nhập không có gì thay đổi ${error.message}`
     })
   }
 }

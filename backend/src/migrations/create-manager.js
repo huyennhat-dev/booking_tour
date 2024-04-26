@@ -1,37 +1,42 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
+    // associate models
     await queryInterface.createTable('Managers', {
-      id_manager: {
+      id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      id_account: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
       company_name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: ''
       },
-      point_evaluation: {
-        type: Sequelize.INTEGER
-      },
-      full_name: {
-        type: Sequelize.STRING
-      },
-      birth_day: {
-        type: Sequelize.STRING
+      birthday: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: ''
       },
       createdAt: {
+        type: Sequelize.DATE,
         allowNull: false,
-        type: Sequelize.DATE
+        defaultValue: new Date()
       },
       updatedAt: {
+        type: Sequelize.DATE,
         allowNull: false,
-        type: Sequelize.DATE
+        defaultValue: new Date()
       }
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Managers');
+    await queryInterface.dropTable('Managers')
   }
-};
+}

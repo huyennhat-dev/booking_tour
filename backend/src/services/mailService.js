@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 })
 
 // async..await is not allowed in global scope, must use a wrapper
-async function sendMailWithHtml(html , email_customer) {
+async function sendMailWithHtml(html, email_customer) {
   // send mail with defined transport object
   const info = await transporter.sendMail({
     from: 'mailtrap@demomailtrap.com', // sender address
@@ -24,4 +24,22 @@ async function sendMailWithHtml(html , email_customer) {
   console.log('Message sent: %s', info.messageId)
 }
 
-export default sendMailWithHtml
+async function sendMailWithPassword(email_customer, password) {
+  // send mail with defined transport object
+  const info = await transporter.sendMail({
+    from: 'mailtrap@demomailtrap.com', // sender address
+    to: email_customer, // list of receivers
+    subject: 'Mật Khẩu đăng nhập', // Subject line
+    text: password, // plain text body
+    html: password // html body
+  })
+
+  console.log('Message sent: %s', info.messageId)
+}
+
+const emailService = {
+  sendMailWithHtml,
+  sendMailWithPassword
+}
+
+export default emailService

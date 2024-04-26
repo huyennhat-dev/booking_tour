@@ -1,25 +1,21 @@
 import db from '~/models'
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
+import moment from 'moment'
 
 const getStaff = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = query
+    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', filters = {} } = query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
     // Xây dựng điều kiện tìm kiếm
     let whereClause = {}
-    if (search) {
-      whereClause = {
-        [Op.or]: [
-          { name_staff: { [Op.like]: `%${search}%` } }
-        ]
-      }
-    }
+
+    
 
     // Áp dụng bộ lọc (nếu có)
     for (const key in filters) {
@@ -32,18 +28,11 @@ const getStaff = async (query) => {
     // Thực hiện truy vấn
     const staffs = await db.Staff.findAndCountAll({
       where: whereClause,
-      include:[
+      include: [
         {
-          model: db.Manager,
-          as : 'managerData',
-          attributes: { exclude: ['createdAt', 'updatedAt'] },
-          include:[
-            {
-              model: db.User,
-              as : 'userData',
-              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
-            }
-          ]
+          model: db.Account,
+          as: 'accountData',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
         }
       ],
       order: [[sortBy, sortOrder]],
@@ -53,6 +42,7 @@ const getStaff = async (query) => {
 
     return staffs
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }
@@ -68,7 +58,7 @@ const createStaff = async (body) => {
 
 const updateStaff = async (updateData) => {
   try {
-    const updatedStaff = await apifeature(db.Staff, 'update', { ...updateData }, 'id_staff')
+    const updatedStaff = await apifeature(db.Staff, 'update', { ...updateData })
     return updatedStaff
   } catch (error) {
     throw new ApiError(error.message)
@@ -77,7 +67,15 @@ const updateStaff = async (updateData) => {
 
 const deleteStaff = async (id_staff) => {
   try {
-    const deletedStaff = await apifeature(db.Staff, 'delete', { id_staff }, 'id_staff')
+
+    const staff = await db.Staff.findOne({ where: { id : id_staff } })
+
+    const deletedStaff = await apifeature(db.Staff, 'delete', { id : id_staff })
+
+    const deleteStaffAccount = await db.Account.destroy({
+      where: { id: staff.id_account }
+    })
+
     return deletedStaff
   } catch (error) {
     throw new ApiError(error.message)

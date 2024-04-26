@@ -6,11 +6,22 @@ const getTour = async (req, res, next) => {
     const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = req.query
     const tours = await tourService.getTour(req.query)
 
+    if (search) {
+      // validate search theo định dạng YYYY-MM-DD
+      const date = new Date(search)
+      if (date.toString() === 'Invalid Date') {
+        return next(new ApiError(404, 'Định dạng ngày không hợp lệ'))
+      }
+    }
+
+
     // Trả về kết quả
     return res.status(200).json({
+      statusCode: 200,
       page: parseInt(page),
-      totalPages: Math.ceil(tours.count / limit),
-      tours: tours.rows
+      data: tours.rows,
+      limit: parseInt(limit),
+      total: tours.count
     })
   } catch (error) {
     return next(new ApiError(404, error.message))
@@ -52,8 +63,8 @@ const updateTour = async (req, res, next) => {
 
 const deleteTour = async (req, res, next) => {
   try {
-    const { id_tour } = req.body
-    const deletedTour = await tourService.deleteTour(id_tour)
+    const { id } = req.body
+    const deletedTour = await tourService.deleteTour(id)
     return res.status(200).json({
       statusCode: 200,
       message: 'Xóa tour thành công',

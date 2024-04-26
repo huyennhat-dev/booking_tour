@@ -1,31 +1,28 @@
 import express from 'express'
-import { userRouter } from '~/routes/v1/user'
-import { customerRouter } from '~/routes/v1/customer'
-import { tourRouter } from '~/routes/v1/tour'
-import { bookRouter } from '~/routes/v1/book'
-import { teamRouter } from '~/routes/v1/team'
-import { managerRouter } from '~/routes/v1/manager'
-import { staffRouter } from '~/routes/v1/staff'
-import { authRouter } from '~/routes/v1/auth/userAuth'
-import { SignInRouter } from '~/routes/v1/auth/userSignIn'
-import { paymentRouter } from '~/routes/v1/payment'
-import { uploadRouter } from '~/routes/v1/upload'
-
+import { accountRouter } from '~/routes/v1/auth/account'
+import { adminLogin } from '~/routes/v1/auth/adminLogin'
+import { staffRouter } from './auth/staff'
+import { managerRouter } from './auth/manager'
+import { tourRouter } from './auth/tour'
+import { userRouter } from './auth/user'
+import { userLogin } from '~/routes/v1/user/userAuth'
+import { userSignIn } from '~/routes/v1/user/userSignIn'
+import { uploadRouter } from './auth/upload'
 
 const router = express.Router()
 
-router.use('/user', userRouter)
-router.use('/customer', customerRouter)
-router.use('/tour', tourRouter)
-router.use('/book', bookRouter)
-router.use('/team', teamRouter)
-router.use('/staff', staffRouter)
-router.use('/manager', managerRouter)
+// auth url
+router.use('/auth/login', adminLogin)
+router.use('/auth/account', accountRouter)
+router.use('/auth/manager', managerRouter)
+router.use('/auth/staff', staffRouter)
+router.use('/auth/user', userRouter)
+router.use('/auth/tour', tourRouter)
+router.use('/auth/upload', uploadRouter)
 
-router.use('/login', authRouter)
-router.use('/signIn', SignInRouter)
-
-router.use('/payment', paymentRouter)
+// user url
+router.use('/login', userLogin)
+router.use('/signIn', userSignIn)
 router.use('/upload', uploadRouter)
 
 

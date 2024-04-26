@@ -18,12 +18,20 @@ async function performCRUD(model, action, data, id_index = 'id') {
       if (updatedRecord[0] === 0) {
         return ApiError('Record with id not found.')
       }
-      return { message: 'Record updated successfully.' }
+
+      data = await model.findOne({
+        where: { [id_index]: data[id_index] },
+        attributes: { exclude: ['password'] }
+      })
+
+      return data
     } catch (error) {
       return ApiError(`Error updating record: ${error.message}`)
     }
   case 'delete':
     try {
+      console.log(data)
+      console.log({ [id_index]: data[id_index] })
       const deletedRecordCount = await model.destroy({
         where: { [id_index]: data[id_index] }
       })

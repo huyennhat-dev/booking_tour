@@ -4,14 +4,15 @@ import ApiError from '~/utils/ApiError'
 import bcrypt from 'bcryptjs'
 import apifeature from '~/helpers/apifeature'
 import jwt from 'jsonwebtoken'
-import authValidation from '~/validations/loginValidation'
 
 const router = express.Router()
 
-const SignInFuc = async (req, res, next) => {
-  const { email, password, phone_number = '', username, birth_day= '' } = req.body
+const signInFuc = async (req, res, next) => {
+  const { email, fullName, password , photo = ''} = req.body
 
-  if (!email || !password || !username) {
+  console.log(req.body)
+
+  if (!email || !password || !fullName) {
     return next(new ApiError(404, 'Vui lòng điền đầy đủ thông tin.'))
   }
 
@@ -22,25 +23,17 @@ const SignInFuc = async (req, res, next) => {
     const user = await apifeature(db.User, 'create', {
       email,
       password: hashedPassword,
-      phone_number,
-      username,
-      role : 'customer'
+      fullName,
+      photo,
     })
 
-    const customer = await apifeature(db.Customer, 'create', {
-      id_customer : user.dataValues.id,
-      full_name : username,
-      birth_day : birth_day,
-      point_evaluation : 1
-    })
+    
 
 
     const token = jwt.sign({
       id : user.dataValues.id,
       email : user.dataValues.email,
-      username : user.dataValues.username,
-      phone_number : user.dataValues.phone_number,
-      role : 'customer'
+      fullName : user.dataValues.username,
     }, 'mysecretkey')
 
     return res.status(200).json({
@@ -63,6 +56,6 @@ const SignInFuc = async (req, res, next) => {
 }
 
 
-router.route('/').post(authValidation.signIn, SignInFuc)
+router.route('/').post(signInFuc)
 
-export const SignInRouter = router
+export const userSignIn = router

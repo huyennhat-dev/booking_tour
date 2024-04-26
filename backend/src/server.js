@@ -13,7 +13,8 @@ const RUN_SERVER = () => {
 
   app.use(cors(corsOptions))
   app.use(express.json())
-  app.use('/api/v1', API_V1)
+  app.use('/api/v1/', API_V1)
+
 
   app.use(errorHandlingMiddleware)
 

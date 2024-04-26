@@ -3,26 +3,38 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     // associate models
-    await queryInterface.createTable('Staffs', {
+    await queryInterface.createTable('Bookings', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true
       },
-      id_account: {
+      id_tour: {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      address: {
-        type: Sequelize.STRING,
-        allowNull: true,
-        defaultValue: ''
+      id_user: {
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
-      birthday: {
+      status: {
         type: Sequelize.STRING,
         allowNull: true,
-        defaultValue: ''
+        defaultValue: 'success'
+      },
+      booking_info: {
+        type: Sequelize.TEXT('long'),
+        allowNull: false
+      },
+      total_price: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0
+      },
+      member : {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 1
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -37,6 +49,6 @@ module.exports = {
     })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Staffs')
+    await queryInterface.dropTable('Bookings')
   }
 }
