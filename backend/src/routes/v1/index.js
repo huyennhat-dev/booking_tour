@@ -12,18 +12,19 @@ import { uploadRouter } from './auth/upload'
 const router = express.Router()
 
 // auth url
-router.use('/auth/login', adminLogin)
 router.use('/auth/account', accountRouter)
 router.use('/auth/manager', managerRouter)
 router.use('/auth/staff', staffRouter)
 router.use('/auth/user', userRouter)
-router.use('/auth/tour', tourRouter)
 router.use('/auth/upload', uploadRouter)
+
+//
+router.use('/auth/tour', tourRouter)
+router.use('/auth/login', adminLogin)
 
 // user url
 router.use('/login', userLogin)
 router.use('/signIn', userSignIn)
-router.use('/upload', uploadRouter)
 
 
 export const API_V1 = router

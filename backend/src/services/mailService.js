@@ -30,8 +30,8 @@ async function sendMailWithPassword(email_customer, password) {
     from: 'mailtrap@demomailtrap.com', // sender address
     to: email_customer, // list of receivers
     subject: 'Mật Khẩu đăng nhập', // Subject line
-    text: password, // plain text body
-    html: password // html body
+    text: `Email Đăng nhập ${email_customer} password : ${password} `, // plain text body
+    html: `Email Đăng nhập ${email_customer} password : ${password} ` // html body
   })
 
   console.log('Message sent: %s', info.messageId)

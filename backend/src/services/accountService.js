@@ -66,7 +66,7 @@ const getAccount = async (query) => {
 
 const createStaff = async (body) => {
   try {
-    const { email, username, phoneNumber = '', birthday, address } = body
+    const { email, username, phoneNumber = '', birthday = '', address = '' } = body
     // check staff account
     const checkStaffAccount = await db.Account.findOne({
       where: { email }
@@ -93,8 +93,11 @@ const createStaff = async (body) => {
       birthday,
       address
     })
-
-    await emailService.sendMailWithPassword(email, '123123123')
+    try {
+      await emailService.sendMailWithPassword(email, '123123123')
+    } catch (error) {
+      return staff
+    }
     return staff
     // Hash the password
   } catch (error) {

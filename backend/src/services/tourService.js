@@ -97,7 +97,7 @@ const createTour = async (body) => {
     const newTour = await apifeature(db.Tour, 'create',
       { ...body,
         promotional : (body.promotional / 100),
-        photos : body.photos
+        photos : body.photos?.join(','),
       }
     )
     return newTour
