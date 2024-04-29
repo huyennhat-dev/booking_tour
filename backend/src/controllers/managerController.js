@@ -10,7 +10,7 @@ const getManager = async (req, res, next) => {
     return res.status(200).json({
       statusCode: 200,
       page: parseInt(page),
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       data: managers.rows,
       total: managers.count
     })

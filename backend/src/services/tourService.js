@@ -78,7 +78,7 @@ const getTour = async (query) => {
           ]
         }
       ],
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip)
     })
 

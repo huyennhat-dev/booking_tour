@@ -20,7 +20,7 @@ const getTour = async (req, res, next) => {
       statusCode: 200,
       page: parseInt(page),
       data: tours.rows,
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       total: tours.count
     })
   } catch (error) {

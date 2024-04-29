@@ -8,6 +8,7 @@ import { userRouter } from './auth/user'
 import { userLogin } from '~/routes/v1/user/userAuth'
 import { userSignIn } from '~/routes/v1/user/userSignIn'
 import { uploadRouter } from './auth/upload'
+import { bookRouter } from './auth/book'
 
 const router = express.Router()
 
@@ -21,6 +22,7 @@ router.use('/auth/upload', uploadRouter)
 //
 router.use('/auth/tour', tourRouter)
 router.use('/auth/login', adminLogin)
+router.use('/booking', bookRouter)
 
 // user url
 router.use('/login', userLogin)

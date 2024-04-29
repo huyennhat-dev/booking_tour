@@ -36,7 +36,7 @@ const getUser = async (query) => {
     const users = await db.User.findAndCountAll({
       where: whereClause,
       order: [[sortBy, sortOrder]],
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip),
       attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
     })

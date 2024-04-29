@@ -36,7 +36,7 @@ const getStaff = async (query) => {
         }
       ],
       order: [[sortBy, sortOrder]],
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip)
     })
 

@@ -1,26 +1,19 @@
 import db from '~/models'
-import { Op, where } from 'sequelize'
+import { Op } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
-import sendMailWithHtml from './mailService'
 
 const getBook = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = query
+    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', filters = {} } = query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
     // Xây dựng điều kiện tìm kiếm
     let whereClause = {}
-    if (search) {
-      whereClause = {
-        [Op.or]: [
-          { email: { [Op.like]: `%${search}%` } }
-        ]
-      }
-    }
+
 
     // Áp dụng bộ lọc (nếu có)
     for (const key in filters) {
@@ -31,19 +24,49 @@ const getBook = async (query) => {
     }
 
     // Thực hiện truy vấn
-    const books = await db.Account.findAndCountAll({
+    const books = await db.Book.findAndCountAll({
       where: whereClause,
       include: [
-        
+        {
+          model: db.Tour,
+          as : 'tourData',
+          include: [
+            {
+              model: db.Manager,
+              as : 'managerData',
+              include: [
+                {
+                  model: db.Account,
+                  as : 'accountData'
+                }
+              ]
+            },
+            {
+              model: db.Staff,
+              as : 'staffData',
+              include: [
+                {
+                  model: db.Account,
+                  as : 'accountData'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          model: db.User,
+          as : 'userData'
+        }
       ],
       order: [[sortBy, sortOrder]],
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip)
     })
 
 
     return books
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }

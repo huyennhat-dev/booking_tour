@@ -48,7 +48,7 @@ const getAccount = async (query) => {
         }
       ],
       order: [[sortBy, sortOrder]],
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip)
     })
 
@@ -56,7 +56,7 @@ const getAccount = async (query) => {
     return {
       accounts : accounts.rows,
       total : accounts.count,
-      limit : parseInt(limit),
+      limit : parseInt(limit) == 1000 ? undefined : parseInt(limit),
       page : parseInt(page)
     }
   } catch (error) {

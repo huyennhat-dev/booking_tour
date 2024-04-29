@@ -13,7 +13,7 @@ const getUser = async (req, res, next) => {
       statusCode: 200,
       page: parseInt(page),
       totalPages: Math.ceil(users.count / limit),
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       data : users.rows
     })
   } catch (error) {

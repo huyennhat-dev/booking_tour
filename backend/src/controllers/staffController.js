@@ -9,7 +9,7 @@ const getStaff = async (req, res, next) => {
     // Trả về kết quả
     return res.status(200).json({
       statusCode: 200,
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       page: parseInt(page),
       total: staffs.count,
       data: staffs.rows
