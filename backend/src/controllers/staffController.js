@@ -8,9 +8,11 @@ const getStaff = async (req, res, next) => {
 
     // Trả về kết quả
     return res.status(200).json({
+      statusCode: 200,
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       page: parseInt(page),
-      totalPages: Math.ceil(staffs.count / limit),
-      staffs: staffs.rows
+      total: staffs.count,
+      data: staffs.rows
     })
   } catch (error) {
     return next(new ApiError(404, error.message))
@@ -52,8 +54,9 @@ const updateStaff = async (req, res, next) => {
 
 const deleteStaff = async (req, res, next) => {
   try {
-    const { id_staff } = req.body
-    const deletedStaff = await staffService.deleteStaff(id_staff)
+    const { id } = req.body
+
+    const deletedStaff = await staffService.deleteStaff(id)
     return res.status(200).json({
       statusCode: 200,
       message: 'Xóa staff thành công',

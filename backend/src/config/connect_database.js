@@ -1,8 +1,11 @@
 import { Sequelize } from 'sequelize';
 const sequelize = new Sequelize('book_tour', 'root', null, {
     host: 'localhost',
-    dialect: 'mysql'
+    dialect: 'mysql',
+    logging: false
 });
+
+
 
 
 const connectDatabase = async () => {

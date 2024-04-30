@@ -1,11 +1,15 @@
 import express from 'express'
 import db from '~/models'
 import ApiError from '~/utils/ApiError'
+import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import authValidation from '~/validations/loginValidation'
+
 
 const router = express.Router()
 
 const loginFuc = async (req, res, next) => {
-  const { email, password ,  } = req.body
+  const { email, password } = req.body
 
   if (!email || !password) {
     return next(new ApiError(404, 'Email and password are required.'))
@@ -21,17 +25,25 @@ const loginFuc = async (req, res, next) => {
       return next(new ApiError(403, 'Unauthorized'))
     }
 
-    if (password !== user.password) {
+    const match = await bcrypt.compare(password, user.dataValues.password)
+
+    if (!match) {
       return next(new ApiError(403, 'Unauthorized'))
     }
 
+    const token = jwt.sign({
+      id : user.dataValues.id,
+      email : user.dataValues.email,
+      fullName : user.dataValues.username,
+    }, 'mysecretkey')
+
     return res.status(200).json({
-      jwt : 'con cac',
+      statusCode : 200,
+      token : token,
       user: {
         id: user.id,
         email: user.email,
-        username: user.username,
-        phone_number: user.phone_number
+        fullName: user.fullName,
       }
     })
   } catch (error) {
@@ -41,7 +53,6 @@ const loginFuc = async (req, res, next) => {
 }
 
 
-router.route('/')
-  .post(loginFuc)
+router.route('/').post(authValidation.login, loginFuc)
 
-export const authRouter = router
+export const userLogin = router

@@ -3,26 +3,33 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     // associate models
-    await queryInterface.createTable('Staffs', {
+    await queryInterface.createTable('Accounts', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_account: {
-        type: Sequelize.INTEGER,
+      email : {
+        type: Sequelize.STRING,
         allowNull: false
       },
-      address: {
+      username: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      phoneNumber: {
         type: Sequelize.STRING,
         allowNull: true,
         defaultValue: ''
       },
-      birthday: {
+      role: {
         type: Sequelize.STRING,
-        allowNull: true,
-        defaultValue: ''
+        allowNull: false
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -37,6 +44,6 @@ module.exports = {
     })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Staffs')
+    await queryInterface.dropTable('Accounts')
   }
 }
