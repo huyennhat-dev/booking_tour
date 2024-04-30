@@ -3,6 +3,7 @@ import { Op } from 'sequelize'
 import ApiError from '~/utils/ApiError'
 import emailService from '~/services/mailService'
 import bcrypt from 'bcryptjs'
+import generateStrongPassword from '~/utils/generateStrongPassword'
 
 const getAccount = async (query) => {
   try {
@@ -60,6 +61,62 @@ const getAccount = async (query) => {
       page : parseInt(page)
     }
   } catch (error) {
+    throw new ApiError(error.message)
+  }
+}
+
+const createAccount = async (body) => {
+  try {
+    const { email, username, role, phoneNumber, birthday = '', address = '' } = body
+    // check account account
+    const checkAccount = await db.Account.findOne({
+      where: { email }
+    }) // tìm kiếm email trong bảng account
+
+
+    if (checkAccount) {
+      console.log(checkAccount)
+      throw new ApiError(404, 'Email đã tồn tại trong hệ thống')
+    }
+
+    const strongPassword = generateStrongPassword()
+
+    // create account account
+    const hashedPassword = await bcrypt.hash(strongPassword, 10)
+
+    const account = await db.Account.create({
+      email,
+      password : hashedPassword,
+      role,
+      username,
+      phoneNumber
+    })
+    let account_info
+
+    if (role=='staff') {
+      account_info = await db.Staff.create({
+        id_account: account.dataValues.id,
+        birthday,
+        address
+      })
+    }
+    if (role=='manager') {
+      account_info = await db.Manager.create({
+        id_account: account.dataValues.id,
+        birthday,
+        address
+      })
+    }
+
+    try {
+      await emailService.sendMailWithPassword(email, strongPassword)
+    } catch (error) {
+      return account_info
+    }
+    return account_info
+    // Hash the password
+  } catch (error) {
+    console.error(error)
     throw new ApiError(error.message)
   }
 }
@@ -147,7 +204,8 @@ const createManager = async (body) => {
 const accountService = {
   getAccount,
   createStaff,
-  createManager
+  createManager,
+  createAccount
 }
 
 

@@ -3,7 +3,14 @@ import ApiError from '~/utils/ApiError'
 
 const getTour = async (req, res, next) => {
   try {
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = req.query
+    const {
+      page = 1,
+      limit = 1000,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      search = '',
+      filters = {}
+    } = req.query
     const tours = await tourService.getTour(req.query)
 
     if (search) {
@@ -13,7 +20,6 @@ const getTour = async (req, res, next) => {
         return next(new ApiError(404, 'Định dạng ngày không hợp lệ'))
       }
     }
-
 
     // Trả về kết quả
     return res.status(200).json({
@@ -47,7 +53,8 @@ const createTour = async (req, res, next) => {
 const updateTour = async (req, res, next) => {
   try {
     const { ...updateData } = req.body
-    const updatedTour = await tourService.updateTour(updateData)
+    const id = req.params.id
+    const updatedTour = await tourService.updateTour(updateData, id)
     return res.status(200).json({
       statusCode: 200,
       message: 'Cập nhật tour thành công',
@@ -63,7 +70,7 @@ const updateTour = async (req, res, next) => {
 
 const deleteTour = async (req, res, next) => {
   try {
-    const { id } = req.body
+    const id = req.params.id
     const deletedTour = await tourService.deleteTour(id)
     return res.status(200).json({
       statusCode: 200,
