@@ -8,9 +8,11 @@ const getManager = async (req, res, next) => {
 
     // Trả về kết quả
     return res.status(200).json({
+      statusCode: 200,
       page: parseInt(page),
-      totalPages: Math.ceil(managers.count / limit),
-      managers: managers.rows
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
+      data: managers.rows,
+      total: managers.count
     })
   } catch (error) {
     return next(new ApiError(404, error.message))
@@ -52,8 +54,8 @@ const updateManager = async (req, res, next) => {
 
 const deleteManager = async (req, res, next) => {
   try {
-    const { id_manager } = req.body
-    const deletedManager = await managerService.deleteManager(id_manager)
+    const { id } = req.body
+    const deletedManager = await managerService.deleteManager(id)
     return res.status(200).json({
       statusCode: 200,
       message: 'Xóa manager thành công',

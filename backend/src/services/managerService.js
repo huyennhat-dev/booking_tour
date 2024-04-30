@@ -16,7 +16,7 @@ const getManager = async (query) => {
     if (search) {
       whereClause = {
         [Op.or]: [
-          { name_manager: { [Op.like]: `%${search}%` } },
+          { company_name: { [Op.like]: `%${search}%` } }
         ]
       }
     }
@@ -32,8 +32,15 @@ const getManager = async (query) => {
     // Thực hiện truy vấn
     const managers = await db.Manager.findAndCountAll({
       where: whereClause,
+      include: [
+        {
+          model: db.Account,
+          as: 'accountData',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+        }
+      ],
       order: [[sortBy, sortOrder]],
-      limit: parseInt(limit),
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip)
     })
 
@@ -54,7 +61,7 @@ const createManager = async (body) => {
 
 const updateManager = async (updateData) => {
   try {
-    const updatedManager = await apifeature(db.Manager, 'update', { ...updateData } , 'id_manager')
+    const updatedManager = await apifeature(db.Manager, 'update', { ...updateData })
     return updatedManager
   } catch (error) {
     throw new ApiError(error.message)
@@ -63,7 +70,14 @@ const updateManager = async (updateData) => {
 
 const deleteManager = async (id_manager) => {
   try {
-    const deletedManager = await apifeature(db.Manager, 'delete', { id_manager } , 'id_manager')
+    const manager = await db.Manager.findOne({ where: { id : id_manager } })
+
+    const deletedManager = await apifeature(db.Manager, 'delete', { id : id_manager })
+
+    await db.Account.destroy({
+      where: { id: manager.id_account }
+    })
+
     return deletedManager
   } catch (error) {
     throw new ApiError(error.message)

@@ -8,9 +8,10 @@ const getBook = async (req, res, next) => {
 
     // Trả về kết quả
     return res.status(200).json({
+      statusCode: 200,
       page: parseInt(page),
-      totalPages: Math.ceil(books.count / limit),
-      books: books.rows
+      data: books.rows,
+      limit : parseInt(limit) == 1000 ? undefined : parseInt(limit),
     })
   } catch (error) {
     return next(new ApiError(404, error.message))

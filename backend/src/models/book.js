@@ -1,32 +1,61 @@
 'use strict'
-const {
-  Model
-} = require('sequelize')
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Book extends Model {
-    /**
-     * Helper method for defining associations .
-     * This method is not a part of Sequelize lifecycle .
-     * The `models/index` file will call this method automatically .
-     */
     static associate(models) {
-      // define association here
-      
+      Book.belongsTo(models.Tour, {
+        foreignKey: 'id_tour',
+        as: 'tourData'
+      })
+      Book.belongsTo(models.User, {
+        foreignKey: 'id_user',
+        as: 'userData'
+      })
     }
   }
   Book.init({
-    id_booked_tour: {
+    id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    id_tour: DataTypes.INTEGER,
-    id_customer: DataTypes.INTEGER,
-    guest_number: DataTypes.INTEGER,
-    date_booked: DataTypes.STRING,
-    complete: DataTypes.BOOLEAN,
-    evaluate: DataTypes.STRING,
-    point_evaluate: DataTypes.INTEGER
+    id_tour: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    id_user: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: 'success'
+    },
+    booking_info: {
+      type: DataTypes.TEXT('long'),
+      allowNull: false
+    },
+    total_price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0
+    },
+    member : {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 1
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: new Date()
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: new Date()
+    }
   }, {
     sequelize,
     modelName: 'Book'
