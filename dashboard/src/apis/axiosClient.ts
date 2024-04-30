@@ -14,7 +14,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   async (config) => {
-    if (requiresToken(config.url!)) {
+    if (requiresToken(config.url!.trim())) {
       const token = getToken();
       config.headers.Authorization = token;
     }

@@ -16,64 +16,19 @@ import CheckboxOne from '../../components/Checkbox/CheckboxOne';
 import tourApi from '../../apis/tourApi';
 import { TOUR_TYPE } from '../../types';
 import { useParams } from 'react-router-dom';
+import { UploadFile } from 'antd';
 
 type staffSelectData = {
     slug: string,
     name: string
 }
 
-const mockData: TOUR_TYPE = {
-    id: 1,
-    tour_name:
-        'Tour Du lịch Campuchia từ TP.HCM 4 ngày 3 đêm – Khám phá dấu ấn thời gian qua các công trình cổ',
-    initial_price: 100,
-    departure_day: '2024-05-01',
-    end_tour_day: '2024-05-10',
-    promotional: 10,
-    destination: 'da-nang',
-    vehicle: 'plane',
-    photos: ['https://i.ibb.co/cYDrVGh/Rectangle-245.png', 'https://i.ibb.co/cYDrVGh/Rectangle-245.png', 'https://i.ibb.co/cYDrVGh/Rectangle-245.png'],
-    highlight: `
-        <p><strong>Các điểm đến nổi tiếng tại Campuchia</strong></p>
-        <ul>
-            <li><strong>Đền Angkor Wat:</strong> Được coi là một trong những di sản văn hóa thế giới, đền Angkor Wat là điểm dừng chân không thể bỏ qua khi du lịch Campuchia. Khám phá kiến trúc hoành tráng và lịch sử huy hoàng của đền thánh này.</li>
-            <li><strong>Phố cổ Siem Reap:</strong> Thành phố nổi tiếng với kiến trúc cổ điển và không khí yên bình, Phố cổ Siem Reap là điểm dừng chân lý tưởng để tận hưởng những ngày thư giãn.</li>
-            <li><strong>Thành phố Phnom Penh:</strong> Là thủ đô và trung tâm văn hóa, kinh tế của Campuchia, Phnom Penh không chỉ thu hút du khách bởi các công trình kiến trúc độc đáo mà còn là nơi lưu giữ nhiều di tích lịch sử và văn hóa đặc sắc.</li>
-        </ul>
-    `,
-    id_manager: 1, // ID của người quản lý tour
-    id_staff: 2, // ID của nhân viên phụ trách tour
-    insurance: true,
-    introduce: `
-    <p>
-        Tour du lịch Campuchia từ TP.HCM 4 ngày 3 đêm sẽ đưa du khách khám phá những điểm đến nổi tiếng và thú vị của Campuchia. Trải nghiệm du lịch độc đáo, thưởng thức những món ăn đặc sản, tham quan những điểm du lịch nổi tiếng và tận hưởng những khoảnh khắc đáng nhớ cùng bạn bè và người thân.
-    </p>
-    <p>
-        Ngày đầu tiên của chuyến đi, du khách sẽ được tham quan Đền Angkor Wat, một trong những kỳ quan của thế giới cổ đại. Sau đó, dừng chân tại phố cổ Siem Reap, nơi bạn có thể thưởng thức những món ăn đặc sản và mua sắm hàng hóa thủ công.
-    </p>
-    <p>
-        Trong những ngày tiếp theo, chúng ta sẽ thăm quan các điểm du lịch khác nhau, như khu phố cổ Angkor Thom, Bảo tàng Quốc gia Campuchia, và tham quan thành phố thủ đô Phnom Penh với nhiều di tích lịch sử và văn hóa đặc sắc.
-    </p>
-    <p>
-        Cuối cùng, chúng ta sẽ kết thúc chuyến đi tuyệt vời này với nhiều kỷ niệm đẹp và những câu chuyện đáng nhớ về Campuchia.
-    </p>
-    <p>
-        Hãy tham gia cùng chúng tôi để khám phá vẻ đẹp và sự hấp dẫn của đất nước Campuchia!
-    </p>
-`,
-
-    max_user: 10, // Số lượng người tối đa cho mỗi tour
-    meal: true, // Có bao gồm bữa ăn trong tour không
-    point_rating: 5, // Điểm đánh giá của tour
-}
-
-
 
 const EditTour = () => {
     const { id } = useParams();
     const [staff, setStaff] = useState<staffSelectData[]>([]);
 
-    // const [tour, setTour] = useState<TOUR_TYPE>()
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     const [formData, setFormData] = useState<TOUR_TYPE>({
         tour_name: '',
@@ -83,44 +38,52 @@ const EditTour = () => {
         end_tour_day: '',
         promotional: 0,
         destination: provinces[0]?.slug,
-        vehicle: '',
-        id_staff: 1,
-        id_manager: 2,
-        meal: true,
-        insurance: true,
+        vehicle: vehicle[0]?.slug,
+        id_staff: 0,
+        id_manager: 0,
+        meal: false,
+        insurance: false,
         photos: [],
         introduce: '',
-        highlight: ''
+        highlight: '',
     });
 
-    const getStaffFunction = () => {
-        userApi.getUsers("staff").then(rs => {
-            const userData = rs.users.map((user: any) => ({
-                slug: user.id,
-                name: user.username
-            }));
-
-            setStaff(userData)
-        }).catch(err => console.log(err))
-
+    const handleFileListChange = (newFileList: UploadFile[]) => {
+        setFileList(newFileList);
     };
-
-    const getTour = () => {
-        //call api
-        setFormData(mockData)
-    }
-
     useEffect(() => {
+        const getStaffFunction = () => {
+            userApi
+                .getStaff()
+                .then((rs) => {
+                    const staffData = rs.data.map((user: any) => ({
+                        slug: user.id,
+                        name: user.accountData.username,
+                    }));
+
+                    setStaff(staffData);
+                })
+                .catch((err) => console.log(err));
+        };
+
+        const getTour = () => {
+            tourApi.getTour(id!).then(rs => {
+                const modifiedTours = rs.data.map((tour: any) => {
+                    return {
+                        ...tour,
+                        photos: tour.photos?.split(',')
+                    };
+                });
+                setFormData(modifiedTours)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
         getTour()
-        getStaffFunction()
+        getStaffFunction();
     }, []);
 
-
-
-
-    useEffect(() => {
-        console.log(formData)
-    }, [formData])
 
 
     const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -330,28 +293,31 @@ const EditTour = () => {
                                     </div>
                                 </div>
                                 <div className="mb-4.5">
-                                    <UploadImage title='Chọn ảnh'
-                                    imageUrls={formData.photos}
-
+                                    <UploadImage
+                                        title="Chọn ảnh"
+                                        imageUrls={formData.photos}
+                                        fileList={fileList} 
+                                        setFileList={handleFileListChange}
                                         onChangeImageUrl={(ImageUrl: string) => {
-
                                             if (ImageUrl) {
                                                 setFormData((prevData) => ({
                                                     ...prevData,
                                                     photos: [...prevData.photos!, ImageUrl],
-                                                }))
+                                                }));
                                             }
-
                                         }}
+
                                         onRemoveImageUrl={(ImageUrl: string) => {
                                             if (ImageUrl) {
                                                 setFormData((prevData) => ({
                                                     ...prevData,
-                                                    photos: prevData.photos!.filter(photo => photo !== ImageUrl),
-                                                }))
+                                                    photos: prevData.photos!.filter(
+                                                        (photo) => photo !== ImageUrl,
+                                                    ),
+                                                }));
                                             }
-
-                                        }} />
+                                        }}
+                                    />
                                 </div>
 
 

@@ -24,17 +24,22 @@ const UploadImage = ({
     title,
     imageUrls,
     onChangeImageUrl,
-    onRemoveImageUrl
+    onRemoveImageUrl,
+    fileList, 
+    setFileList,
 }: {
     title: string;
     imageUrls?: string[];
     onChangeImageUrl: (ImageUrl: string) => void;
     onRemoveImageUrl: (ImageUrl: string) => void;
+    fileList: UploadFile[]; // Định dạng prop fileList
+    setFileList: (newFileList: UploadFile[]) => void; 
 }) => {
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+
+    // const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
-
 
     useEffect(() => {
         if (imageUrls) {
@@ -50,14 +55,12 @@ const UploadImage = ({
     }, [imageUrls]);
 
 
-
     const onRemove: UploadProps<any>['onRemove'] = (info) => {
         const photo = info.response?.url;
         if (photo) uploadApi.removePhoto(photo);
         onRemoveImageUrl(photo);
 
     };
-
     const onChange: UploadProps<any>['onChange'] = (info) => {
         const { fileList: newFileList, file } = info;
         setFileList(newFileList);
@@ -73,19 +76,20 @@ const UploadImage = ({
         setPreviewOpen(true);
     };
 
+
+
     return (
         <>
             <label className="mb-2.5 block text-black dark:text-white">{title}</label>
             <div>
-                <ImgCrop rotationSlider aspect={16 / 9}>
+                <ImgCrop rotationSlider aspect={5 / 3}>
                     <Upload
-                        action={`${env.apiUrl}/upload`}
+                        action={`${env.apiUrl}/auth/upload`}
                         listType="picture-card"
                         fileList={fileList}
                         onChange={onChange}
                         onPreview={handlePreview}
                         onRemove={onRemove}
-
                         headers={{ Authorization: getToken()! }}
                     >
                         {fileList.length < 5 && '+ Upload'}

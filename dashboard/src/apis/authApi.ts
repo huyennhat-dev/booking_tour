@@ -6,7 +6,7 @@ interface AuthApi {
 
 const authApi: AuthApi = {
   login: ({ email, password }) => {
-    const url = '/login';
+    const url = '/auth/login';
     return axiosClient.post(url, { email, password });
   },
 };

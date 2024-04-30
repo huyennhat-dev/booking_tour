@@ -52,3 +52,18 @@ export type CANCEL_TOUR_TYPE = {
   stk: string;
   createdAt: string;
 };
+
+export type ACCOUNT_TYPE = {
+  email: string;
+  username: string;
+  role: string;
+  phoneNumber: string;
+};
+
+export type PARAM_TYPE = {
+  page?: number,
+  limit?: number,
+};
+
+
+

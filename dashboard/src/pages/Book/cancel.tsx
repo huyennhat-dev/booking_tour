@@ -5,7 +5,7 @@ import { FaEnvelopeOpenText, FaRegEye } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import React, { startTransition, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { BOOK_TYPE, CANCEL_TOUR_TYPE } from '../../types';
+import { CANCEL_TOUR_TYPE } from '../../types';
 import { Modal, Pagination, Tooltip } from 'antd';
 import { BsCashCoin } from 'react-icons/bs';
 import BookDetail from './detail';
