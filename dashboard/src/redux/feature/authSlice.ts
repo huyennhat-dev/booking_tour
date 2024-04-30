@@ -1,9 +1,9 @@
 // authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { saveToken } from '../../utils/tokenUtils';
+import { clearToken, saveToken } from '../../utils/tokenUtils';
 import { jwtDecode } from 'jwt-decode';
 
-type UserInfo = {
+export type UserInfo = {
   id: string;
   username: string;
   role: string;
@@ -42,6 +42,9 @@ const authSlice = createSlice({
     },
     logout(state) {
       state.isLoggedIn = false;
+      state.token = null;
+      state.userInfo = null;
+      clearToken();
     },
   },
 });

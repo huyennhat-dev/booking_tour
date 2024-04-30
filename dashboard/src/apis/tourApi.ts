@@ -1,28 +1,24 @@
+import { TOUR_TYPE } from '../types';
 import axiosClient from './axiosClient';
-type tourType = {
-  name_tour: string;
-  initial_price: number;
-  departure_day: string;
-  end_tour_day: string;
-  promotional: number;
-  destination: string;
-  vehicle: string;
-  id_staff: number;
-  id_manager: number;
-  meal: boolean;
-  insurance: boolean;
-  photos: string[];
-  introduce: string;
-  highlight: string;
-};
+
 interface tourApi {
-  create: (data: tourType) => Promise<any>;
+  create: (data: TOUR_TYPE) => Promise<any>;
+  getTours: () => Promise<any>;
+  deleteTour: (id: string) => Promise<any>;
 }
 
 const tourApi: tourApi = {
   create: (data) => {
     const url = '/tour';
     return axiosClient.post(url, { ...data });
+  },
+  getTours: () => {
+    const url = '/tour';
+    return axiosClient.get(url);
+  },
+  deleteTour: (id) => {
+    const url = `/tour/${id}`;
+    return axiosClient.delete(url);
   },
 };
 

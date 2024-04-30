@@ -1,7 +1,7 @@
 import React, { startTransition, useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/images/logo/logo.svg';
-import { ArrowDownIcon, DashboardIcon, UserIcon } from '../Icon';
+import { ArrowDownIcon, CalendarIcon, DashboardIcon, UserIcon } from '../Icon';
 import SidebarLinkGroup from './SidebarLinkGroup';
 
 interface SidebarProps {
@@ -114,17 +114,78 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   Dashboard
                 </div>
               </li>
-
-              <li onClick={() => handleClickNavigate('/account')}>
+              <li onClick={() => handleClickNavigate('/calendar')} >
                 <div
-                  className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('/account') &&
-                    'bg-graydark dark:bg-meta-4'
+                  className={`group cursor-pointer relative flex items-center  gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                    pathname == '/calendar') && 'bg-graydark dark:bg-meta-4'
                     }`}
                 >
-                  {UserIcon}
-                  Calendar
+                  {CalendarIcon}
+                  Lịch làm việc
                 </div>
               </li>
+
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname.includes('/account')
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <div
+                        className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/account/manager' ||
+                          pathname == '/account/user') &&
+                          'bg-graydark dark:bg-meta-4'
+                          }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        {UserIcon}
+                        Tài khoản
+                        {ArrowDownIcon(open)}
+                      </div>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
+                      >
+                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li onClick={() => handleClickNavigate('/account/manager')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname === "/account/manager") &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Tài khoản quản trị
+                            </div>
+                          </li>
+
+                          <li onClick={() => handleClickNavigate('/account/user')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname == '/account/user') &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Tài khoản người dùng
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
+
 
               <SidebarLinkGroup
                 activeCondition={
@@ -168,6 +229,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </div>
                           </li>
 
+
                           <li onClick={() => handleClickNavigate('/tour/create')}
                           >
                             <div
@@ -177,6 +239,67 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 }`}
                             >
                               Tạo mới tour
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
+
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname.includes('/book')
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <div
+                        className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/book' ||
+                          pathname == '/book/cancel') &&
+                          'bg-graydark dark:bg-meta-4'
+                          }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        {UserIcon}
+                        Quản lí đặt tour
+                        {ArrowDownIcon(open)}
+                      </div>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && 'hidden'
+                          }`}
+                      >
+                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                          <li onClick={() => handleClickNavigate('/book')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname === "/book") &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Danh sách tuor đặt
+                            </div>
+                          </li>
+
+                          <li onClick={() => handleClickNavigate('/book/cancel')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname === "/book/cancel") &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Danh sách tour hủy
                             </div>
                           </li>
                         </ul>
