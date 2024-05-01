@@ -10,7 +10,6 @@ const router = express.Router()
 
 const loginFuc = async (req, res, next) => {
   const { email, password } = req.body
-
   if (!email || !password) {
     return next(new ApiError(404, 'Email and password are required.'))
   }

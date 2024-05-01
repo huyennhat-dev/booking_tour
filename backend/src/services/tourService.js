@@ -7,22 +7,18 @@ import moment from 'moment'
 const getTour = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, search = '', filters = {} } = query
+    const { page = 1, limit = 1000, search = '', filters } = query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
+    // const currentDate = moment().toDate()
+    // const threeDaysLater = moment().add(3 'days').toDate()
+    // console.log('currentDate', currentDate)
+    // console.log('threeDaysLater', threeDaysLater)
+
     let whereClause = {}
 
-    // parse filters id_staff to integer
-    // if (filters.id_staff) {
-    //   filters.id_staff = parseInt(filters.id_staff)
-    // }
-
-    // // parse filters id_manager to integer
-    // if (filters.id_manager) {
-    //   filters.id_manager = parseInt(filters.id_manager)
-    // }
 
     if (search) {
       const searchDate = moment(search, 'YYYY-MM-DD').toDate()
@@ -84,6 +80,7 @@ const getTour = async (query) => {
     throw new ApiError(error.message)
   }
 }
+
 
 const createTour = async (body) => {
   try {

@@ -5,7 +5,7 @@ import tokenValidation from '~/middlewares/jwtMiddleware'
 
 const router = express.Router()
 router.route('/')
-  .get(tokenValidation.authToken, checkRule(['admin', 'manager' , 'staff']), tourController.getTour)
+  .get(tokenValidation.authToken, checkRule(['admin', 'manager', 'staff']), tourController.getTour)
   .post(tokenValidation.authToken, checkRule(['admin']), tourController.createTour)
 
 

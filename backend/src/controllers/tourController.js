@@ -6,13 +6,8 @@ const getTour = async (req, res, next) => {
     const {
       page = 1,
       limit = 1000,
-      sortBy = 'createdAt',
-      sortOrder = 'desc',
-      search = '',
-      filters = {}
+      search = ''
     } = req.query
-    const tours = await tourService.getTour(req.query)
-    console.log(req.user)
 
     if (search) {
       // validate search theo định dạng YYYY-MM-DD
@@ -22,71 +17,24 @@ const getTour = async (req, res, next) => {
       }
     }
 
-    // Trả về kết quả
-    return res.status(200).json({
-      statusCode: 200,
-      page: parseInt(page),
-      data: tours.rows,
-      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
-      total: tours.count
-    })
-  } catch (error) {
-    return next(new ApiError(404, error.message))
-  }
-}
+    let tours = []
 
-const getTourByManager = async (req, res, next) => {
-  try {
-    const {
-      page = 1,
-      limit = 1000,
-      sortBy = 'createdAt',
-      sortOrder = 'desc',
-      search = '',
-      filters = {}
-    } = req.query
-    const tours = await tourService.getTour(req.query)
-
-    if (search) {
-      // validate search theo định dạng YYYY-MM-DD
-      const date = new Date(search)
-      if (date.toString() === 'Invalid Date') {
-        return next(new ApiError(404, 'Định dạng ngày không hợp lệ'))
-      }
+    if (req.user.role === 'admin') {
+      tours = await tourService.getTour(req.query)
     }
 
-    // Trả về kết quả
-    return res.status(200).json({
-      statusCode: 200,
-      page: parseInt(page),
-      data: tours.rows,
-      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
-      total: tours.count
-    })
-  } catch (error) {
-    return next(new ApiError(404, error.message))
-  }
-}
-
-const getTourByStaff = async (req, res, next) => {
-  try {
-    const {
-      page = 1,
-      limit = 1000,
-      sortBy = 'createdAt',
-      sortOrder = 'desc',
-      search = '',
-      filters = {}
-    } = req.query
-    const tours = await tourService.getTour(req.query)
-
-    if (search) {
-      // validate search theo định dạng YYYY-MM-DD
-      const date = new Date(search)
-      if (date.toString() === 'Invalid Date') {
-        return next(new ApiError(404, 'Định dạng ngày không hợp lệ'))
-      }
+    else if (req.user.role === 'manager') {
+      req.query.filters = {}
+      req.query.filters.id_manager = req.user.id_manager
+      tours = await tourService.getTour(req.query)
     }
+
+    else if (req.user.role === 'staff') {
+      req.query.filters = {}
+      req.query.filters.id_staff = req.user.id_staff
+      tours = await tourService.getTour(req.query)
+    }
+
 
     // Trả về kết quả
     return res.status(200).json({
