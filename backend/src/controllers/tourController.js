@@ -29,11 +29,11 @@ const getTour = async (req, res, next) => {
       tours = await tourService.getTour(req.query)
     }
 
-    else if (req.user.role === 'staff') {
-      req.query.filters = {}
-      req.query.filters.id_staff = req.user.id_staff
-      tours = await tourService.getTour(req.query)
-    }
+    // else if (req.user.role === 'staff') {
+    //   req.query.filters = {}
+    //   req.query.filters.id_staff = req.user.id_staff
+    //   tours = await tourService.getTour(req.query)
+    // }
 
 
     // Trả về kết quả
