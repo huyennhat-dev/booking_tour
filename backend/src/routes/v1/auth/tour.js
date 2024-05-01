@@ -10,6 +10,7 @@ router.route('/')
 
 
 router.route('/:id')
+  .get(tourController.getTourDetail)
   .put(tokenValidation.authToken, checkRule(['admin']), tourController.updateTour)
   .delete(tokenValidation.authToken, checkRule(['admin']), tourController.deleteTour)
 

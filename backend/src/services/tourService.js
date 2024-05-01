@@ -7,15 +7,21 @@ import moment from 'moment'
 const getTour = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, search = '', filters } = query
+    const { page = 1, limit = 1000, search = '', filters , exp } = query
+
+    let op = Op.gt
+    if(exp == 1) {
+      op = Op.lt
+    }
+    else {
+      op = Op.gt
+    }
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
-    const currentDate = moment().toDate()
-    const threeDaysLater = moment().add(3 ,'days').toDate()
-    console.log('currentDate', currentDate)
-    console.log('threeDaysLater', threeDaysLater)
+    const oneDaysLater = moment().add(1, 'days').toDate()
+    console.log('oneDaysLater', oneDaysLater)
 
     let whereClause = {}
 
@@ -23,13 +29,13 @@ const getTour = async (query) => {
     if (search) {
       const searchDate = moment(search, 'YYYY-MM-DD').toDate()
       whereClause.departure_day = {
-        [Op.gt]: searchDate
+        [op]: searchDate
       }
     }
     else {
       whereClause = {
         departure_day: {
-          [Op.gt]: threeDaysLater
+          [op]: oneDaysLater
         }
       }
     }
@@ -81,6 +87,42 @@ const getTour = async (query) => {
   }
 }
 
+const getTourDetail = async (id) => {
+  try {
+    const tour = await db.Tour.findOne({
+      where: { id },
+      include: [
+        {
+          model : db.Staff,
+          as : 'staffData',
+          include : [
+            {
+              model : db.Account,
+              as : 'accountData',
+              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model : db.Manager,
+          as : 'managerData',
+          include : [
+            {
+              model : db.Account,
+              as : 'accountData',
+              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        }
+      ]
+    })
+    return tour
+  } catch (error) {
+    console.log(error)
+    throw new ApiError(error.message)
+  }
+
+}
 
 const createTour = async (body) => {
   try {
@@ -124,7 +166,8 @@ const tourService = {
   getTour,
   createTour,
   updateTour,
-  deleteTour
+  deleteTour,
+  getTourDetail
 }
 
 export default tourService
