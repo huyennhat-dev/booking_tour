@@ -31,9 +31,9 @@ const Hero = () => {
       <img
         src={"https://images.unsplash.com/photo-1445272885371-027f17af0130"}
         alt=""
-        className="w-full h-full "
+        className="w-full h-full"
       />
-      <div className="w-full absolute px-4 md:px-28 text-center bottom-10 translate-x-[-5%] flex flex-col items-center gap-y-3">
+      <div className="w-full absolute px-4 md:px-28 text-center bottom-10 translate-x-[0%] flex flex-col items-center gap-y-3">
         <div className="flex flex-col md:gap-y-6 lg:gap-y-10 mb-48">
           <h1 className="text-4xl md:text-5xl lg:text-[69px] font-semibold text-white">
             {appData.slogan}

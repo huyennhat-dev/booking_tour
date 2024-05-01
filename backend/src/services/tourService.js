@@ -12,10 +12,7 @@ const getTour = async (query) => {
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
-    const currentDate = moment().toDate()
-    const threeDaysLater = moment().add(3 ,'days').toDate()
-    console.log('currentDate', currentDate)
-    console.log('threeDaysLater', threeDaysLater)
+    const oneDaysLater = moment().add(1, 'days').toDate()
 
     let whereClause = {}
 
@@ -29,7 +26,7 @@ const getTour = async (query) => {
     else {
       whereClause = {
         departure_day: {
-          [Op.gt]: threeDaysLater
+          [Op.gt]: oneDaysLater
         }
       }
     }
