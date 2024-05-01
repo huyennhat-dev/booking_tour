@@ -1,8 +1,10 @@
+import BackToPrev from '../../components/BackToPrev';
 import DefaultLayout from '../../layout/DefaultLayout';
 
 const ViewTour = () => {
   return (
     <DefaultLayout>
+      <BackToPrev />
       <div className="w-full rounded-md bg-white p-15 md:flex items-start justify-center 2xl:px-20 md:px-6 text-black">
         <div className="xl:w-2/6 lg:w-2/5 w-80 md:block hidden">
           <img
@@ -52,7 +54,7 @@ const ViewTour = () => {
               Huế - Đà Nẵng - Hội An
             </p>
             <h1 className="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 text-gray-800 dark:text-white mt-2">
-            Thừa Thiên Huế: Thêm nhiều hoạt động hút khách đến vịnh đẹp Lăng Cô 
+              Thừa Thiên Huế: Thêm nhiều hoạt động hút khách đến vịnh đẹp Lăng Cô
             </h1>
           </div>
           <div className="py-2 border-b border-gray-200 flex items-center justify-between">
@@ -64,22 +66,7 @@ const ViewTour = () => {
                 Nguyễn Đức Bảo
               </p>
               <div className="w-6 h-6 bg-gradient-to-b from-gray-900 to-indigo-500 ml-3 mr-4 cursor-pointer"></div>
-              <svg
-                className="cursor-pointer text-gray-300 dark:text-white"
-                width="6"
-                height="10"
-                viewBox="0 0 6 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M1 1L5 5L1 9"
-                  stroke="currentColor"
-                  stroke-width="1.25"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-              </svg>
+
             </div>
           </div>
           <div className="py-2  flex items-center justify-between">
@@ -90,7 +77,7 @@ const ViewTour = () => {
               <p className="text-sm leading-none text-gray-600 dark:text-gray-300 mr-3">
                 2000000 VND / Người
               </p>
-              
+
             </div>
           </div>
           <div className="py-2 border-b border-gray-200 flex items-center justify-between">
@@ -121,7 +108,7 @@ const ViewTour = () => {
               <b>Bảo hiểm</b> : Khôpng bao gồm
             </p>
             <p className="text-base leading-4 mt-4 text-gray-600 dark:text-gray-300">
-              <b>Phương tiện</b> : Ô tô / Máy bay / Tàu hỏa 
+              <b>Phương tiện</b> : Ô tô / Máy bay / Tàu hỏa
             </p>
             <p className="text-base leading-4 mt-4 text-gray-600 dark:text-gray-300">
               <b>Ăn uống</b> : Không hổ trợ ăn uống

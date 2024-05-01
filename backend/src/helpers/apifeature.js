@@ -1,5 +1,5 @@
 import ApiError from '~/utils/ApiError'
-async function performCRUD(model, action, data, id_index = 'id') {
+async function performCRUD(model, action, data, id_index) {
   switch (action.toLowerCase()) {
   case 'create':
     try {
@@ -13,14 +13,14 @@ async function performCRUD(model, action, data, id_index = 'id') {
     try {
       const { ...updateData } = data
       const updatedRecord = await model.update(updateData, {
-        where: { [id_index]: data[id_index] }
+        where: { id: id_index }
       })
       if (updatedRecord[0] === 0) {
         return ApiError('Record with id not found.')
       }
 
       data = await model.findOne({
-        where: { [id_index]: data[id_index] },
+        where: { id: id_index },
         attributes: { exclude: ['password'] }
       })
 
@@ -30,10 +30,8 @@ async function performCRUD(model, action, data, id_index = 'id') {
     }
   case 'delete':
     try {
-      console.log(data)
-      console.log({ [id_index]: data[id_index] })
       const deletedRecordCount = await model.destroy({
-        where: { [id_index]: data[id_index] }
+        where: { id: data.id }
       })
       if (deletedRecordCount === 0) {
         return ApiError('Record with id not found.')
@@ -46,6 +44,5 @@ async function performCRUD(model, action, data, id_index = 'id') {
     return ApiError(`Invalid action: ${action}`)
   }
 }
-
 
 export default performCRUD

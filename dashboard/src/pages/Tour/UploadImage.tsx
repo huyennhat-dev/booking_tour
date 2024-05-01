@@ -1,8 +1,7 @@
 import { Image, Upload } from 'antd';
 import type { GetProp, UploadFile, UploadProps } from 'antd';
 import ImgCrop from 'antd-img-crop';
-import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { env } from '../../configs/envConfig';
 import { getToken } from '../../utils/tokenUtils';
 import uploadApi from '../../apis/uploadApi';
@@ -17,18 +16,43 @@ const getBase64 = (file: FileType): Promise<string> =>
         reader.onerror = (error) => reject(error);
     });
 
+function generateUID(): string {
+    return Math.random().toString(36).substring(2);
+}
+
 const UploadImage = ({
     title,
+    imageUrls,
     onChangeImageUrl,
-    onRemoveImageUrl
+    onRemoveImageUrl,
+    fileList, 
+    setFileList,
 }: {
     title: string;
+    imageUrls?: string[];
     onChangeImageUrl: (ImageUrl: string) => void;
     onRemoveImageUrl: (ImageUrl: string) => void;
+    fileList: UploadFile[]; // Định dạng prop fileList
+    setFileList: (newFileList: UploadFile[]) => void; 
 }) => {
-    const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+
+    // const [fileList, setFileList] = useState<UploadFile[]>([]);
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState('');
+
+    useEffect(() => {
+        if (imageUrls) {
+            const files: UploadFile<any>[] = imageUrls.map(url => ({
+                uid: generateUID(),
+                name: 'image.png',
+                status: 'done',
+                url: url,
+                response: { url: url }
+            }));
+            setFileList(files);
+        }
+    }, [imageUrls]);
 
 
     const onRemove: UploadProps<any>['onRemove'] = (info) => {
@@ -37,7 +61,6 @@ const UploadImage = ({
         onRemoveImageUrl(photo);
 
     };
-
     const onChange: UploadProps<any>['onChange'] = (info) => {
         const { fileList: newFileList, file } = info;
         setFileList(newFileList);
@@ -53,13 +76,15 @@ const UploadImage = ({
         setPreviewOpen(true);
     };
 
+
+
     return (
         <>
             <label className="mb-2.5 block text-black dark:text-white">{title}</label>
             <div>
-                <ImgCrop rotationSlider>
+                <ImgCrop rotationSlider aspect={5 / 3}>
                     <Upload
-                        action={`${env.apiUrl}/upload`}
+                        action={`${env.apiUrl}/auth/upload`}
                         listType="picture-card"
                         fileList={fileList}
                         onChange={onChange}
@@ -70,6 +95,7 @@ const UploadImage = ({
                         {fileList.length < 5 && '+ Upload'}
                     </Upload>
                 </ImgCrop>
+
                 {previewImage && (
                     <Image
                         wrapperStyle={{ display: 'none' }}

@@ -1,14 +1,17 @@
-/* eslint-disable react-refresh/only-export-components */
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 
 const Dashboard = lazy(() => import("../pages/Dashboard"));
-const Account = lazy(() => import("../pages/Account"));
+const AccountUser = lazy(() => import("../pages/Account/User"));
+const AccountManager = lazy(() => import("../pages/Account/Manager"));
 const ListTours = lazy(() => import("../pages/Tour/index"));
 const CreateTour = lazy(() => import("../pages/Tour/create"));
 const EditTour = lazy(() => import("../pages/Tour/edit"));
 const ViewTour = lazy(() => import("../pages/Tour/view"));
 const LoginPage = lazy(() => import("../pages/Auth/Login"));
+const CancelTour = lazy(() => import("../pages/Book/cancel"));
+const BooksTour = lazy(() => import("../pages/Book"));
+const Calendar = lazy(() => import("../pages/Calendar/Calendar"));
 
 
 
@@ -21,10 +24,14 @@ export const routes = [
     },
     {
         pageTitle: " Account | TailAdmin - Tailwind CSS Admin Dashboard Template",
-        url: "/account",
-        page: <Account />,
+        url: "/account/manager",
+        page: <AccountManager />,
     },
-
+    {
+        pageTitle: " Account | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/account/user",
+        page: <AccountUser />,
+    },
 
     {
         pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
@@ -46,6 +53,23 @@ export const routes = [
         pageTitle: " Edit Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
         url: "/tour/edit/:id",
         page: <EditTour />,
+    },
+
+    {
+        pageTitle: " Booking | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/book",
+        page: <BooksTour />,
+    },
+    {
+        pageTitle: " Cancel Booking | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/book/cancel",
+        page: <CancelTour />,
+    },
+
+    {
+        pageTitle: " Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/calendar",
+        page: <Calendar />,
     },
 
     {

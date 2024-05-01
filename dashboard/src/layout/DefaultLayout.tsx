@@ -3,15 +3,20 @@ import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/index';
 import { useDispatch } from 'react-redux';
 import { getToken } from '../utils/tokenUtils';
-import { setToken } from '../redux/feature/authSlice';
+import { logout, setToken } from '../redux/feature/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = getToken()
     if (token) dispatch(setToken({ token }))
-
+    if (!token) {
+      dispatch(logout())
+      navigate('/login')
+    }
   }, []);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);

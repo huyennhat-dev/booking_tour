@@ -6,6 +6,7 @@ import './assets/css/style.css';
 import './assets/css/satoshi.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
