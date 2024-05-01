@@ -23,7 +23,7 @@ const GrabSaleSection = () => {
         </div>
         <div className="md:h-1/2 h-full">
           <img
-            src={GrabSaleRight}
+            src="https://heritagevietnamairlines.cdn.vccloud.vn/wp-content/uploads/2022/12/shutterstock_343170872-1024x683.jpg"
             alt=""
             className="rounded-b-xl md:rounded-b-none md:rounded-r-xl "
           />
