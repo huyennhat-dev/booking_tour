@@ -61,9 +61,7 @@ export type ACCOUNT_TYPE = {
 };
 
 export type PARAM_TYPE = {
-  page?: number,
-  limit?: number,
+  page?: number;
+  limit?: number;
+  exp?: number;
 };
-
-
-

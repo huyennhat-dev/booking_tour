@@ -11,7 +11,7 @@ const TopTrending = () => {
         <div className="w-full flex items-center justify-between px-4 md:px-8 lg:px-16">
           <h2 className={`text-2xl font-bold`}>Xu hướng hàng đầu</h2>
           <Link
-            to="/tours"
+            to="/tours?keyword=trend"
             className="text-sm font-normal hover:text-[color:#eb662b] duration-100"
           >
             Xem tất cả

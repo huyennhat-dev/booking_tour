@@ -5,9 +5,12 @@ const Dashboard = lazy(() => import("../pages/Dashboard"));
 const AccountUser = lazy(() => import("../pages/Account/User"));
 const AccountManager = lazy(() => import("../pages/Account/Manager"));
 const ListTours = lazy(() => import("../pages/Tour/index"));
+const StaffTours = lazy(() => import("../pages/Tour/staffTour"));
+const ExpListTours = lazy(() => import("../pages/Tour/ExpTour"));
 const CreateTour = lazy(() => import("../pages/Tour/create"));
 const EditTour = lazy(() => import("../pages/Tour/edit"));
 const ViewTour = lazy(() => import("../pages/Tour/view"));
+const StaffViewTour = lazy(() => import("../pages/Tour/StaffView"));
 const LoginPage = lazy(() => import("../pages/Auth/Login"));
 const CancelTour = lazy(() => import("../pages/Book/cancel"));
 const BooksTour = lazy(() => import("../pages/Book"));
@@ -37,6 +40,21 @@ export const routes = [
         pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
         url: "/tour",
         page: <ListTours />,
+    },
+    {
+        pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/tour/exp",
+        page: <ExpListTours />,
+    },
+    {
+        pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/tour/staff",
+        page: <StaffTours />,
+    },
+    {
+        pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/tour/staff/view/:id",
+        page: <StaffViewTour />,
     },
     {
         pageTitle: " List Tours | TailAdmin - Tailwind CSS Admin Dashboard Template",

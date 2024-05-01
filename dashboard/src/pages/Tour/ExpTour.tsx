@@ -1,5 +1,4 @@
 import { CiEdit, CiTrash } from 'react-icons/ci';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../../layout/DefaultLayout';
 import { FaRegEye } from 'react-icons/fa';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -11,9 +10,8 @@ import tourApi from '../../apis/tourApi';
 import provinces from '../../assets/js/province';
 
 
-const ListTours = () => {
+const ExpListTours = () => {
   const limit = 10;
-
 
   const navigate = useNavigate();
   const params = useSearchParams();
@@ -28,7 +26,7 @@ const ListTours = () => {
     const params = {
       page: currentPage,
       limit: limit,
-      exp: 1
+      exp: 0
     }
 
     tourApi.getTours(params).then(rs => {
@@ -55,12 +53,10 @@ const ListTours = () => {
     console.log(id);
     toast.success('Bạn đã xóa thành công');
   };
-
   const getProvinceName = (slug: string) => {
     const province = provinces.find(p => p.slug === slug);
     return province ? province.name : "Không tìm thấy tỉnh";
   }
-
   return (
     <DefaultLayout>
       <ToastContainer autoClose={2000} />
@@ -176,4 +172,4 @@ const ListTours = () => {
   );
 };
 
-export default ListTours;
+export default ExpListTours;

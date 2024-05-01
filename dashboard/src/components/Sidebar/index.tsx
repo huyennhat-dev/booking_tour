@@ -3,6 +3,8 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../../assets/images/logo/logo.svg';
 import { ArrowDownIcon, CalendarIcon, DashboardIcon, UserIcon } from '../Icon';
 import SidebarLinkGroup from './SidebarLinkGroup';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -10,6 +12,18 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+
+  const userInfo = useSelector((state: RootState) => state.auth.userInfo);
+  const [role, setRole] = useState<string>("");
+
+  useEffect(() => {
+    if (userInfo?.role) {
+      setRole(userInfo.role);
+    }
+  }, [userInfo]);
+
+
+
   const location = useLocation();
   const { pathname } = location;
 
@@ -104,7 +118,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
             <ul className="mb-6 flex flex-col gap-1.5">
 
-              <li onClick={() => handleClickNavigate('/')} >
+              {role == "admin" && <li onClick={() => handleClickNavigate('/')} >
                 <div
                   className={`group cursor-pointer relative flex items-center  gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
                     pathname == 'dashboard') && 'bg-graydark dark:bg-meta-4'
@@ -113,7 +127,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   {DashboardIcon}
                   Dashboard
                 </div>
-              </li>
+              </li>}
               <li onClick={() => handleClickNavigate('/calendar')} >
                 <div
                   className={`group cursor-pointer relative flex items-center  gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
@@ -125,7 +139,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </div>
               </li>
 
-              <SidebarLinkGroup
+              {role == "staff" && <li onClick={() => handleClickNavigate('/tour/staff')} >
+                <div
+                  className={`group cursor-pointer relative flex items-center  gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                    pathname == '/tour/staff') && 'bg-graydark dark:bg-meta-4'
+                    }`}
+                >
+                  {CalendarIcon}
+                  Tour bạn hướng dẫn
+                </div>
+              </li>}
+
+              {role == "admin" && <SidebarLinkGroup
                 activeCondition={
                   pathname.includes('/account')
                 }
@@ -184,10 +209,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup>}
 
 
-              <SidebarLinkGroup
+              {(role == "admin" || role == "manager") && <SidebarLinkGroup
                 activeCondition={
                   pathname.includes('/tour') || pathname.includes('/tour/create')
                 }
@@ -229,8 +254,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </div>
                           </li>
 
+                          <li onClick={() => handleClickNavigate('/tour/exp')}
+                          >
+                            <div
+                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                pathname === "/tour/exp") &&
+                                'bg-graydark dark:bg-meta-4'
+                                }`}
+                            >
+                              Danh sách tour quá hạn
+                            </div>
+                          </li>
 
-                          <li onClick={() => handleClickNavigate('/tour/create')}
+
+                          {role == "manager" && <li onClick={() => handleClickNavigate('/tour/create')}
                           >
                             <div
                               className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
@@ -240,16 +277,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             >
                               Tạo mới tour
                             </div>
-                          </li>
+                          </li>}
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup>}
 
-              <SidebarLinkGroup
+              {role == "admin" && <SidebarLinkGroup
                 activeCondition={
                   pathname.includes('/book')
                 }
@@ -308,7 +345,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     </React.Fragment>
                   );
                 }}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup>}
 
             </ul>
           </div>

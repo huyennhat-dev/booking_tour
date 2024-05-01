@@ -17,8 +17,8 @@ const Home = () => {
       <TrendingDestinationsSection />
       <FindPopularTours />
       <GrabSaleSection />
-      <PopularThingsToDoSection />
       <TopTrending />
+      <PopularThingsToDoSection />
       <ArticlesSection />
     </>
   );

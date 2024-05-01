@@ -16,14 +16,6 @@ import {
   Tour6,
   Tour7,
   Tour8,
-  TrendingDestination1,
-  TrendingDestination2,
-  TrendingDestination3,
-  TrendingDestination4,
-  TrendingDestination5,
-  TrendingDestination6,
-  TrendingDestination7,
-  TrendingDestination8,
   WhyChooseTour1,
   WhyChooseTour2,
   WhyChooseTour3,
@@ -59,44 +51,58 @@ export const whyChooseTours = [
 
 export const trendingDestination = [
   {
-    image: TrendingDestination1,
+    image:
+      "https://images.baodantoc.vn/uploads/2022/Th%C3%A1ng%204/Ng%C3%A0y%203/Anh/ho-hoan-kiem-3.jpg",
     location: "Hà Nội",
     duration: "100+ Tours",
+    slug: "ha-noi",
   },
   {
-    image: TrendingDestination2,
+    image:
+      "https://hodadi.s3.amazonaws.com/production/destinations/pictures/000/000/030/original/ho-chi-minh.jpg",
     location: "Hồ Chí Minh",
     duration: "100+ Tours",
+    slug: "ho-chi-minh",
   },
   {
-    image: TrendingDestination3,
+    image:
+      "https://dulich3mien.vn/wp-content/uploads/2021/12/cau-rong-da-nang-phat-sang-ve-dem.jpg",
     location: "Đà Nẵng",
     duration: "100+ Tours",
+    slug: "da-nang",
   },
   {
-    image: TrendingDestination4,
+    image: "https://haiphongnews.gov.vn/uploads/2023-T6/NHL-1.png",
     location: "Hải Phòng",
     duration: "100+ Tours",
+    slug: "hai-phong",
   },
   {
-    image: TrendingDestination5,
+    image:
+      "https://cdn.vntrip.vn/cam-nang/wp-content/uploads/2016/01/nha-trang-thap-tram-huong.jpg",
     location: "Nha Trang",
     duration: "100+ Tours",
+    slug: "nha-trang",
   },
   {
-    image: TrendingDestination6,
-    location: "Phú Quốc",
+    image:
+      "https://ticotravel.com.vn/wp-content/uploads/2022/06/Tuong-dai-Chua-Kito-Vua-2-960x600.jpg",
+    location: "Bà Rịa - Vũng Tàu",
     duration: "100+ Tours",
+    slug: "ba-ria-vung-tau",
   },
   {
-    image: TrendingDestination7,
-    location: "Đà Lạt",
+    image:
+      "https://www.hcmc-cordbloodbank.org.vn/wp-content/uploads/2017/02/nha-tho-con-ga-bieu-tuong-kien-truc-da-lat-1.jpg",
+    location: "Lâm Đồng",
     duration: "100+ Tours",
+    slug: "lam-dong",
   },
   {
-    image: TrendingDestination8,
-    location: "Hội An",
+    image: 'https://hoiantourist.com.vn/datafiles/15378/upload/images/chua-cau-hoi-an.jpg',
+    location: "Quảng Nam",
     duration: "100+ Tours",
+    slug: "quang-nam",
   },
 ];
 

@@ -10,7 +10,10 @@ const FindPopularTours = () => {
     <div className={`py-16 ${styles.horizontalPadding} flex flex-col gap-y-12`}>
       <div className="w-full flex items-center justify-between">
         <h2 className={`${styles.headingSize}`}>Tour phổ biến</h2>
-        <Link to="/tours" className="text-sm font-normal hover:text-[color:#eb662b] duration-100">
+        <Link
+          to="/tours?keyword=popular"
+          className="text-sm font-normal hover:text-[color:#eb662b] duration-100"
+        >
           Xem tất cả
         </Link>
       </div>
