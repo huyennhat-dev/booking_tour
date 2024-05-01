@@ -137,7 +137,6 @@ const CreateTour = () => {
         <>
             <DefaultLayout>
                 <ToastContainer autoClose={2000} />
-                <Breadcrumb pageName="Tạo mới tour" />
                 <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                         <Spin spinning={loading} delay={500}>
