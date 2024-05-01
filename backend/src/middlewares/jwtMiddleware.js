@@ -11,6 +11,7 @@ const authToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, 'mysecretkey')
+    console.log(decoded)
     req.user = decoded
   } catch (err) {
     return res.status(403).json({

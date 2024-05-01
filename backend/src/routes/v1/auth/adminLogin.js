@@ -16,7 +16,23 @@ const loginFuc = async (req, res, next) => {
 
   try {
     // Tìm người dùng dựa trên email
-    const user = await db.Account.findOne({ where: { email } })
+    const user = await db.Account.findOne(
+      { 
+        where: { email },
+        include: [
+          {
+            model : db.Staff,
+            as : 'staffData',
+            attributes : { exclude : ['createdAt', 'updatedAt'] }
+          },
+          {
+            model : db.Manager,
+            as : 'managerData',
+            attributes : { exclude : ['createdAt', 'updatedAt'] }
+          }
+        ]  
+      }
+    )
     console.log(user)
 
     // Nếu không tìm thấy người dùng
@@ -35,7 +51,9 @@ const loginFuc = async (req, res, next) => {
       email : user.dataValues.email,
       username : user.dataValues.username,
       phoneNumber : user.dataValues.phone_number,
-      role : user.dataValues.role
+      role : user.dataValues.role,
+      id_staff : user.dataValues.staffData?.id,
+      id_manager : user.dataValues.managerData?.id
     }, 'mysecretkey')
 
     return res.status(200).json({
@@ -46,7 +64,9 @@ const loginFuc = async (req, res, next) => {
         email: user.email,
         username: user.username,
         phoneNumber: user.phone_number,
-        role : user.dataValues.role
+        role : user.dataValues.role,
+        id_staff : user.dataValues.staffData?.id,
+        id_manager : user.dataValues.managerData?.id
       }
     })
   } catch (error) {

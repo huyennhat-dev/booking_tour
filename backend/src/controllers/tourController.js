@@ -12,6 +12,73 @@ const getTour = async (req, res, next) => {
       filters = {}
     } = req.query
     const tours = await tourService.getTour(req.query)
+    console.log(req.user)
+
+    if (search) {
+      // validate search theo định dạng YYYY-MM-DD
+      const date = new Date(search)
+      if (date.toString() === 'Invalid Date') {
+        return next(new ApiError(404, 'Định dạng ngày không hợp lệ'))
+      }
+    }
+
+    // Trả về kết quả
+    return res.status(200).json({
+      statusCode: 200,
+      page: parseInt(page),
+      data: tours.rows,
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
+      total: tours.count
+    })
+  } catch (error) {
+    return next(new ApiError(404, error.message))
+  }
+}
+
+const getTourByManager = async (req, res, next) => {
+  try {
+    const {
+      page = 1,
+      limit = 1000,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      search = '',
+      filters = {}
+    } = req.query
+    const tours = await tourService.getTour(req.query)
+
+    if (search) {
+      // validate search theo định dạng YYYY-MM-DD
+      const date = new Date(search)
+      if (date.toString() === 'Invalid Date') {
+        return next(new ApiError(404, 'Định dạng ngày không hợp lệ'))
+      }
+    }
+
+    // Trả về kết quả
+    return res.status(200).json({
+      statusCode: 200,
+      page: parseInt(page),
+      data: tours.rows,
+      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
+      total: tours.count
+    })
+  } catch (error) {
+    return next(new ApiError(404, error.message))
+  }
+}
+
+const getTourByStaff = async (req, res, next) => {
+  try {
+    const {
+      page = 1,
+      limit = 1000,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      search = '',
+      filters = {}
+    } = req.query
+    const tours = await tourService.getTour(req.query)
 
     if (search) {
       // validate search theo định dạng YYYY-MM-DD
@@ -52,9 +119,10 @@ const createTour = async (req, res, next) => {
 
 const updateTour = async (req, res, next) => {
   try {
-    const { ...updateData } = req.body
     const id = req.params.id
-    const updatedTour = await tourService.updateTour(updateData, id)
+    const { ...updateData } = req.body
+    updateData.id = id
+    const updatedTour = await tourService.updateTour(updateData)
     return res.status(200).json({
       statusCode: 200,
       message: 'Cập nhật tour thành công',

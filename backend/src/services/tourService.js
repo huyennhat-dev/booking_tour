@@ -7,37 +7,36 @@ import moment from 'moment'
 const getTour = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, search = '27-4-26', filters = {} } = query
+    const { page = 1, limit = 1000, search = '', filters = {} } = query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
     let whereClause = {}
-    // lấy những tour có ngày bắt đầu lớn hơn ngày hiện tại 1 ngày
-    const currentDate = moment().toDate()
-    const threeDaysLater = moment().add(1, 'days').toDate()
 
-    whereClause = {
-      departure_day: {
-        [Op.gt]: threeDaysLater
-      }
-    }
+    // parse filters id_staff to integer
+    // if (filters.id_staff) {
+    //   filters.id_staff = parseInt(filters.id_staff)
+    // }
+
+    // // parse filters id_manager to integer
+    // if (filters.id_manager) {
+    //   filters.id_manager = parseInt(filters.id_manager)
+    // }
+
     if (search) {
-      console.log('search', search)
       const searchDate = moment(search, 'YYYY-MM-DD').toDate()
-      console.log('searchDate', searchDate)
-      whereClause = {
-        departure_day: {
-          [Op.gt]: searchDate
-        }
-      }
-    } else {
-      whereClause = {
-        departure_day: {
-          [Op.gt]: threeDaysLater
-        }
+      whereClause.departure_day = {
+        [Op.gt]: searchDate
       }
     }
+    // else {
+    //   whereClause = {
+    //     departure_day: {
+    //       [Op.gt]: threeDaysLater
+    //     }
+    //   }
+    // }
 
     // Xây dựng điều kiện tìm kiếm
 
@@ -48,40 +47,37 @@ const getTour = async (query) => {
         whereClause[key] = filters[key]
       }
     }
-    console.log('--------------------------------')
+    console.log(whereClause)
     // Thực hiện truy vấn
     const tours = await db.Tour.findAndCountAll({
-      // where: whereClause,
-      // include: [
-      //   {
-      //     model : db.Staff,
-      //     as : 'staffData',
-      //     include : [
-      //       {
-      //         model : db.Account,
-      //         as : 'accountData',
-      //         attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
-      //       }
-      //     ]
-      //   },
-      //   {
-      //     model : db.Manager,
-      //     as : 'managerData',
-      //     include : [
-      //       {
-      //         model : db.Account,
-      //         as : 'accountData',
-      //         attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
-      //       }
-      //     ]
-      //   }
-      // ],
+      where: whereClause, // điều kiện tìm kiếm
+      include: [
+        {
+          model : db.Staff,
+          as : 'staffData',
+          include : [
+            {
+              model : db.Account,
+              as : 'accountData',
+              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model : db.Manager,
+          as : 'managerData',
+          include : [
+            {
+              model : db.Account,
+              as : 'accountData',
+              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        }
+      ],
       limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       offset: parseInt(skip)
     })
-
-    console.log(tours)
-
     return tours
   } catch (error) {
     console.log(error)
@@ -104,13 +100,12 @@ const createTour = async (body) => {
   }
 }
 
-const updateTour = async (updateData, id) => {
+const updateTour = async (updateData) => {
   try {
     const updatedTour = await apifeature(
       db.Tour,
       'update',
-      { ...updateData },
-      id
+      { ...updateData }
     )
     return updatedTour
   } catch (error) {
