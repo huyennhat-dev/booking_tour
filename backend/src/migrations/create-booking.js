@@ -36,6 +36,11 @@ module.exports = {
         allowNull: false,
         defaultValue: 1
       },
+      day_booking: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: new Date()
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

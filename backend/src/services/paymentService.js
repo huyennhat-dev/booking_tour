@@ -1,9 +1,9 @@
-import moment from 'moment'
 import querystring from 'qs'
 import crypto from 'crypto'
-import bookService from '~/services/bookService'
 import ApiError from '~/utils/ApiError'
 import env from '~/config/environment'
+import db from '~/models'
+import moment from 'moment'
 
 const sortObject = (obj) => {
   let sorted = {}
@@ -84,54 +84,72 @@ function stringToJsonObject(stringData) {
 const createURLPayment = async (req) => {
   try {
 
+
+    // get tour id
+    const tour = await db.Tour.findOne({
+      where : {
+        id : req.body.id_tour
+      }
+    })
+    if (!tour) {
+      throw new ApiError(404, 'Tour not found')
+    }
+    const price_discount = tour.initial_price - (tour.initial_price * tour.promotional)
+    const total = price_discount * req.body.member
+
+    const data = {
+      id_tour: req.body.id_tour,
+      booking_info: req.body.booking_info,
+      id_user: req.body.id_user,
+      member: req.body.member,
+      total_price: total,
+      day_booking : new Date().getTime()
+    }
+
+    console.log(`${data.day_booking}_${data.id_tour}_${data.id_user}_${data.member}_${data.total_price}_${JSON.stringify(data.booking_info)}`)
+
+
     process.env.TZ = 'Asia/Ho_Chi_Minh'
     let date = new Date()
     let createDate = moment(date).format('YYYYMMDDHHmmss')
-
-
     let ipAddr =
               req.headers['x-forwarded-for'] || req.connection.remoteAddress ||
               req.socket.remoteAddress || req.connection.socket.remoteAddress
-
     let tmnCode = env.VNP_TMNCODE
     let secretKey = env.VNP_HASHSECRET
     let vnpUrl = env.VNP_URL
-    let returnUrl = env.VNP_RETUR_URL
+    let returnUrl = env.VNP_RETURN_URL
 
     // random orderId unique
-    let orderId = jsonToCustomString(req.body)
-    let amount = 10000
+    let orderId = new Date().getTime()
+    let amount = total
     let locale = 'vn'
     let currCode = 'VND'
     let vnp_Params = {}
-
     vnp_Params['vnp_Version'] = '2.1.0'
     vnp_Params['vnp_Command'] = 'pay'
     vnp_Params['vnp_TmnCode'] = tmnCode
     vnp_Params['vnp_Locale'] = locale
     vnp_Params['vnp_CurrCode'] = currCode
-    vnp_Params['vnp_TxnRef'] = orderId
+    vnp_Params['vnp_TxnRef'] = `${data.day_booking}_${data.id_tour}_${data.id_user}_${data.member}_${data.total_price}_${JSON.stringify(data.booking_info)}`
     vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + orderId
     vnp_Params['vnp_OrderType'] = 'other'
     vnp_Params['vnp_Amount'] = amount * 100
     vnp_Params['vnp_ReturnUrl'] = returnUrl
     vnp_Params['vnp_IpAddr'] = ipAddr
     vnp_Params['vnp_CreateDate'] = createDate
-
     vnp_Params = sortObject(vnp_Params)
-
     let signData = querystring.stringify(vnp_Params, { encode: false })
     let crypto = require('crypto')
     let hmac = crypto.createHmac('sha512', secretKey)
     let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest('hex')
-
     vnp_Params['vnp_SecureHash'] = signed
-
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false })
 
 
-    return { vnpUrl, body : stringToJsonObject(orderId) }
+    return { vnpUrl }
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }
@@ -153,27 +171,40 @@ const vnpReturn = async (query) => {
     let hmac = crypto.createHmac('sha512', secretKey)
     let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest('hex')
 
+    console.log('--------------------------------------------------------')
+    console.log('secureHash', secureHash)
+    console.log('dataPass', vnp_Params.vnp_TxnRef.split('_'))
+    console.log('day_booking', new Date(parseInt(vnp_Params.vnp_TxnRef.split('_')[0])))
+    console.log('id_tour', vnp_Params.vnp_TxnRef.split('_')[1])
+    console.log('id_user', vnp_Params.vnp_TxnRef.split('_')[2])
+    console.log('member', vnp_Params.vnp_TxnRef.split('_')[3])
+    console.log('total_price', vnp_Params.vnp_TxnRef.split('_')[4])
+    console.log('info', JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' ')))
+    console.log('--------------------------------------------------------')
+
+
     if (secureHash === signed) {
       const rsCode = vnp_Params['vnp_ResponseCode']
       if (rsCode == '00') {
         // tao book khi thanh toan thanh cong
 
-        await bookService.createBook({
-          ...stringToJsonObject(vnp_Params.vnp_TxnRef),
-          complete : true,
-          evaluate : '',
-          statpoint_evaluateus : 1
-        })
+        // await bookService.createBook({
+        //   ...stringToJsonObject(vnp_Params.vnp_TxnRef),
+        //   complete : true,
+        //   evaluate : '',
+        //   statpoint_evaluateus : 1
+        // })
 
         return `http//${env.HOST}:${env.BACKEND_PORT}/${vnp_Params.vnp_TxnRef}`
       }
 
-      return `http://${env.HOST}:${env.BACKEND_PORT}/404`
+      return `http://${env.HOST}:${env.BACKEND_PORT}/deletebook/${vnp_Params.vnp_TxnRef}`
 
     } else {
       return `http://${env.HOST}:${env.BACKEND_PORT}/404`
     }
   } catch (error) {
+    console.log(error)
     throw new ApiError(error.message)
   }
 }
