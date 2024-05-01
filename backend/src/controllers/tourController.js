@@ -6,7 +6,8 @@ const getTour = async (req, res, next) => {
     const {
       page = 1,
       limit = 1000,
-      search = ''
+      search = '',
+      exp = 0
     } = req.query
 
     if (search) {
@@ -43,6 +44,19 @@ const getTour = async (req, res, next) => {
       data: tours.rows,
       limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       total: tours.count
+    })
+  } catch (error) {
+    return next(new ApiError(404, error.message))
+  }
+}
+
+const getTourDetail = async (req, res, next) => {
+  try {
+    const id = req.params.id
+    const tour = await tourService.getTourDetail(id)
+    return res.status(200).json({
+      statusCode: 200,
+      data: tour
     })
   } catch (error) {
     return next(new ApiError(404, error.message))
@@ -105,7 +119,8 @@ const tourController = {
   getTour,
   createTour,
   updateTour,
-  deleteTour
+  deleteTour,
+  getTourDetail
 }
 
 export default tourController
