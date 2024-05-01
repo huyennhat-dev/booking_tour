@@ -21,7 +21,6 @@ const getTour = async (query) => {
     const skip = (page - 1) * limit
 
     const oneDaysLater = moment().add(1, 'days').toDate()
-    console.log('oneDaysLater', oneDaysLater)
 
     let whereClause = {}
 
@@ -35,7 +34,7 @@ const getTour = async (query) => {
     else {
       whereClause = {
         departure_day: {
-          [op]: oneDaysLater
+          [Op.gt]: oneDaysLater
         }
       }
     }
