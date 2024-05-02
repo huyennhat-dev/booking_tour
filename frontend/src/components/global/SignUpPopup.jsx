@@ -1,14 +1,102 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styles } from "../../styles/styles";
 import { IoClose } from "react-icons/io5";
-import { Link } from "react-router-dom";
 import { GoogleLogo } from "../../assets/export";
+import Button from "./Button";
+import authApi from "../../apis/authApi";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../redux/authSlice";
 
 const SignUpPopup = () => {
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState(false);
 
   const handleToggle = () => {
     setShowModal(!showModal);
+  };
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
+  const [errMsg, setErrMsg] = useState({
+    fullName: {
+      value: false,
+      message: "",
+    },
+    email: {
+      value: false,
+      message: "",
+    },
+    password: {
+      value: false,
+      message: "",
+    },
+  });
+
+
+  const validation = () => {
+    let isValid = true;
+    if (!formData.fullName) {
+      setErrMsg((prev) => ({
+        ...prev,
+        fullName: { value: true, message: "Tên người dùng không hợp lệ!" },
+      }));
+      isValid = false;
+    } else {
+      setErrMsg((prev) => ({
+        ...prev,
+        fullName: { value: false },
+      }));
+      isValid = true;
+    }
+
+    if (!formData.email) {
+      setErrMsg((prev) => ({
+        ...prev,
+        email: { value: true, message: "Email không hợp lệ!" },
+      }));
+      isValid = false;
+    } else {
+      setErrMsg((prev) => ({
+        ...prev,
+        email: { value: false },
+      }));
+      isValid = true;
+    }
+
+    if (!formData.password) {
+      setErrMsg((prev) => ({
+        ...prev,
+        password: { value: true, message: "Mật khẩu không hợp lệ!" },
+      }));
+      isValid = false;
+    } else {
+      setErrMsg((prev) => ({
+        ...prev,
+        password: { value: false },
+      }));
+      isValid = true;
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = () => {
+    if (validation()) {
+      authApi
+        .register(formData)
+        .then((rs) => {
+          dispatch(loginSuccess({ token: rs.token }));
+          setShowModal(!showModal);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -31,45 +119,89 @@ const SignUpPopup = () => {
               />
             </div>
             <div className="w-full">
-              <h3 className="text-2xl font-semibold">Điền thông tin để tạo tài khoản</h3>
+              <h3 className="text-2xl font-semibold">
+                Điền thông tin để tạo tài khoản
+              </h3>
             </div>
             <div className="w-full">
               <input
                 type="text"
-                className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
+                value={formData.fullName}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    fullName: e.target.value,
+                  }))
+                }
+                className={`w-full p-3 rounded-xl border ${
+                  errMsg.fullName.value ? "border-red-600" : "border-slate-300"
+                } text-sm font-normal outline-none`}
                 placeholder="Nhập tên của bạn"
               />
+              {errMsg.fullName.value && (
+                <p className="text-xs pl-2 mt-1 text-red-600">
+                  {errMsg.fullName.message}
+                </p>
+              )}
             </div>
             <div className="w-full">
               <input
                 type="email"
-                className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }))
+                }
+                className={`w-full p-3 rounded-xl border ${
+                  errMsg.email.value ? "border-red-600" : "border-slate-300"
+                } text-sm font-normal outline-none`}
                 placeholder="Nhập email của bạn"
               />
+              {errMsg.email.value && (
+                <p className="text-xs pl-2 mt-1 text-red-600">
+                  {errMsg.email.message}
+                </p>
+              )}
             </div>
             <div className="w-full">
               <input
                 type="password"
-                className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }))
+                }
+                className={`w-full p-3 rounded-xl border ${
+                  errMsg.password.value ? "border-red-600" : "border-slate-300"
+                } text-sm font-normal outline-none`}
                 placeholder="Nhập mật khẩu"
               />
+              {errMsg.password.value && (
+                <p className="text-xs pl-2 mt-1 text-red-600">
+                  {errMsg.password.message}
+                </p>
+              )}
             </div>
-            <div className="w-full">
+            {/* <div className="w-full">
               <input
                 type="password"
                 className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
                 placeholder="Nhập lại mật khẩu"
               />
-            </div>
+            </div> */}
             {/* <div className="w-full py-0 text-right">
               <Link className="text-sm">Forgot Password?</Link>
             </div> */}
             <div className="w-full py-0 my-0">
-              <button
-                className={`w-full py-3 text-white text-sm font-medium rounded-xl ${styles.bgOrange}`}
-              >
-                Đăng Ký
-              </button>
+              <Button
+                title={"Đăng ký"}
+                classes={`w-full py-3 text-white text-sm font-medium rounded-xl ${styles.bgOrange}`}
+                onclick={handleSubmit}
+              />
             </div>
             <div className="w-full flex items-center justify-center md:px-1">
               <div className="border w-full border-slate-200"></div>

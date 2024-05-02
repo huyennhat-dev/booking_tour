@@ -8,9 +8,5 @@ const store = configureStore({
   },
 });
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-});
 
-// Định nghĩa kiểu RootState từ rootReducer
 export default store;

@@ -1,6 +1,7 @@
 // authSlice.ts
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
+import { clearToken, saveToken } from "../utils/tokenUtils";
 
 const initialState = {
   isLoggedIn: false,
@@ -23,13 +24,13 @@ const authSlice = createSlice({
       const decodedToken = jwtDecode(action.payload.token);
       state.userInfo = decodedToken;
       state.token = action.payload.token;
-      localStorage.setItem("token", action.payload.token);
+      saveToken(action.payload.token);
     },
     logout(state) {
       state.isLoggedIn = false;
       state.token = null;
       state.userInfo = null;
-      localStorage.removeItem("token");
+      clearToken();
     },
   },
 });
