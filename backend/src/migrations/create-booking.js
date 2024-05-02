@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     // associate models
-    await queryInterface.createTable('Bookings', {
+    await queryInterface.createTable('Books', {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -54,6 +54,6 @@ module.exports = {
     })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Bookings')
+    await queryInterface.dropTable('Books')
   }
 }

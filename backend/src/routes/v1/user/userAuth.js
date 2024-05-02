@@ -34,6 +34,8 @@ const loginFuc = async (req, res, next) => {
       id : user.dataValues.id,
       email : user.dataValues.email,
       fullName : user.dataValues.username,
+      avatar : user.dataValues.avatar,
+      role : 'customer'
     }, 'mysecretkey')
 
     return res.status(200).json({
@@ -43,6 +45,8 @@ const loginFuc = async (req, res, next) => {
         id: user.id,
         email: user.email,
         fullName: user.fullName,
+        avatar: user.avatar,
+        role : 'customer'
       }
     })
   } catch (error) {

@@ -1,9 +1,9 @@
 import db from '~/models'
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
 
-const getBook = async (query) => {
+const getBook = async (query, role = '') => {
   try {
     // Đọc các tham số từ query string
     const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', filters = {} } = query
@@ -11,25 +11,25 @@ const getBook = async (query) => {
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
-    // Xây dựng điều kiện tìm kiếm
-    let whereClause = {}
+    // let whereCondition = {
 
+    // }
 
-    // Áp dụng bộ lọc (nếu có)
-    for (const key in filters) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (filters.hasOwnProperty(key)) {
-        whereClause[key] = filters[key]
-      }
-    }
+    // if (role == 'manager') {
+    //   whereCondition = {
+    //     id_manager: 1
+    //   }
+    // }
 
     // Thực hiện truy vấn
     const books = await db.Book.findAndCountAll({
-      where: whereClause,
       include: [
         {
           model: db.Tour,
           as : 'tourData',
+          where: {
+            id_manager: 1
+          },
           include: [
             {
               model: db.Manager,

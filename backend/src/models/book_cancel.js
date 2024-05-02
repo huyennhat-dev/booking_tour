@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
+      models.BookCancel.belongsTo(models.Book, {
+        foreignKey: 'id_book',
+        as: 'bookCancelData'
+      })
     }
   }
   BookCancel.init({

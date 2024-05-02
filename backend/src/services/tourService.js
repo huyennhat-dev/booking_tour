@@ -28,13 +28,13 @@ const getTour = async (query) => {
     if (search) {
       const searchDate = moment(search, 'YYYY-MM-DD').toDate()
       whereClause.departure_day = {
-        [op]: searchDate
+        [Op.gt]: searchDate
       }
     }
     else {
       whereClause = {
         departure_day: {
-          [Op.gt]: oneDaysLater
+          [op]: oneDaysLater
         }
       }
     }
