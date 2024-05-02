@@ -7,7 +7,6 @@ const getTour = async (req, res, next) => {
       page = 1,
       limit = 1000,
       search = '',
-      exp = 0
     } = req.query
 
     if (search) {

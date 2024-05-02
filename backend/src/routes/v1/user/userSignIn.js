@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken'
 const router = express.Router()
 
 const signInFuc = async (req, res, next) => {
-  const { email, fullName, password , photo = ''} = req.body
+  const { email, fullName, password, photo = '' } = req.body
 
   console.log(req.body)
 
@@ -24,16 +24,16 @@ const signInFuc = async (req, res, next) => {
       email,
       password: hashedPassword,
       fullName,
-      photo,
+      photo
     })
-
-    
 
 
     const token = jwt.sign({
       id : user.dataValues.id,
       email : user.dataValues.email,
       fullName : user.dataValues.username,
+      avatar : user.dataValues.avatar,
+      role : 'customer'
     }, 'mysecretkey')
 
     return res.status(200).json({
@@ -42,8 +42,8 @@ const signInFuc = async (req, res, next) => {
       user: {
         id : user.dataValues.id,
         email : user.dataValues.email,
-        username : user.dataValues.username,
-        phone_number : user.dataValues.phone_number,
+        full_name : user.dataValues.username,
+        avatar : user.dataValues.avatar,
         role : 'customer'
       }
     })

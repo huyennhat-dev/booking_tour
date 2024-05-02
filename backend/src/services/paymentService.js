@@ -81,14 +81,14 @@ function stringToJsonObject(stringData) {
   }
 }
 
-const createURLPayment = async (req) => {
+const createURLPayment = async (req, idBook) => {
   try {
 
 
     // get tour id
     const tour = await db.Tour.findOne({
       where : {
-        id : req.body.id_tour
+        id : idBook
       }
     })
     if (!tour) {
@@ -98,7 +98,7 @@ const createURLPayment = async (req) => {
     const total = price_discount * req.body.member
 
     const data = {
-      id_tour: req.body.id_tour,
+      id_tour: idBook,
       booking_info: req.body.booking_info,
       id_user: req.body.id_user,
       member: req.body.member,

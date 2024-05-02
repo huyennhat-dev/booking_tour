@@ -19,6 +19,7 @@ router.use('/auth/manager', managerRouter)
 router.use('/auth/staff', staffRouter)
 router.use('/auth/user', userRouter)
 router.use('/auth/upload', uploadRouter)
+router.use('/auth/book', bookRouter)
 
 //
 router.use('/auth/tour', tourRouter)
