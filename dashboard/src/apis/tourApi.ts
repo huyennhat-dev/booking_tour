@@ -3,8 +3,9 @@ import axiosClient from './axiosClient';
 
 interface tourApi {
   create: (data: TOUR_TYPE) => Promise<any>;
+  update: (data: TOUR_TYPE, id: string) => Promise<any>;
+  delete: (id: number) => Promise<any>;
   getTours: (params?: PARAM_TYPE) => Promise<any>;
-  deleteTour: (id: string) => Promise<any>;
   getTour: (id: string) => Promise<any>;
 }
 
@@ -12,6 +13,14 @@ const tourApi: tourApi = {
   create: (data) => {
     const url = '/auth/tour';
     return axiosClient.post(url, { ...data });
+  },
+  update: (data, id) => {
+    const url = `/auth/tour/${id}`;
+    return axiosClient.put(url, { ...data });
+  },
+  delete: (id) => {
+    const url = `/auth/tour/${id}`;
+    return axiosClient.delete(url);
   },
   getTour: (id) => {
     const url = `/auth/tour/${id}`;
@@ -21,10 +30,7 @@ const tourApi: tourApi = {
     const url = '/auth/tour';
     return axiosClient.get(url, { params });
   },
-  deleteTour: (id) => {
-    const url = `/tour/${id}`;
-    return axiosClient.delete(url);
-  },
+
 };
 
 export default tourApi;

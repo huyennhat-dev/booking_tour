@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const SelectGroupTwo = ({ title, selectData, onSelectChange, defaultValue }: { defaultValue: string, title: string, selectData: { slug: string; name: string }[], onSelectChange: (selectedValue: string) => void }) => {
   const [selectedOption, setSelectedOption] = useState<string>(defaultValue);
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
-
 
 
   const changeTextColor = () => {
@@ -15,21 +14,22 @@ const SelectGroupTwo = ({ title, selectData, onSelectChange, defaultValue }: { d
     changeTextColor();
     onSelectChange(selectedValue);
   };
+
+  useEffect(() => {
+    setSelectedOption(defaultValue)
+  }, [defaultValue])
+
   return (
     <div>
       <label className="mb-2.5 block text-black dark:text-white">
-
         {title}
       </label>
 
       <div className="relative z-20 bg-white dark:bg-form-input">
-
-
         <select
           value={selectedOption}
           onChange={handleSelectChange}
-          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 pr-12 pl-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${isOptionSelected ? 'text-black dark:text-white' : ''
-            }`}
+          className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 pr-12 pl-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${isOptionSelected ? 'text-black dark:text-white' : ''}`}
         >
           {
             selectData.map((e, index) => (

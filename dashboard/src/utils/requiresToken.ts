@@ -7,6 +7,7 @@ const requiresToken = (url: string) => {
     '/auth/user',
     '/auth/upload',
     '/auth/tour',
+    '/auth/tour/:id',
   ];
 
   return tokenRequiredPaths.some((path) => url.startsWith(path));

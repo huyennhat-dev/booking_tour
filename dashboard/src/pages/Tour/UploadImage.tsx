@@ -25,7 +25,7 @@ const UploadImage = ({
     imageUrls,
     onChangeImageUrl,
     onRemoveImageUrl,
-    fileList, 
+    fileList,
     setFileList,
 }: {
     title: string;
@@ -33,7 +33,7 @@ const UploadImage = ({
     onChangeImageUrl: (ImageUrl: string) => void;
     onRemoveImageUrl: (ImageUrl: string) => void;
     fileList: UploadFile[]; // Định dạng prop fileList
-    setFileList: (newFileList: UploadFile[]) => void; 
+    setFileList: (newFileList: UploadFile[]) => void;
 }) => {
 
 
@@ -57,6 +57,18 @@ const UploadImage = ({
 
     const onRemove: UploadProps<any>['onRemove'] = (info) => {
         const photo = info.response?.url;
+        if (imageUrls) {
+            const newImgList = imageUrls.filter(imgUrl => imgUrl !== photo);
+
+            const newFiles: UploadFile<any>[] = newImgList.map(url => ({
+                uid: generateUID(),
+                name: 'image.png',
+                status: 'done',
+                url: url,
+                response: { url: url }
+            }));
+            setFileList(newFiles);
+        }
         if (photo) uploadApi.removePhoto(photo);
         onRemoveImageUrl(photo);
 
@@ -64,7 +76,14 @@ const UploadImage = ({
     const onChange: UploadProps<any>['onChange'] = (info) => {
         const { fileList: newFileList, file } = info;
         setFileList(newFileList);
-        onChangeImageUrl(file.response?.url);
+        if (imageUrls) {
+            if (file.response?.url && !imageUrls.includes(file.response.url)) {
+                onChangeImageUrl(file.response.url);
+            }
+        } else {
+            onChangeImageUrl(file.response?.url);
+        }
+
     };
 
     const handlePreview = async (file: UploadFile) => {
@@ -75,7 +94,6 @@ const UploadImage = ({
         setPreviewImage(file.url || (file.preview as string));
         setPreviewOpen(true);
     };
-
 
 
     return (

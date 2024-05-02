@@ -1,6 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const CheckboxOne = ({ title, id, onCheckboxChange }: { title: string; id: string; onCheckboxChange: (isChecked: boolean, id: string) => void }) => {
+const CheckboxOne = (
+  { title, id, onCheckboxChange, defaultVal }:
+    {
+      title: string; id: string;
+      onCheckboxChange: (isChecked: boolean, id: string) => void;
+      defaultVal?: boolean
+    }) => {
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleCheckboxChange = () => {
@@ -8,6 +14,14 @@ const CheckboxOne = ({ title, id, onCheckboxChange }: { title: string; id: strin
     setIsChecked(newCheckedValue);
     onCheckboxChange(newCheckedValue, id);
   };
+  
+  useEffect(() => {
+    if (defaultVal !== undefined) setIsChecked(defaultVal);
+  }, [defaultVal]);
+
+
+
+
   return (
     <div>
       <label

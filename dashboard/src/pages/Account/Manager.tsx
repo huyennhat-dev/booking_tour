@@ -44,7 +44,8 @@ const AccountManager = () => {
             limit: limit
         }
         userApi.getAllAccount(params).then(rs => {
-            setAccounts(rs.data)
+            const data = rs.data.filter((acc: ACCOUNT_TYPE) => acc.role != "admin")
+            setAccounts(data)
             setTotal(rs.total)
         })
     }
@@ -219,7 +220,7 @@ const AccountManager = () => {
                                             <h4 className="font-semibold text-base">{data.username}</h4>
                                             <h6 className="text-sm mt-1">Email: {data.email}</h6>
                                             <h6 className="text-sm mt-1">Sdt: {data.phoneNumber}</h6>
-                                            <h6 className="text-sm mt-1">Vai trò: {data.role}</h6>
+                                            <h6 className="text-sm mt-1">Vai trò: {selectRoleData.find(role => role.value === data.role)?.label}</h6>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
                                             <div>Bình thường</div>

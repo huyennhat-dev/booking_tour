@@ -5,7 +5,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { startTransition, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { TOUR_TYPE } from '../../types';
-import { Image, Pagination, Tooltip } from 'antd';
+import { Empty, Image, Pagination, Tooltip } from 'antd';
 import tourApi from '../../apis/tourApi';
 import provinces from '../../assets/js/province';
 
@@ -26,7 +26,7 @@ const ExpListTours = () => {
     const params = {
       page: currentPage,
       limit: limit,
-      exp: 0
+      exp: 1
     }
 
     tourApi.getTours(params).then(rs => {
@@ -50,9 +50,15 @@ const ExpListTours = () => {
   }, []);
 
   const handleDeleteTour = (id: number) => {
-    console.log(id);
-    toast.success('Bạn đã xóa thành công');
+    tourApi.delete(id).then(rs => {
+      const newData = tours.filter(tour => tour.id !== id);
+      setTours(newData)
+      toast.success('Bạn đã xóa thành công');
+    }).catch(err => {
+      toast.error(err.response?.data?.message)
+    })
   };
+
   const getProvinceName = (slug: string) => {
     const province = provinces.find(p => p.slug === slug);
     return province ? province.name : "Không tìm thấy tỉnh";
@@ -152,6 +158,7 @@ const ExpListTours = () => {
                 ))}
               </tbody>
             </table>
+            {tours.length == 0 ? <Empty description="Không có dữ liệu" image={Empty.PRESENTED_IMAGE_SIMPLE} /> : null}
           </div>
           {total > 10 ? (
             <div className="w-full my-3 text-center">
