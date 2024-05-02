@@ -4,11 +4,12 @@ import ApiError from '~/utils/ApiError'
 import bcrypt from 'bcryptjs'
 import apifeature from '~/helpers/apifeature'
 import jwt from 'jsonwebtoken'
+import randomCatAvatar from '../../../utils/randomCatAvatar'
 
 const router = express.Router()
 
 const signInFuc = async (req, res, next) => {
-  const { email, fullName, password, photo = '' } = req.body
+  const { email, fullName, password, avatar = randomCatAvatar() } = req.body
 
   console.log(req.body)
 
@@ -24,7 +25,7 @@ const signInFuc = async (req, res, next) => {
       email,
       password: hashedPassword,
       fullName,
-      photo
+      avatar
     })
 
 
