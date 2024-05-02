@@ -24,7 +24,6 @@ router.use('/auth/book', bookRouter)
 //
 router.use('/auth/tour', tourRouter)
 router.use('/auth/login', adminLogin)
-router.use('/booking', bookRouter)
 
 // user url
 router.use('/login', userLogin)

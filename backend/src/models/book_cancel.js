@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.BookCancel.belongsTo(models.Book, {
+      models.Cancel.belongsTo(models.Book, {
         foreignKey: 'id_book',
         as: 'bookCancelData'
       })
@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'BookCancel'
+    modelName: 'Cancel',
   })
   return BookCancel
 }

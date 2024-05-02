@@ -5,22 +5,7 @@ const getBook = async (req, res, next) => {
   try {
     const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = req.query
 
-    let books = []
-
-    if (req.user.role == 'manager') {
-      req.query.filters.id_manager = req.user.id
-      books = await bookService.getBook(req.query)
-    }
-
-    if (req.user.role == 'staff') {
-      req.query.filters.id_staff = req.user.id
-      books = await bookService.getBook(req.query)
-    }
-
-    if (req.user.role == 'customer') {
-      req.query.filters.id_user = req.user.id
-      books = await bookService.getBook(req.query)
-    }
+    const books = await bookService.getBook(req.query)
 
 
     // Trả về kết quả
@@ -86,11 +71,47 @@ const deleteBook = async (req, res, next) => {
   }
 }
 
+const cancelTour = async (req, res, next) => {
+  try {
+    const idBook = req.params.idBook
+    const infoCancel = req.body
+    const canceledTour = await bookService.cancelTour(idBook, infoCancel)
+    return res.status(200).json({
+      statusCode: 200,
+      message: 'Hủy tour thành công',
+      data: canceledTour
+    })
+  } catch (error) {
+    return res.status(404).json({
+      statusCode: 404,
+      message: `Hủy tour thất bại ${error.message}`
+    })
+  }
+}
+
+const refundTour = async (req, res, next) => {
+  try {
+    const idCancel = req.params.idCancel
+    await bookService.refundTour(idCancel, res)
+    return res.status(200).json({
+      statusCode: 200,
+      message: 'Hoàn tiền tour thành công'
+    })
+  } catch (error) {
+    return res.status(404).json({
+      statusCode: 404,
+      message: `Hoàn tiền tour thất bại ${error.message}`
+    })
+  }
+}
+
 const bookController = {
   getBook,
   createBook,
   updateBook,
-  deleteBook
+  deleteBook,
+  cancelTour,
+  refundTour
 }
 
 export default bookController
