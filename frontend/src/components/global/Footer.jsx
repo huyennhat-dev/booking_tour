@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div
-      className={`pt-16 pb-6 bg-[#F5F5F5] ${styles.horizontalPadding} flex flex-col shadow-2xl gap-y-6 relative `}
+      className={`pt4 md:pt-16 mt-16 md:mt-0 pb-6 bg-[#F5F5F5] ${styles.horizontalPadding} flex flex-col shadow-2xl gap-y-6 relative `}
     >
       <div className="w-full bg-[#F5F5F5] h-full  py-12 rounded-xl flex flex-col gap-y-8 px-4 md:px-8 lg:px-16">
         <div className="w-full grid grid-cols-1 md:grid-cols-10 lg:grid-cols-10 xl:grid-cols-10 gap-y-10 md:gap-y-0">

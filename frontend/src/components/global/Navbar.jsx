@@ -11,7 +11,7 @@ import LogoComponent from "./Logo";
 import UserInfo from "./Info";
 
 const Navbar = () => {
-  const [logged] = useState(true);
+  const [logged] = useState(!true);
   const [open, setOpen] = useState(false);
   const sidebarRef = useRef();
 

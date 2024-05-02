@@ -6,7 +6,7 @@ import { trendingDestination } from "../../constants/whychoosetours";
 
 const TrendingDestinationsSection = () => {
   return (
-    <div className={`py-16 ${styles.horizontalPadding} flex flex-col gap-y-12`}>
+    <div className={`py-4 md:py-16 ${styles.horizontalPadding} flex flex-col gap-y-12`}>
       <div className="w-full flex items-center justify-between">
         <h2 className={`${styles.headingSize}`}>Điểm đến thịnh hành</h2>
      
