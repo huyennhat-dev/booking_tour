@@ -181,19 +181,28 @@ const vnpReturn = async (query) => {
     console.log('total_price', vnp_Params.vnp_TxnRef.split('_')[4])
     console.log('info', JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' ')))
     console.log('--------------------------------------------------------')
+    console.log({
+      day_booking: new Date(parseInt(vnp_Params.vnp_TxnRef.split('_')[0])),
+      id_tour: parseInt(vnp_Params.vnp_TxnRef.split('_')[1]),
+      id_user: parseInt(vnp_Params.vnp_TxnRef.split('_')[2]),
+      member: parseInt(vnp_Params.vnp_TxnRef.split('_')[3]),
+      total_price: parseInt(vnp_Params.vnp_TxnRef.split('_')[4]),
+      booking_info: JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' '))
+    })
+    console.log('--------------------------------------------------------')
 
 
     if (secureHash === signed) {
       const rsCode = vnp_Params['vnp_ResponseCode']
       if (rsCode == '00') {
-        // tao book khi thanh toan thanh cong
-
-        // await bookService.createBook({
-        //   ...stringToJsonObject(vnp_Params.vnp_TxnRef),
-        //   complete : true,
-        //   evaluate : '',
-        //   statpoint_evaluateus : 1
-        // })
+        await db.Book.create({
+          day_booking: new Date(parseInt(vnp_Params.vnp_TxnRef.split('_')[0])),
+          id_tour: parseInt(vnp_Params.vnp_TxnRef.split('_')[1]),
+          id_user: parseInt(vnp_Params.vnp_TxnRef.split('_')[2]),
+          member: parseInt(vnp_Params.vnp_TxnRef.split('_')[3]),
+          total_price: parseInt(vnp_Params.vnp_TxnRef.split('_')[4]),
+          booking_info: JSON.stringify(JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' ')))
+        })
 
         return `http//${env.HOST}:${env.BACKEND_PORT}/${vnp_Params.vnp_TxnRef}`
       }

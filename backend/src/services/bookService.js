@@ -11,25 +11,12 @@ const getBook = async (query, role = '') => {
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
-    // let whereCondition = {
-
-    // }
-
-    // if (role == 'manager') {
-    //   whereCondition = {
-    //     id_manager: 1
-    //   }
-    // }
-
     // Thực hiện truy vấn
     const books = await db.Book.findAndCountAll({
       include: [
         {
           model: db.Tour,
           as : 'tourData',
-          where: {
-            id_manager: 1
-          },
           include: [
             {
               model: db.Manager,
@@ -198,11 +185,95 @@ const deleteBook = async (id_booked_tour) => {
   }
 }
 
+const cancelTour = async (idBook , infoCancel) => {
+  try {
+    const book = await db.Book.findOne({
+      where: {
+        id: idBook
+      }
+    })
+
+    if (book) {
+      await db.Book.update({
+        status: 'cancel'
+      }, {
+        where: {
+          id: idBook
+        }
+      })
+
+      const newBookCancel = await db.Cancel.create({
+        ...infoCancel,
+        id_book: idBook,
+        is_refund : false
+      })
+
+      return newBookCancel
+    } else {
+      throw new ApiError('Không tìm thấy book')
+    }
+  } catch (error) {
+    console.log(error)
+    throw new ApiError(error.message)
+  }
+}
+
+const refundTour = async (idCancel , res) => {
+  try {
+    console.log(idCancel)
+    const cancel = await db.Cancel.findOne({
+      where: {
+        id: idCancel
+      }
+    })
+    if(cancel.is_refund) {
+      throw new ApiError('Đã hoàn tiền rồi')
+    }
+
+    if (cancel) {
+      await db.Cancel.update({
+        is_refund: true
+      }, {
+        where: {
+          id: idCancel
+        }
+      })
+
+      const book = await db.Book.findOne({
+        where: {
+          id: cancel.id_book
+        }
+      })
+
+      if (book) {
+        await db.Book.update({
+          status: 'cancel'
+        }, {
+          where: {
+            id: cancel.id_book
+          }
+        })
+
+        return cancel
+      } else {
+        throw new ApiError('Không tìm thấy book')
+      }
+    } else {
+      throw new ApiError('Không tìm thấy cancel')
+    }
+  } catch (error) {
+    console.log(error)
+    throw new ApiError(error.message)
+  }
+}
+
 const bookService = {
   getBook,
   createBook,
   updateBook,
-  deleteBook
+  deleteBook,
+  cancelTour,
+  refundTour
 }
 
 export default bookService
