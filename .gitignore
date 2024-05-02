@@ -1,2 +1,5 @@
 /frontend/node_modules
 /backend/node_modules
+/backend2/node_modules
+/backend/build
+/dashboard/node_modules
