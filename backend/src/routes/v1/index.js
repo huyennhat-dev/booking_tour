@@ -10,6 +10,7 @@ import { userSignIn } from '~/routes/v1/user/userSignIn'
 import { uploadRouter } from './auth/upload'
 import { bookRouter } from './auth/book'
 import { paymentRouter } from './user/payment'
+import { homeRouter } from './user/home'
 
 const router = express.Router()
 
@@ -29,6 +30,7 @@ router.use('/auth/login', adminLogin)
 router.use('/login', userLogin)
 router.use('/signIn', userSignIn)
 router.use('/payment', paymentRouter)
+router.use('/tour' , homeRouter)
 
 
 export const API_V1 = router
