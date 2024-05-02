@@ -7,13 +7,12 @@ import moment from 'moment'
 const getTour = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, search = '', filters , exp } = query
+    const { page = 1, limit = 1000, search = '', filters, exp } = query
 
     let op = Op.gt
-    if(exp == 1) {
+    if (exp == 1) {
       op = Op.lt
-    }
-    else {
+    } else {
       op = Op.gt
     }
 
@@ -24,14 +23,12 @@ const getTour = async (query) => {
 
     let whereClause = {}
 
-
     if (search) {
       const searchDate = moment(search, 'YYYY-MM-DD').toDate()
       whereClause.departure_day = {
         [Op.gt]: searchDate
       }
-    }
-    else {
+    } else {
       whereClause = {
         departure_day: {
           [op]: oneDaysLater
@@ -54,24 +51,24 @@ const getTour = async (query) => {
       where: whereClause, // điều kiện tìm kiếm
       include: [
         {
-          model : db.Staff,
-          as : 'staffData',
-          include : [
+          model: db.Staff,
+          as: 'staffData',
+          include: [
             {
-              model : db.Account,
-              as : 'accountData',
-              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
             }
           ]
         },
         {
-          model : db.Manager,
-          as : 'managerData',
-          include : [
+          model: db.Manager,
+          as: 'managerData',
+          include: [
             {
-              model : db.Account,
-              as : 'accountData',
-              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
             }
           ]
         }
@@ -92,24 +89,24 @@ const getTourDetail = async (id) => {
       where: { id },
       include: [
         {
-          model : db.Staff,
-          as : 'staffData',
-          include : [
+          model: db.Staff,
+          as: 'staffData',
+          include: [
             {
-              model : db.Account,
-              as : 'accountData',
-              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
             }
           ]
         },
         {
-          model : db.Manager,
-          as : 'managerData',
-          include : [
+          model: db.Manager,
+          as: 'managerData',
+          include: [
             {
-              model : db.Account,
-              as : 'accountData',
-              attributes : { exclude : ['createdAt', 'updatedAt', 'password'] }
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
             }
           ]
         }
@@ -120,12 +117,10 @@ const getTourDetail = async (id) => {
     console.log(error)
     throw new ApiError(error.message)
   }
-
 }
 
 const createTour = async (body) => {
   try {
-    console.log(body)
     const newTour = await apifeature(db.Tour, 'create', {
       ...body,
       promotional: body.promotional / 100,
@@ -140,11 +135,11 @@ const createTour = async (body) => {
 
 const updateTour = async (updateData) => {
   try {
-    const updatedTour = await apifeature(
-      db.Tour,
-      'update',
-      { ...updateData }
-    )
+    const updatedTour = await apifeature(db.Tour, 'update', {
+      ...updateData,
+      promotional: updateData.promotional / 100,
+      photos: updateData.photos?.join(',')
+    })
     return updatedTour
   } catch (error) {
     throw new ApiError(error.message)
