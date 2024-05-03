@@ -3,17 +3,29 @@ import ApiError from '~/utils/ApiError'
 
 const getBook = async (req, res, next) => {
   try {
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = req.query
+    const role = req.user.role
+    let books = []
+    if (role === 'customer') {
+      books = await bookService.getBook(req.query, role, req.user.id)
+    }
 
-    const books = await bookService.getBook(req.query)
+    if (role === 'manager') {
+      books = await bookService.getBook(req.query, role, req.user.id_manager)
+    }
+
+    if (role === 'staff') {
+      books = await bookService.getBook(req.query, role, req.user.id_staff)
+    }
+
+    if (role === 'admin') {
+      books = await bookService.getBook(req.query, role, null)
+    }
 
 
     // Trả về kết quả
     return res.status(200).json({
       statusCode: 200,
-      page: parseInt(page),
-      data: books.rows,
-      limit : parseInt(limit) == 1000 ? undefined : parseInt(limit)
+      data: books
     })
   } catch (error) {
     console.log(error)

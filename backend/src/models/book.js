@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_user',
         as: 'userData'
       })
+      Book.hasOne(models.Cancel,{
+        foreignKey: 'id_book',
+        as: 'cancelData'
+      })
     }
   }
   Book.init({

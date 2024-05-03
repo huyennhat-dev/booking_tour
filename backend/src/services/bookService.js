@@ -2,19 +2,19 @@ import db from '~/models'
 import { Op, where } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
+import book from '~/models/book'
 
-const getBook = async (query, role = '') => {
+const getBook = async (query, role = '', id_by_role) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', filters = {} } = query
+    const { sortBy = 'createdAt', sortOrder = 'desc' } = query
 
-    // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
-    const skip = (page - 1) * limit
 
     // Thực hiện truy vấn
-    const books = await db.Book.findAndCountAll({
+    const booksSucess = await db.Book.findAndCountAll({
       where: {
         isCheckout: true,
+        status: 'success'
       },
       include: [
         {
@@ -48,13 +48,79 @@ const getBook = async (query, role = '') => {
           as : 'userData'
         }
       ],
-      order: [[sortBy, sortOrder]],
-      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
-      offset: parseInt(skip)
+      order: [[sortBy, sortOrder]]
     })
 
+    const booksCancel = await db.Book.findAndCountAll({
+      where: {
+        isCheckout: true,
+        status: 'cancel'
+      },
+      include: [
+        {
+          model: db.Tour,
+          as : 'tourData',
+          include: [
+            {
+              model: db.Manager,
+              as : 'managerData',
+              include: [
+                {
+                  model: db.Account,
+                  as : 'accountData'
+                }
+              ]
+            },
+            {
+              model: db.Staff,
+              as : 'staffData',
+              include: [
+                {
+                  model: db.Account,
+                  as : 'accountData'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          model: db.User,
+          as : 'userData'
+        },
+        {
+          model: db.Cancel,
+          as : 'cancelData'
+        }
+      ],
+      order: [[sortBy, sortOrder]]
+    })
 
-    return books
+    if (role === 'customer') {
+      booksSucess.rows = booksSucess.rows.filter(book => book.id_user === id_by_role)
+      booksCancel.rows = booksCancel.rows.filter(book => book.id_user === id_by_role)
+    }
+
+    if (role === 'manager') {
+      booksSucess.rows = booksSucess.rows.filter(book => book.tourData.id_manager === id_by_role)
+      booksCancel.rows = booksCancel.rows.filter(book => book.tourData.id_manager === id_by_role)
+    }
+
+    if (role === 'staff') {
+      booksSucess.rows = booksSucess.rows.filter(book => book.tourData.id_staff === id_by_role)
+      booksCancel.rows = booksCancel.rows.filter(book => book.tourData.id_staff === id_by_role)
+    }
+
+    if (role === 'admin') {
+      return {
+        'bookSuccess': booksSucess.rows,
+        'bookCancel': booksCancel.rows
+      }
+    }
+
+    return {
+      'bookSuccess': booksSucess.rows,
+      'bookCancel': booksCancel.rows
+    }
   } catch (error) {
     console.log(error)
     throw new ApiError(error.message)
@@ -189,8 +255,7 @@ const deleteBook = async (id_booked_tour) => {
 }
 
 
-
-const cancelTour = async (idBook , infoCancel) => {
+const cancelTour = async (idBook, infoCancel) => {
   try {
     const book = await db.Book.findOne({
       where: {
@@ -198,7 +263,6 @@ const cancelTour = async (idBook , infoCancel) => {
         status: 'success'
       }
     })
-
 
 
     if (book) {
@@ -218,7 +282,7 @@ const cancelTour = async (idBook , infoCancel) => {
 
       return newBookCancel
     } else {
-      throw new ApiError(.404,'Không tìm thấy book')
+      throw new ApiError(.404, 'Không tìm thấy book')
     }
   } catch (error) {
     console.log(error)
@@ -226,7 +290,7 @@ const cancelTour = async (idBook , infoCancel) => {
   }
 }
 
-const refundTour = async (idCancel , res) => {
+const refundTour = async (idCancel, res) => {
   try {
     console.log(idCancel)
     const cancel = await db.Cancel.findOne({
@@ -234,7 +298,7 @@ const refundTour = async (idCancel , res) => {
         id: idCancel
       }
     })
-    if(cancel.is_refund) {
+    if (cancel.is_refund) {
       throw new ApiError('Đã hoàn tiền rồi')
     }
 

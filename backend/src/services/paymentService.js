@@ -155,8 +155,6 @@ const createURLPayment = async (req, idBook) => {
     let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest('hex')
     vnp_Params['vnp_SecureHash'] = signed
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false })
-
-
     return { vnpUrl }
   } catch (error) {
     console.log(error)
@@ -193,13 +191,19 @@ const vnpReturn = async (query) => {
           }
         })
 
-        return `http//${env.HOST}:${env.BACKEND_PORT}/${vnp_Params.vnp_TxnRef}`
+        return 'http://localhost:5173/payment?status=success'
       }
 
-      return `http://${env.HOST}:${env.BACKEND_PORT}/deletebook/${vnp_Params.vnp_TxnRef}`
+      await db.Book.detroy({
+        where: {
+          id: parseInt(vnp_Params.vnp_TxnRef.split('_')[0])
+        }
+      })
+
+      return 'http://localhost:5173/payment?status=failed'
 
     } else {
-      return `http://${env.HOST}:${env.BACKEND_PORT}/404`
+      return 'http://localhost:5173/payment?status=failed'
     }
   } catch (error) {
     console.log(error)
