@@ -8,6 +8,7 @@ import GrabSaleSection from "../components/Home/GrabSaleSection";
 import PopularThingsToDoSection from "../components/Home/PopularThingsToDoSection";
 import TopTrending from "../components/Home/TopTrending";
 import ArticlesSection from "../components/Home/ArticlesSection";
+import homeApi from "../apis/homeApi";
 
 const mockData = {
   statusCode: 200,
@@ -299,8 +300,16 @@ const Home = () => {
   const [data, setData] = useState({});
 
   const getData = () => {
-    //call api
-    setData(mockData.data);
+    // homeApi
+    //   .getHomeData()
+    //   .then((rs) => {
+    //     console.log(rs);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+
+    setData(mockData.data)
   };
 
   useEffect(() => {
@@ -311,10 +320,10 @@ const Home = () => {
     <>
       <Hero />
       <WhyChooseToursSection />
-      <TrendingDestinationsSection  />
-      <FindPopularTours data={data.popular}/>
+      <TrendingDestinationsSection />
+      <FindPopularTours data={data.popular} />
       <GrabSaleSection />
-      <TopTrending data={data.trend}/>
+      <TopTrending data={data.trend} />
       <PopularThingsToDoSection />
       <ArticlesSection />
     </>
