@@ -7,7 +7,7 @@ import { articles } from "../../constants/whychoosetours";
 const ArticlesSection = () => {
   return (
     <div
-      className={`py-16 ${styles.horizontalPadding} flex flex-col gap-y-12 relative`}
+      className={`py-4 md:py-16 ${styles.horizontalPadding} flex flex-col gap-y-12 relative`}
     >
       <div className="w-full flex items-center justify-between">
         <h2 className={`${styles.headingSize}`}>Blog du lịch</h2>

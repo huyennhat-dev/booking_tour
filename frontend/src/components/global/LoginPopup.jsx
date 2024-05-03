@@ -3,12 +3,84 @@ import { styles } from "../../styles/styles";
 import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { GoogleLogo } from "../../assets/export";
+import authApi from "../../apis/authApi";
+import { loginSuccess } from "../../redux/authSlice";
+import { useDispatch } from "react-redux";
+import Button from "./Button";
 
 const LoginPopup = () => {
+  const dispatch = useDispatch();
+
   const [showModal, setShowModal] = useState(false);
 
   const handleToggle = () => {
     setShowModal(!showModal);
+  };
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [errMsg, setErrMsg] = useState({
+  
+    email: {
+      value: false,
+      message: "",
+    },
+    password: {
+      value: false,
+      message: "",
+    },
+  });
+
+  const validation = () => {
+    let isValid = true;
+
+    if (!formData.email) {
+      setErrMsg((prev) => ({
+        ...prev,
+        email: { value: true, message: "Email không hợp lệ!" },
+      }));
+      isValid = false;
+    } else {
+      setErrMsg((prev) => ({
+        ...prev,
+        email: { value: false },
+      }));
+      isValid = true;
+    }
+
+    if (!formData.password) {
+      setErrMsg((prev) => ({
+        ...prev,
+        password: { value: true, message: "Mật khẩu không hợp lệ!" },
+      }));
+      isValid = false;
+    } else {
+      setErrMsg((prev) => ({
+        ...prev,
+        password: { value: false },
+      }));
+      isValid = true;
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = () => {
+    if (validation()) {
+      authApi
+        .login(formData)
+        .then((rs) => {
+          console.log(rs)
+          dispatch(loginSuccess({ token: rs.token }));
+          setShowModal(!showModal);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -34,31 +106,61 @@ const LoginPopup = () => {
               />
             </div>
             <div className="w-full">
-              <h3 className="text-2xl font-semibold">Chào mừng quay trởi lại!</h3>
+              <h3 className="text-2xl font-semibold">
+                Chào mừng quay trởi lại!
+              </h3>
             </div>
             <div className="w-full">
               <input
                 type="email"
-                className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    email: e.target.value,
+                  }))
+                }
+                className={`w-full p-3 rounded-xl border ${
+                  errMsg.email.value ? "border-red-600" : "border-slate-300"
+                } text-sm font-normal outline-none`}
                 placeholder="Nhập email của bạn"
               />
+              {errMsg.email.value && (
+                <p className="text-xs pl-2 mt-1 text-red-600">
+                  {errMsg.email.message}
+                </p>
+              )}
             </div>
             <div className="w-full">
               <input
                 type="password"
-                className="w-full p-3 rounded-xl border border-slate-300 text-sm font-normal outline-none"
-                placeholder="Nhập mật khẩu của bạn"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    password: e.target.value,
+                  }))
+                }
+                className={`w-full p-3 rounded-xl border ${
+                  errMsg.password.value ? "border-red-600" : "border-slate-300"
+                } text-sm font-normal outline-none`}
+                placeholder="Nhập mật khẩu"
               />
+              {errMsg.password.value && (
+                <p className="text-xs pl-2 mt-1 text-red-600">
+                  {errMsg.password.message}
+                </p>
+              )}
             </div>
             <div className="w-full py-0 text-right">
               <Link className="text-sm">Quên mật khẩu?</Link>
             </div>
             <div className="w-full py-0 my-0">
-              <button
-                className={`w-full py-3 text-white text-sm font-medium rounded-xl ${styles.bgOrange}`}
-              >
-                Đăng Nhập
-              </button>
+              <Button
+                title={"Đăng nhập"}
+                classes={`w-full py-3 text-white text-sm font-medium rounded-xl ${styles.bgOrange}`}
+                onclick={handleSubmit}
+              />
             </div>
             <div className="w-full flex items-center justify-center md:px-1">
               <div className="border w-full border-slate-200"></div>

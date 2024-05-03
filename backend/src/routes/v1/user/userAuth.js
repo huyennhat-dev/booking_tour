@@ -33,7 +33,7 @@ const loginFuc = async (req, res, next) => {
     const token = jwt.sign({
       id : user.dataValues.id,
       email : user.dataValues.email,
-      fullName : user.dataValues.username,
+      fullName : user.dataValues.fullName,
       avatar : user.dataValues.avatar,
       role : 'customer'
     }, 'mysecretkey')

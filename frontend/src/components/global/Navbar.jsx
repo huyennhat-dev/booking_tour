@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { styles } from "../../styles/styles";
 import { Logo } from "../../assets/export";
 import NavLink from "./NavLink";
@@ -9,9 +9,11 @@ import LoginPopup from "./LoginPopup";
 import SignUpPopup from "./SignUpPopup";
 import LogoComponent from "./Logo";
 import UserInfo from "./Info";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
-  const [logged] = useState(true);
+  const state = useSelector((state) => state.auth);
+  // const [logged, setLogged] = useState(!true);
   const [open, setOpen] = useState(false);
   const sidebarRef = useRef();
 
@@ -20,6 +22,10 @@ const Navbar = () => {
       setOpen(false);
     }
   };
+
+  // useEffect(() => {
+  //   console.log(state);
+  // }, [state]);
 
   return (
     <div
@@ -36,8 +42,8 @@ const Navbar = () => {
       >
         <NavLink path={"/"} title={"Trang Chủ"} />
         <NavLink path={"/contact"} title={"Liên Hệ"} />
-        {logged ? null : <SignUpPopup />}
-        {logged ? <UserInfo /> : <LoginPopup />}
+        {state.isLoggedIn ? null : <SignUpPopup />}
+        {state.isLoggedIn ? <UserInfo data={state.userInfo} /> : <LoginPopup />}
       </div>
       <div
         onClick={toggleSidebar}
