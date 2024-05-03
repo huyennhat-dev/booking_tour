@@ -73,7 +73,7 @@ const deleteBook = async (req, res, next) => {
 
 const cancelTour = async (req, res, next) => {
   try {
-    const idBook = req.params.idBook
+    const idBook = req.body.id_book
     const infoCancel = req.body
     const canceledTour = await bookService.cancelTour(idBook, infoCancel)
     return res.status(200).json({

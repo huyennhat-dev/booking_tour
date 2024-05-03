@@ -10,4 +10,8 @@ router.route('/')
   .delete(tokenValidation.authToken, checkRule(['admin']), userController.deleteUser)
   .put(tokenValidation.authToken, checkRule(['admin']), userController.updateUser)
 
+
+// router.route('/')
+//   .put(tokenValidation.authToken, checkRule(['customer']), userController.updateUserById)
+
 export const userRouter = router

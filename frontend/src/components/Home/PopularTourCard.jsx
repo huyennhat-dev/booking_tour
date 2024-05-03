@@ -2,17 +2,14 @@ import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import provinces from "../../_mock/province";
 import {
   calculateDateDifference,
   createSlug,
   formatCurrencyVND,
+  getProvinceName,
 } from "../../utils/index";
 const PopularTourCard = ({ tour }) => {
-  const getProvinceName = (slug) => {
-    const province = provinces.find((p) => p.slug === slug);
-    return province ? province.name : "Không tìm thấy tỉnh";
-  };
+
   return (
     <div className="relative border py-2 px-3 rounded-xl flex flex-col items-start gap-y-2 bg-white hover:shadow-xl transition-all duration-300">
       <Link

@@ -4,7 +4,7 @@ import ApiError from '~/utils/ApiError'
 
 const createURLpayment = async (req, res, next) => {
   try {
-    const idBook = req.params.idBook
+    const idBook = req.body.id_tour
     const { vnpUrl } = await paymentService.createURLPayment(req, idBook)
     return res.status(200).json({ statusCode: 200, vnpUrl: vnpUrl })
   } catch (error) {

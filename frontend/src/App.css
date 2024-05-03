@@ -2,3 +2,21 @@
   background-color: #ea713e;
 } */
 
+.react-tabs__tab-list{
+  border-bottom: 1px solid #ea713e;
+}
+
+
+.react-tabs__tab--selected{
+  background: #fff;
+  border-width: 1px;
+  border-color: #ea713e;
+  color: #ea713e;
+  border-radius: 5px 5px 0 0;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; /* Optional */
+}

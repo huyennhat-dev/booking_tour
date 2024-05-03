@@ -5,7 +5,7 @@ import tokenValidation from '~/middlewares/jwtMiddleware'
 const router = express.Router()
 
 router.route('/').get(tokenValidation.authToken, bookController.getBook)
-router.route('/cancel-tour/:idBook').put(bookController.cancelTour)
+router.route('/cancel-tour').put(bookController.cancelTour)
 router.route('/refund/:idCancel').put(bookController.refundTour)
 
 export const bookRouter = router

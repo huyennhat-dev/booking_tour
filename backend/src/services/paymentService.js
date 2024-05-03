@@ -4,6 +4,7 @@ import ApiError from '~/utils/ApiError'
 import env from '~/config/environment'
 import db from '~/models'
 import moment from 'moment'
+import book from '~/models/book'
 
 const sortObject = (obj) => {
   let sorted = {}
@@ -106,7 +107,16 @@ const createURLPayment = async (req, idBook) => {
       day_booking : new Date().getTime()
     }
 
-    console.log(`${data.day_booking}_${data.id_tour}_${data.id_user}_${data.member}_${data.total_price}_${JSON.stringify(data.booking_info)}`)
+    // create book
+    const book = await db.Book.create({
+      day_booking: new Date(parseInt(data.day_booking)),
+      id_tour: parseInt(data.id_tour),
+      id_user: parseInt(data.id_user),
+      member: parseInt(data.member),
+      total_price: parseInt(data.total_price),
+      booking_info: JSON.stringify(data.booking_info),
+      isCheckout: false
+    })
 
 
     process.env.TZ = 'Asia/Ho_Chi_Minh'
@@ -131,7 +141,7 @@ const createURLPayment = async (req, idBook) => {
     vnp_Params['vnp_TmnCode'] = tmnCode
     vnp_Params['vnp_Locale'] = locale
     vnp_Params['vnp_CurrCode'] = currCode
-    vnp_Params['vnp_TxnRef'] = `${data.day_booking}_${data.id_tour}_${data.id_user}_${data.member}_${data.total_price}_${JSON.stringify(data.booking_info)}`
+    vnp_Params['vnp_TxnRef'] = `${book.id}-${orderId}`
     vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + orderId
     vnp_Params['vnp_OrderType'] = 'other'
     vnp_Params['vnp_Amount'] = amount * 100
@@ -171,37 +181,16 @@ const vnpReturn = async (query) => {
     let hmac = crypto.createHmac('sha512', secretKey)
     let signed = hmac.update(new Buffer.from(signData, 'utf-8')).digest('hex')
 
-    console.log('--------------------------------------------------------')
-    console.log('secureHash', secureHash)
-    console.log('dataPass', vnp_Params.vnp_TxnRef.split('_'))
-    console.log('day_booking', new Date(parseInt(vnp_Params.vnp_TxnRef.split('_')[0])))
-    console.log('id_tour', vnp_Params.vnp_TxnRef.split('_')[1])
-    console.log('id_user', vnp_Params.vnp_TxnRef.split('_')[2])
-    console.log('member', vnp_Params.vnp_TxnRef.split('_')[3])
-    console.log('total_price', vnp_Params.vnp_TxnRef.split('_')[4])
-    console.log('info', JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' ')))
-    console.log('--------------------------------------------------------')
-    console.log({
-      day_booking: new Date(parseInt(vnp_Params.vnp_TxnRef.split('_')[0])),
-      id_tour: parseInt(vnp_Params.vnp_TxnRef.split('_')[1]),
-      id_user: parseInt(vnp_Params.vnp_TxnRef.split('_')[2]),
-      member: parseInt(vnp_Params.vnp_TxnRef.split('_')[3]),
-      total_price: parseInt(vnp_Params.vnp_TxnRef.split('_')[4]),
-      booking_info: JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' '))
-    })
-    console.log('--------------------------------------------------------')
-
 
     if (secureHash === signed) {
       const rsCode = vnp_Params['vnp_ResponseCode']
       if (rsCode == '00') {
-        await db.Book.create({
-          day_booking: new Date(parseInt(vnp_Params.vnp_TxnRef.split('_')[0])),
-          id_tour: parseInt(vnp_Params.vnp_TxnRef.split('_')[1]),
-          id_user: parseInt(vnp_Params.vnp_TxnRef.split('_')[2]),
-          member: parseInt(vnp_Params.vnp_TxnRef.split('_')[3]),
-          total_price: parseInt(vnp_Params.vnp_TxnRef.split('_')[4]),
-          booking_info: JSON.stringify(JSON.parse(decodeURIComponent(vnp_Params.vnp_TxnRef.split('_')[5]).replace(/\+/g, ' ')))
+        await db.Book.update({
+          isCheckout: true
+        }, {
+          where: {
+            id: parseInt(vnp_Params.vnp_TxnRef.split('_')[0])
+          }
         })
 
         return `http//${env.HOST}:${env.BACKEND_PORT}/${vnp_Params.vnp_TxnRef}`

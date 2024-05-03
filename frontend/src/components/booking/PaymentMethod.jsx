@@ -1,7 +1,7 @@
 import { styles } from "../../styles/styles";
 import Button from "../global/Button";
 
-const PaymentMethodComponent = () => {
+const PaymentMethodComponent = ({ handleCheckout }) => {
   const method = [
     {
       title: "Thanh toán bằng VNPAY",
@@ -35,7 +35,7 @@ const PaymentMethodComponent = () => {
           <div className="col-span-1 text-end">
             <Button
               title="Đặt Ngay"
-              onclick={()=>{}}
+              onclick={handleCheckout}
               classes={`${styles.bgOrange} w-[200px] py-2 text-base font-medium py-2  text-white rounded-xl`}
             />
           </div>

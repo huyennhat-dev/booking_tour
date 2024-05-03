@@ -16,8 +16,9 @@ export const tourlist = [
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
     price: 344,
     rating: 5,
- 
- ratingQuantity:300,   duration: "2 Days 1 Night",
+
+    ratingQuantity: 300,
+    duration: "2 Days 1 Night",
   },
   {
     image: TourImag2,
@@ -27,7 +28,7 @@ export const tourlist = [
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
     price: 294,
     rating: 4.9,
-    ratingQuantity:300,
+    ratingQuantity: 300,
     duration: "2 Days 1 Night",
   },
   {
@@ -37,9 +38,10 @@ export const tourlist = [
       "Phi Phi Islands Adventure Day Trip with Seaview Lunch by V. Marine Tour",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
     price: 124,
-    rating:4.1,
+    rating: 4.1,
 
-ratingQuantity:300,    duration: "2 Days 1 Night",
+    ratingQuantity: 300,
+    duration: "2 Days 1 Night",
   },
   {
     image: TourImag4,
@@ -49,7 +51,7 @@ ratingQuantity:300,    duration: "2 Days 1 Night",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
     price: 140,
     rating: 4.7,
-    ratingQuantity:300,
+    ratingQuantity: 300,
     duration: "2 Days 1 Night",
   },
   {
@@ -60,7 +62,7 @@ ratingQuantity:300,    duration: "2 Days 1 Night",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
     price: 184,
     rating: 4.8,
-    ratingQuantity:300,
+    ratingQuantity: 300,
     duration: "2 Days 1 Night",
   },
   {
@@ -71,7 +73,8 @@ ratingQuantity:300,    duration: "2 Days 1 Night",
     desc: "The Phi Phi archipelago is a must-visit while in Phuket, and this speedboat trip.",
     price: 143,
     rating: 5,
- 
- ratingQuantity:300,   duration: "2 Days 1 Night",
+
+    ratingQuantity: 300,
+    duration: "2 Days 1 Night",
   },
 ];

@@ -10,7 +10,11 @@
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
-  color: #05073c;
+  color: #1b1c23;
+}
+p{
+  margin-top: 3px;
+  margin-bottom: 3px;
 }
 
 .loader-wrapper {

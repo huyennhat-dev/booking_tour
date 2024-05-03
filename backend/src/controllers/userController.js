@@ -73,6 +73,8 @@ const deleteUser = async (req, res, next) => {
   }
 }
 
+const updateUserById = async (req, res, next) => {}
+
 const userController = {
   getUser,
   createUser,
