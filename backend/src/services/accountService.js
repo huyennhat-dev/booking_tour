@@ -79,7 +79,7 @@ const createAccount = async (body) => {
       throw new ApiError(404, 'Email đã tồn tại trong hệ thống')
     }
 
-    const strongPassword = generateStrongPassword()
+    const strongPassword = 'H123dg#cbhdo@'
 
     // create account account
     const hashedPassword = await bcrypt.hash(strongPassword, 10)

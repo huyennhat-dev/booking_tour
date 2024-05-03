@@ -25,7 +25,7 @@ const getTour = async (req, res, next) => {
 
     else if (req.user.role === 'manager') {
       req.query.filters = {}
-      req.query.filters.id_manager = req.user.id
+      req.query.filters.id_manager = req.user.id_manager
       tours = await tourService.getTour(req.query)
     }
 
