@@ -27,7 +27,7 @@ const TourListCard = ({ tour }) => {
         className="mx-auto md:mx-0 rounded"
       />
       <div className="md:px-2 flex flex-col col-span-2 justify-center items-start gap-1">
-        <p className="text-sm font-normal flex items-center justify-between w-full">
+        <div className="text-sm font-normal flex items-center justify-between w-full">
           <div className="flex items-center">
             <CiLocationOn className="mr-1" />
             {getProvinceName(tour?.destination)}
@@ -43,7 +43,7 @@ const TourListCard = ({ tour }) => {
               1}{" "}
             Đêm
           </p>
-        </p>
+        </div>
         <Link to={`/tours/${createSlug(tour?.tour_name)}?id=${tour.id}`}>
           <p className="text-base line-clamp-2 overflow-visible font-semibold hover:text-[color:#EB662B] cursor-pointer duration-100 ease-in-out">
             {tour?.tour_name}
@@ -64,17 +64,17 @@ const TourListCard = ({ tour }) => {
         <div className="w-full ">
           {tour?.insurance && (
             <p className={`text-xs flex items-center`}>
-              <GiCheckMark fill="green" className="mr-2" /> Bảo hiểm chuyến đi
+              <GiCheckMark fill="#EB662B" className="mr-2" /> Bảo hiểm chuyến đi
             </p>
           )}
           {tour?.meal && (
             <p className={`text-xs flex items-center`}>
-              <GiCheckMark fill="green" className="mr-2" />
+              <GiCheckMark fill="#EB662B" className="mr-2" />
               Ăn uống trọn gói
             </p>
           )}
           <p className={`text-xs flex items-center`}>
-            <GiCheckMark fill="green" className="mr-2" />
+            <GiCheckMark fill="#EB662B" className="mr-2" />
             Hướng dẫn viên nhiệt tình
           </p>
         </div>
@@ -85,7 +85,7 @@ const TourListCard = ({ tour }) => {
       </div>
       <div className="md:ps-3 flex flex-col justify-center py-3 items-center gap-2 md:border-l">
         {tour?.promotional > 0 && (
-          <p className="text-xs font-medium flex items-center justify-between w-full px-4">
+          <div className="text-xs font-medium flex items-center justify-between w-full px-4">
             <div className="flex items-center">
               <span>Giá gốc: </span>
               <strong
@@ -102,7 +102,7 @@ const TourListCard = ({ tour }) => {
                 {tour?.promotional * 100}%
               </strong>
             </div>
-          </p>
+          </div>
         )}
         <p className="text-sm font-medium flex items-center">
           <span>{tour?.promotional > 0 ? "Chỉ còn" : "Chỉ với"}</span>

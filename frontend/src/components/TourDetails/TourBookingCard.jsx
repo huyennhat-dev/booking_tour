@@ -2,21 +2,19 @@ import React from "react";
 import Button from "../global/Button";
 import { styles } from "../../styles/styles";
 import { GiCheckMark } from "react-icons/gi";
-import { useNavigate } from "react-router-dom";
 const TourBookingCard = ({
   tourGuide,
   meal,
   insurance,
   price,
   promotional,
+  departure_day,
+  end_tour_day,
+  handleBooking
 }) => {
-  const navigate = useNavigate();
 
-  const handleNavigate = () => {
-    navigate(`/booking/1`);
-  };
   return (
-    <div className="col-span-4 md:col-span-4 box_shadow rounded-xl flex flex-col gap-2 px-4 md:p-6 py-4 mt-8 md:mt-0">
+    <div className="col-span-4 md:col-span-4 box_shadow rounded-xl flex flex-col gap-2 px-4 md:p-6 py-4 mt-8 md:mt-0 h-[410px]">
       <p className="text-base">
         Giá gốc:
         <span className="ml-2 font-medium line-through text-gray-600 italic">
@@ -43,7 +41,7 @@ const TourBookingCard = ({
               <div className="flex items-center gap-2">
                 <GiCheckMark fill="#EB662B" />
                 <label htmlFor="" className="text-sm">
-                  Có hướng dẫn viên
+                  Hướng dẫn viên nhiệt tình
                 </label>
               </div>
             </div>
@@ -53,7 +51,7 @@ const TourBookingCard = ({
               <div className="flex items-center gap-2">
                 <GiCheckMark fill="#EB662B" />
                 <label htmlFor="" className="text-sm">
-                  Có ăn theo bữa
+                  Ăn uống trọn gói
                 </label>
               </div>
             </div>
@@ -63,7 +61,7 @@ const TourBookingCard = ({
               <div className="flex items-center gap-2">
                 <GiCheckMark fill="#EB662B" />
                 <label htmlFor="" className="text-sm">
-                  Được trang bị bảo hiểm đầy đủ
+                  Bảo hiểm chuyến đi
                 </label>
               </div>
             </div>
@@ -72,29 +70,21 @@ const TourBookingCard = ({
       ) : null}
 
       <div className="flex items-center justify-between">
-        <p className="text-sm">Chọn ngày khởi hành: </p>
-        <div className="flex items-center gap-2 md:gap-4">
-          <input
-            type="date"
-            className="h-full w-full text-sm px-3 text-slate-700 outline-none py-2 border-b-[1px] border-b-[color:#EB662B]"
-          />
+        <p className="text-sm">Ngày khởi hành: </p>
+        <div className="text-sm flex items-center gap-2 md:gap-4">
+          <p className="text-sm">{departure_day}</p>
         </div>
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-sm">Số hành khách: </p>
-        <div className="flex items-center gap-2 md:gap-4">
-          <input
-            type="number"
-            min={1}
-            max={15}
-            className="h-full w-full text-sm px-3 border-[1px] border-[color:#EB662B] rounded-md text-slate-700 outline-none py-2 text-center"
-          />
+        <p className="text-sm">Ngày kết thúc: </p>
+        <div className="text-sm flex items-center gap-2 md:gap-4">
+          <p className="text-sm">{end_tour_day}</p>
         </div>
       </div>
-    
+
       <Button
         title="Đặt Ngay"
-        onclick={handleNavigate}
+        onclick={handleBooking}
         classes={`${styles.bgOrange} w-full py-2 text-base font-medium py-3 my-3 text-white rounded-xl`}
       />
     </div>

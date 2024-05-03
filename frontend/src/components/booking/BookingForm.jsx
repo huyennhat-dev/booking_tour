@@ -1,4 +1,23 @@
-const BookingForm = (params) => {
+import { useEffect, useState } from "react";
+
+const BookingForm = ({ formData, setFormData }) => {
+  const [address, setAddress] = useState({
+    province: "",
+    district: "",
+    ward: "",
+    address: "",
+  });
+
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      booking_info: {
+        ...prev.booking_info,
+        address: `${address.address} - ${address.ward} - ${address.district} - ${address.province}`,
+      },
+    }));
+  }, [address]);
+
   return (
     <div className="col-span-8 md:col-span-8 box_shadow rounded-xl flex flex-col gap-2 px-4 md:p-6 py-4 mt-8 md:mt-0">
       <h3 className="text-[24px] font-semibold">
@@ -11,6 +30,16 @@ const BookingForm = (params) => {
             Họ và tên:
           </label>
           <input
+            value={formData.name}
+            onChange={(e) => {
+              setFormData((prev) => ({
+                ...prev,
+                booking_info: {
+                  ...prev.booking_info,
+                  name: e.target.value,
+                },
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="text"
             name="name"
@@ -22,6 +51,16 @@ const BookingForm = (params) => {
             Email:
           </label>
           <input
+            value={formData.email}
+            onChange={(e) => {
+              setFormData((prev) => ({
+                ...prev,
+                booking_info: {
+                  ...prev.booking_info,
+                  email: e.target.value,
+                },
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="email"
             name="email"
@@ -33,6 +72,16 @@ const BookingForm = (params) => {
             Số điện thoại:
           </label>
           <input
+            value={formData.phone_number}
+            onChange={(e) => {
+              setFormData((prev) => ({
+                ...prev,
+                booking_info: {
+                  ...prev.booking_info,
+                  phone_number: e.target.value,
+                },
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="text"
             name="phone-number"
@@ -44,6 +93,13 @@ const BookingForm = (params) => {
             Tỉnh/ Thành phố:
           </label>
           <input
+            value={address.province}
+            onChange={(e) => {
+              setAddress((prev) => ({
+                ...prev,
+                province: e.target.value,
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="text"
             name="province"
@@ -55,6 +111,13 @@ const BookingForm = (params) => {
             Quận/ Huyện:
           </label>
           <input
+            value={address.district}
+            onChange={(e) => {
+              setAddress((prev) => ({
+                ...prev,
+                district: e.target.value,
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="text"
             name="district"
@@ -66,6 +129,13 @@ const BookingForm = (params) => {
             Phường/ Xã:
           </label>
           <input
+            value={address.ward}
+            onChange={(e) => {
+              setAddress((prev) => ({
+                ...prev,
+                ward: e.target.value,
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="text"
             name="ward"
@@ -77,6 +147,13 @@ const BookingForm = (params) => {
             Địa chỉ chi tiết
           </label>
           <input
+            value={address.address}
+            onChange={(e) => {
+              setAddress((prev) => ({
+                ...prev,
+                address: e.target.value,
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             type="text"
             name="address"
@@ -89,6 +166,16 @@ const BookingForm = (params) => {
             Lời nhắn:
           </label>
           <textarea
+            value={formData.message}
+            onChange={(e) => {
+              setFormData((prev) => ({
+                ...prev,
+                booking_info: {
+                  ...prev.booking_info,
+                  message: e.target.value,
+                },
+              }));
+            }}
             className="w-full outline-none px-2 py-2 border-[1px] border-gray-300 rounded"
             name="message"
             id="bookingMessage"
