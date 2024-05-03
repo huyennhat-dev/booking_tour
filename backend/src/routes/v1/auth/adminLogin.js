@@ -3,6 +3,7 @@ import db from '~/models'
 import ApiError from '~/utils/ApiError'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import env from '~/config/environment'
 
 
 const router = express.Router()
@@ -54,7 +55,7 @@ const loginFuc = async (req, res, next) => {
       role : user.dataValues.role,
       id_staff : user.dataValues.staffData?.id,
       id_manager : user.dataValues.managerData?.id
-    }, 'mysecretkey')
+    }, env.JWT_SECRETKEY)
 
     return res.status(200).json({
       statusCode : 200,

@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import env from '~/config/environment'
 
 const authToken = (req, res, next) => {
   const token = req.headers.authorization
@@ -10,7 +11,7 @@ const authToken = (req, res, next) => {
     })
 
   try {
-    const decoded = jwt.verify(token, 'mysecretkey')
+    const decoded = jwt.verify(token, env.JWT_SECRETKEY)
     console.log(decoded)
     req.user = decoded
   } catch (err) {

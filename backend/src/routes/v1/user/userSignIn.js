@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs'
 import apifeature from '~/helpers/apifeature'
 import jwt from 'jsonwebtoken'
 import randomCatAvatar from '../../../utils/randomCatAvatar'
+import env from '~/config/environment'
 
 const router = express.Router()
 
@@ -35,7 +36,7 @@ const signInFuc = async (req, res, next) => {
         avatar: user.dataValues.avatar,
         role: 'customer'
       },
-      'mysecretkey'
+      env.JWT_SECRETKEY
     )
 
     return res.status(200).json({

@@ -13,6 +13,9 @@ const getBook = async (query, role = '') => {
 
     // Thực hiện truy vấn
     const books = await db.Book.findAndCountAll({
+      where: {
+        isCheckout: true,
+      },
       include: [
         {
           model: db.Tour,
@@ -185,13 +188,18 @@ const deleteBook = async (id_booked_tour) => {
   }
 }
 
+
+
 const cancelTour = async (idBook , infoCancel) => {
   try {
     const book = await db.Book.findOne({
       where: {
-        id: idBook
+        id: idBook,
+        status: 'success'
       }
     })
+
+
 
     if (book) {
       await db.Book.update({
@@ -210,7 +218,7 @@ const cancelTour = async (idBook , infoCancel) => {
 
       return newBookCancel
     } else {
-      throw new ApiError('Không tìm thấy book')
+      throw new ApiError(.404,'Không tìm thấy book')
     }
   } catch (error) {
     console.log(error)

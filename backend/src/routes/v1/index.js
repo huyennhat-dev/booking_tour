@@ -29,6 +29,7 @@ router.use('/auth/login', adminLogin)
 // user url
 router.use('/login', userLogin)
 router.use('/sign_in', userSignIn)
+// router.use('/user', userRouter)
 router.use('/payment', paymentRouter)
 router.use('/tour', homeRouter)
 
