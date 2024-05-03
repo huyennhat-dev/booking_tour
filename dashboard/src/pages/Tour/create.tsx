@@ -66,7 +66,7 @@ const CreateTour = () => {
     useEffect(() => {
         setFormData((prev) => ({
             ...prev,
-            id_manager: parseInt(userInfo?.id!),
+            id_manager: userInfo?.id_manager!,
             id_staff: parseInt(staff[0]?.slug),
         }));
     }, [userInfo, staff]);

@@ -8,6 +8,7 @@ export type UserInfo = {
   username: string;
   role: string;
   email: string;
+  id_manager:number;
   phoneNumber: string;
 };
 
