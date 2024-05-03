@@ -24,7 +24,6 @@ const getTourSearch = async (req, res, next) => {
 
     if (departure_day) {
       let searchDate = moment(departure_day, 'YYYY-MM-DD').toDate()
-      searchDate = moment(searchDate).subtract(1, 'days').toDate()
       const searchDateLimit = moment(searchDate).add(10, 'days').toDate()
       console.log(searchDate)
       console.log(searchDateLimit)
