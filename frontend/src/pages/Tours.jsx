@@ -1,16 +1,46 @@
-import React from "react";
-import CommonHeader from "../components/global/CommonHeader";
+import React, { useEffect, useState } from "react";
+
 import { styles } from "../styles/styles";
 import List from "../components/Tours/List";
+import { useSearchParams } from "react-router-dom";
+import homeApi from "../apis/homeApi";
+
+import { getProvinceName } from "../utils/index";
 
 const Tours = () => {
+  const params = useSearchParams();
+  const [data, setData] = useState({});
+
+  let param = {};
+  if (params[0].get("keyword")) param.keyword = params[0].get("keyword");
+  if (params[0].get("destination"))
+    param.destination = params[0].get("destination");
+  if (params[0].get("departure_day"))
+    param.departure_day = params[0].get("departure_day");
+
+  useEffect(() => {
+    homeApi
+      .getSearchData(param)
+      .then((rs) => {
+        setData(rs);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const parts = params[0].get("departure_day").split("-");
+
   return (
     <div className="flex flex-col gap-y-10">
       <div className={`w-full overflow-hidden ${styles.horizontalPadding}`}>
         <div className="w-full flex items-center justify-center mt-4">
-          <h2 className={`${styles.headingSize}`}>Đà Nẵng, Ngày 6/9/2024</h2>
+          <h2 className={`${styles.headingSize}`}>
+            {getProvinceName(params[0].get("destination"))}, Ngày {parts[2]}/
+            {parts[1]}/{parts[0]}
+          </h2>
         </div>
-        <List />
+        <List rs={data} />
       </div>
     </div>
   );

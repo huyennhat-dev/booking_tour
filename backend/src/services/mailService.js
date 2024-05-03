@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer')
 const transporter = nodemailer.createTransport({
   host: 'live.smtp.mailtrap.io',
   port: 587,
-  secure: false, // Use `true` for port 465, `false` for all other ports
+  secure: false,
   auth: {
     user: 'api',
     pass: '55a6171208fec0db6dfdfc92a8bb6971'

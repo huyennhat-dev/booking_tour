@@ -1,3 +1,6 @@
+import provinces from "../_mock/province";
+
+
 const formatCurrencyVND = (amount, currencySymbol = "vnđ") => {
   return amount.toLocaleString("vi-VN", {
     style: "currency",
@@ -46,4 +49,9 @@ const createSlug = (str) => {
   return str;
 };
 
-export { formatCurrencyVND, calculateDateDifference, createSlug };
+const getProvinceName = (slug) => {
+  const province = provinces.find((p) => p.slug === slug);
+  return province ? province.name : "Không tìm thấy tỉnh";
+};
+
+export { formatCurrencyVND, calculateDateDifference, createSlug ,getProvinceName};

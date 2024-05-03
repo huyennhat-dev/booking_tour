@@ -5,11 +5,11 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import env from '~/config/environment'
 
-
 const router = express.Router()
 
 const loginFuc = async (req, res, next) => {
   const { email, password } = req.body
+
 
   if (!email || !password) {
     return next(new ApiError(404, 'Email and password are required.'))
@@ -17,24 +17,21 @@ const loginFuc = async (req, res, next) => {
 
   try {
     // Tìm người dùng dựa trên email
-    const user = await db.Account.findOne(
-      { 
-        where: { email },
-        include: [
-          {
-            model : db.Staff,
-            as : 'staffData',
-            attributes : { exclude : ['createdAt', 'updatedAt'] }
-          },
-          {
-            model : db.Manager,
-            as : 'managerData',
-            attributes : { exclude : ['createdAt', 'updatedAt'] }
-          }
-        ]  
-      }
-    )
-    console.log(user)
+    const user = await db.Account.findOne({
+      where: { email },
+      include: [
+        {
+          model: db.Staff,
+          as: 'staffData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] }
+        },
+        {
+          model: db.Manager,
+          as: 'managerData',
+          attributes: { exclude: ['createdAt', 'updatedAt'] }
+        }
+      ]
+    })
 
     // Nếu không tìm thấy người dùng
     if (!user) {
@@ -42,6 +39,8 @@ const loginFuc = async (req, res, next) => {
     }
 
     const match = await bcrypt.compare(password, user.dataValues.password)
+
+    console.log(match)
 
     if (!match) {
       return next(new ApiError(403, 'Unauthorized'))
@@ -58,23 +57,22 @@ const loginFuc = async (req, res, next) => {
     }, env.JWT_SECRETKEY)
 
     return res.status(200).json({
-      statusCode : 200,
-      token : token,
-      data : {
+      statusCode: 200,
+      token: token,
+      data: {
         id: user.id,
         email: user.email,
         username: user.username,
         phoneNumber: user.phone_number,
-        role : user.dataValues.role,
-        id_staff : user.dataValues.staffData?.id,
-        id_manager : user.dataValues.managerData?.id
+        role: user.dataValues.role,
+        id_staff: user.dataValues.staffData?.id,
+        id_manager: user.dataValues.managerData?.id
       }
     })
   } catch (error) {
     return next(new ApiError(403, 'Unauthorized'))
   }
 }
-
 
 router.route('/').post(loginFuc)
 
