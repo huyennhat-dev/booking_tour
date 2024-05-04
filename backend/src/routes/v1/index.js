@@ -11,6 +11,7 @@ import { uploadRouter } from './auth/upload'
 import { bookRouter } from './auth/book'
 import { paymentRouter } from './user/payment'
 import { homeRouter } from './user/home'
+import { crawlRouter } from './crawl'
 
 const router = express.Router()
 
@@ -32,6 +33,7 @@ router.use('/sign_in', userSignIn)
 // router.use('/user', userRouter)
 router.use('/payment', paymentRouter)
 router.use('/tour', homeRouter)
+router.use('/crawl', crawlRouter)
 
 
 export const API_V1 = router
