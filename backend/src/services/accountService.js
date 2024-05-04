@@ -9,7 +9,14 @@ const getAccount = async (query) => {
   try {
     // Đọc các tham số từ query string
     //http://localhost:8000/api/v1/user?filters[role]=admin&search=thanh&sortBy=createdAt&sortOrder=desc&page=1&limit=10
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = query
+    const {
+      page = 1,
+      limit = 1000,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      search = '',
+      filters = {}
+    } = query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
@@ -18,9 +25,7 @@ const getAccount = async (query) => {
     let whereClause = {}
     if (search) {
       whereClause = {
-        [Op.or]: [
-          { email: { [Op.like]: `%${search}%` } }
-        ]
+        [Op.or]: [{ email: { [Op.like]: `%${search}%` } }]
       }
     }
 
@@ -53,12 +58,11 @@ const getAccount = async (query) => {
       offset: parseInt(skip)
     })
 
-
     return {
-      accounts : accounts.rows,
-      total : accounts.count,
-      limit : parseInt(limit) == 1000 ? undefined : parseInt(limit),
-      page : parseInt(page)
+      accounts: accounts.rows,
+      total: accounts.count,
+      limit: parseInt(limit) == 1000 ? undefined : parseInt(limit),
+      page: parseInt(page)
     }
   } catch (error) {
     throw new ApiError(error.message)
@@ -67,40 +71,46 @@ const getAccount = async (query) => {
 
 const createAccount = async (body) => {
   try {
-    const { email, username, role, phoneNumber, birthday = '', address = '' } = body
+    const {
+      email,
+      username,
+      role,
+      phoneNumber,
+      birthday = '',
+      address = ''
+    } = body
     // check account account
     const checkAccount = await db.Account.findOne({
       where: { email }
     }) // tìm kiếm email trong bảng account
 
-
     if (checkAccount) {
-      console.log(checkAccount)
       throw new ApiError(404, 'Email đã tồn tại trong hệ thống')
     }
 
-    const strongPassword = 'H123dg#cbhdo@'
+    const strongPassword = generateStrongPassword()
+    console.log(strongPassword)
 
     // create account account
     const hashedPassword = await bcrypt.hash(strongPassword, 10)
 
     const account = await db.Account.create({
       email,
-      password : hashedPassword,
+      password: hashedPassword,
       role,
       username,
       phoneNumber
     })
     let account_info
 
-    if (role=='staff') {
+    if (role == 'staff') {
       account_info = await db.Staff.create({
         id_account: account.dataValues.id,
         birthday,
         address
       })
     }
-    if (role=='manager') {
+    if (role == 'manager') {
       account_info = await db.Manager.create({
         id_account: account.dataValues.id,
         birthday,
@@ -123,12 +133,17 @@ const createAccount = async (body) => {
 
 const createStaff = async (body) => {
   try {
-    const { email, username, phoneNumber = '', birthday = '', address = '' } = body
+    const {
+      email,
+      username,
+      phoneNumber = '',
+      birthday = '',
+      address = ''
+    } = body
     // check staff account
     const checkStaffAccount = await db.Account.findOne({
       where: { email }
     }) // tìm kiếm email trong bảng staff
-
 
     if (checkStaffAccount) {
       console.log(checkStaffAccount)
@@ -139,8 +154,8 @@ const createStaff = async (body) => {
     const hashedPassword = await bcrypt.hash('123123123', 10)
     const staffAccout = await db.Account.create({
       email,
-      password : hashedPassword,
-      role : 'staff',
+      password: hashedPassword,
+      role: 'staff',
       username,
       phoneNumber
     })
@@ -171,7 +186,6 @@ const createManager = async (body) => {
       where: { email }
     }) // tìm kiếm email trong bảng manager
 
-
     if (checkManagerAccount) {
       throw new ApiError(404, 'Email đã tồn tại trong hệ thống')
     }
@@ -180,15 +194,15 @@ const createManager = async (body) => {
     const hashedPassword = await bcrypt.hash('123123123', 10)
     const managerAccount = await db.Account.create({
       email,
-      password : hashedPassword,
-      role : 'manager',
+      password: hashedPassword,
+      role: 'manager',
       username,
       phoneNumber
     })
 
     const manager = await db.Manager.create({
       id_account: managerAccount.dataValues.id,
-      birthday : '',
+      birthday: '',
       company_name
     })
 
@@ -207,6 +221,5 @@ const accountService = {
   createManager,
   createAccount
 }
-
 
 export default accountService

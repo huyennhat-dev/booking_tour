@@ -1,10 +1,10 @@
-export default function generateStrongPassword(length = 12) {
+export default function generateStrongPassword(length = 8) {
   const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz'
   const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   const numericChars = '0123456789'
-  const specialChars = '!@#$%^&*()-_+=[]{}|;:,.<>?'
+ 
 
-  const allChars = lowercaseChars + uppercaseChars + numericChars + specialChars
+  const allChars = lowercaseChars + uppercaseChars + numericChars 
 
   let password = ''
 
@@ -12,7 +12,6 @@ export default function generateStrongPassword(length = 12) {
   password += lowercaseChars[Math.floor(Math.random() * lowercaseChars.length)]
   password += uppercaseChars[Math.floor(Math.random() * uppercaseChars.length)]
   password += numericChars[Math.floor(Math.random() * numericChars.length)]
-  password += specialChars[Math.floor(Math.random() * specialChars.length)]
 
   // Đảm bảo mật khẩu có độ dài mong muốn bằng cách thêm các ký tự ngẫu nhiên
   for (let i = 0; i < length - 4; i++) {
