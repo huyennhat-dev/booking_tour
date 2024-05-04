@@ -168,6 +168,14 @@ function randomDecimalInRange(min, max, decimalPlaces) {
   return random.toFixed(decimalPlaces)
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]]
+  }
+  return array
+}
+
 const crwalFunc = async (req, res, next) => {
   try {
     const { url } = req.body
@@ -198,18 +206,14 @@ const crwalFunc = async (req, res, next) => {
             .replace(/\D/g, '') || 10000,
           10
         )
-        const promotional = parseFloat(randomDecimalInRange(0, 0.3,2))
+        const promotional = parseFloat(randomDecimalInRange(0, 0.3, 2))
 
         const destination =
           provinces[randomInRange(0, provinces.length - 1)].slug
 
         const vehicle = vehicles[randomInRange(0, vehicles.length - 1)].slug
 
-        const photos = [
-          imgs[randomInRange(0, imgs.length - 1)],
-          imgs[randomInRange(0, imgs.length - 1)],
-          imgs[randomInRange(0, imgs.length - 1)]
-        ]
+        const photos = shuffleArray(imgs).slice(0, randomInRange(3, 5))
 
         const highlight = $$('.main-page.detail-page .o2 span').html().trim()
         const introduce = $$(
