@@ -10,4 +10,5 @@ router.route('/')
   .delete(tokenValidation.authToken, checkRule(['manager', 'admin']), staffController.deleteStaff)
   .put(tokenValidation.authToken, checkRule(['manager', 'admin']), staffController.updateStaff)
 
+router.route('/tour-booking').get(tokenValidation.authToken, checkRule(['staff']), staffController.getTourBooking)
 export const staffRouter = router

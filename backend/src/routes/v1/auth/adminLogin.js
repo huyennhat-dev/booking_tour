@@ -32,7 +32,7 @@ const loginFuc = async (req, res, next) => {
         }
       ]
     })
-
+    console.log(user)
     // Nếu không tìm thấy người dùng
     if (!user) {
       return next(new ApiError(403, 'Unauthorized'))

@@ -70,11 +70,29 @@ const deleteStaff = async (req, res, next) => {
   }
 }
 
+const getTourBooking = async (req, res, next) => {
+  try {
+    const staffId = req.user.id_staff
+    const tourBooking = await staffService.getTourBookingByStaff(staffId)
+
+    // Trả về kết quả
+    return res.status(200).json({
+      statusCode: 200,
+      data: tourBooking.rows
+    })
+  } catch (error) {
+    return next(new ApiError(404, error.message))
+  }
+
+}
+
+
 const staffController = {
   getStaff,
   createStaff,
   updateStaff,
-  deleteStaff
+  deleteStaff,
+  getTourBooking
 }
 
 export default staffController
