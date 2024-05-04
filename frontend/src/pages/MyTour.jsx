@@ -19,117 +19,115 @@ import { toast } from "react-toastify";
 
 const MyTourItem = ({ data, openModal, isCancel }) => {
   return (
-    <div className="w-full min-h-[500px]">
-      <div className="w-full  py-2 flex flex-col gap-4">
-        <div className="w-full grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 px-2 border md:p-3 rounded-xl gap-4 hover:shadow-xl duration-200 ease-in-out">
-          <img
-            src={data?.tour?.photos[0]}
-            alt="tour image"
-            className="mx-auto md:mx-0 rounded"
-          />
-          <div className="md:px-2 flex flex-col col-span-2 justify-center items-start">
-            <Link
-              to={`/tours/${createSlug(data?.tour?.tour_name)}?id=${
-                data?.tour?.id
-              }`}
-            >
-              <p className="text-base line-clamp-2 overflow-visible font-semibold hover:text-[color:#EB662B] cursor-pointer duration-100 ease-in-out">
-                {data?.tour?.tour_name}
-              </p>
-            </Link>
-            <div className="text-xs font-normal flex items-center justify-between w-full">
-              <div className="flex items-center">
-                <CiLocationOn className="mr-1" />
-                {getProvinceName(data?.tour?.destination)}
-              </div>
-              <span>Ngày đi: {data?.tour?.departure_day}</span>
-              <span className="ml-5">Ngày về: {data?.tour?.end_tour_day}</span>
-              <p className="text-xs font-normal flex items-center">
-                <CiClock1 className="mr-1" />
-                {calculateDateDifference(
-                  data?.tour?.departure_day,
-                  data?.tour?.end_tour_day
-                )}{" "}
-                Ngày{" "}
-                {calculateDateDifference(
-                  data?.tour?.departure_day,
-                  data?.tour?.end_tour_day
-                ) - 1}{" "}
-                Đêm
-              </p>
-            </div>
-
-            <p className="text-sm font-normal line-clamp-3 overflow-visible">
-              {data?.tour?.desc}
+    <div className="w-full  py-2 flex flex-col gap-4">
+      <div className="w-full grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 px-2 border md:p-3 rounded-xl gap-4 hover:shadow-xl duration-200 ease-in-out">
+        <img
+          src={data?.tour?.photos[0]}
+          alt="tour image"
+          className="mx-auto md:mx-0 rounded"
+        />
+        <div className="md:px-2 flex flex-col col-span-2 justify-center items-start">
+          <Link
+            to={`/tours/${createSlug(data?.tour?.tour_name)}?id=${
+              data?.tour?.id
+            }`}
+          >
+            <p className="text-base line-clamp-2 overflow-visible font-semibold hover:text-[color:#EB662B] cursor-pointer duration-100 ease-in-out">
+              {data?.tour?.tour_name}
             </p>
-            <div className="w-full ">
-              {data?.tour?.insurance && (
-                <p className={`text-xs flex items-center`}>
-                  <GiCheckMark fill="#EB662B" className="mr-2" /> Bảo hiểm
-                  chuyến đi
-                </p>
-              )}
-              {data?.tour?.meal && (
-                <p className={`text-xs flex items-center`}>
-                  <GiCheckMark fill="#EB662B" className="mr-2" />
-                  Ăn uống trọn gói
-                </p>
-              )}
+          </Link>
+          <div className="text-xs font-normal flex items-center justify-between w-full">
+            <div className="flex items-center">
+              <CiLocationOn className="mr-1" />
+              {getProvinceName(data?.tour?.destination)}
+            </div>
+            <span>Ngày đi: {data?.tour?.departure_day}</span>
+            <span className="ml-5">Ngày về: {data?.tour?.end_tour_day}</span>
+            <p className="text-xs font-normal flex items-center">
+              <CiClock1 className="mr-1" />
+              {calculateDateDifference(
+                data?.tour?.departure_day,
+                data?.tour?.end_tour_day
+              )}{" "}
+              Ngày{" "}
+              {calculateDateDifference(
+                data?.tour?.departure_day,
+                data?.tour?.end_tour_day
+              ) - 1}{" "}
+              Đêm
+            </p>
+          </div>
+
+          <p className="text-sm font-normal line-clamp-3 overflow-visible">
+            {data?.tour?.desc}
+          </p>
+          <div className="w-full ">
+            {data?.tour?.insurance && (
+              <p className={`text-xs flex items-center`}>
+                <GiCheckMark fill="#EB662B" className="mr-2" /> Bảo hiểm chuyến
+                đi
+              </p>
+            )}
+            {data?.tour?.meal && (
               <p className={`text-xs flex items-center`}>
                 <GiCheckMark fill="#EB662B" className="mr-2" />
-                Hướng dẫn viên nhiệt tình
+                Ăn uống trọn gói
               </p>
-            </div>
-          </div>
-          <div className="md:ps-3 flex flex-col justify-center py-3 items-center  md:border-l">
-            <p className="text-sm font-medium flex items-center">
-              <span className="flex items-center">
-                Đã đặt
-                <strong className="text-[color:#EB662B] text-xl mx-1">
-                  {data.member}
-                </strong>
-                vé
-              </span>
-            </p>
-            <p className="text-sm font-medium flex items-center">
-              <span className="flex items-center">
-                Giá gốc:
-                {data.tour.promotional > 0 && (
-                  <span className="text-slate-500 line-through  mx-1">
-                    {formatCurrencyVND(data.tour.initial_price)}
-                  </span>
-                )}
-                <span className="text-[color:#EB662B] text-base font-semibold  mx-1">
-                  {formatCurrencyVND(
-                    data.tour.initial_price -
-                      data.tour.initial_price * data.tour.promotional
-                  )}
-                </span>
-                / vé
-              </span>
-            </p>
-            <p className="text-sm font-medium flex items-center">
-              <span>Đã thanh toán {data.status}</span>
-              <strong className={`${styles.orangeText} mx-2 text-xl`}>
-                {formatCurrencyVND(data?.total_price)}
-              </strong>
-            </p>
-            {!isCancel ? (
-              <Button
-                title="Hủy Tour"
-                onclick={openModal}
-                classes={`${styles.orangeText} hover:text-white hover:bg-[color:#EB662B] transition-all duration-300 rounded-lg border border-[#EB662B] w-full py-2 text-base font-medium`}
-              />
-            ) : (
-              <div className="text-sm font-semibold mt-2">
-                {data.cancel.is_refund ? (
-                  <p className="text-green-600">Đã hoàn tiền</p>
-                ) : (
-                  <p className="text-orange-600">Chưa hoàn tiền</p>
-                )}
-              </div>
             )}
+            <p className={`text-xs flex items-center`}>
+              <GiCheckMark fill="#EB662B" className="mr-2" />
+              Hướng dẫn viên nhiệt tình
+            </p>
           </div>
+        </div>
+        <div className="md:ps-3 flex flex-col justify-center py-3 items-center  md:border-l">
+          <p className="text-sm font-medium flex items-center">
+            <span className="flex items-center">
+              Đã đặt
+              <strong className="text-[color:#EB662B] text-xl mx-1">
+                {data.member}
+              </strong>
+              vé
+            </span>
+          </p>
+          <p className="text-sm font-medium flex items-center">
+            <span className="flex items-center">
+              Giá gốc:
+              {data.tour.promotional > 0 && (
+                <span className="text-slate-500 line-through  mx-1">
+                  {formatCurrencyVND(data.tour.initial_price)}
+                </span>
+              )}
+              <span className="text-[color:#EB662B] text-base font-semibold  mx-1">
+                {formatCurrencyVND(
+                  data.tour.initial_price -
+                    data.tour.initial_price * data.tour.promotional
+                )}
+              </span>
+              / vé
+            </span>
+          </p>
+          <p className="text-sm font-medium flex items-center">
+            <span>Đã thanh toán {data.status}</span>
+            <strong className={`${styles.orangeText} mx-2 text-xl`}>
+              {formatCurrencyVND(data?.total_price)}
+            </strong>
+          </p>
+          {!isCancel ? (
+            <Button
+              title="Hủy Tour"
+              onclick={openModal}
+              classes={`${styles.orangeText} hover:text-white hover:bg-[color:#EB662B] transition-all duration-300 rounded-lg border border-[#EB662B] w-full py-2 text-base font-medium`}
+            />
+          ) : (
+            <div className="text-sm font-semibold mt-2">
+              {data.cancel.is_refund ? (
+                <p className="text-green-600">Đã hoàn tiền</p>
+              ) : (
+                <p className="text-orange-600">Chưa hoàn tiền</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -144,7 +142,7 @@ const MyTour = () => {
     id_book: 0,
     stk: {
       name: "", // Tên chủ tài khoản
-      bank: banksnapas[0].short_name, // Ngân hàng mặc định
+      bank: banksnapas[0].bin, // Ngân hàng mặc định
       stk: "", // Số tài khoản
     },
     reason: "", // Lý do hủy tour
@@ -198,11 +196,14 @@ const MyTour = () => {
       return toast.warning("Bạn phải điền đầy đủ thông tin!");
 
     // Tạo mới đối tượng cancelData với trường thông tin stk được kết hợp
+
+    // const stkData = `${cancelData.stk.stk} - ${cancelData.stk.bank} - ${cancelData.stk.name}`
     const newCancelData = {
       ...cancelData,
-      stk: `${cancelData.stk.stk} - ${cancelData.stk.bank} - ${cancelData.stk.name}`,
+      stk: JSON.stringify(cancelData.stk),
     };
 
+    console.log(newCancelData);
     // Lọc ra tour đang được hủy và thêm thông tin hủy vào mỗi tour
     const crrTour = data?.bookSuccess
       ?.filter((e) => e.id == cancelData.id_book)
@@ -245,38 +246,38 @@ const MyTour = () => {
               <Tab>Tour đã huỷ</Tab>
             </TabList>
 
-            <TabPanel>
-              {data?.bookSuccess?.length > 0 ? (
-                data?.bookSuccess?.map((tour, index) => (
-                  <MyTourItem
-                    key={index}
-                    data={tour}
-                    isCancel={false}
-                    openModal={() => {
-                      setCancelData((prev) => ({
-                        ...prev,
-                        id_book: tour.id,
-                      }));
-                      setShowModal(true);
-                    }}
-                  />
-                ))
-              ) : (
-                <div className="w-full flex items-center justify-center h-[300px]">
-                  <p className="my-auto">Dữ liệu rỗng</p>
-                </div>
-              )}
+            <TabPanel className="mb-7">
+                {data?.bookSuccess?.length > 0 ? (
+                  data?.bookSuccess?.map((tour, index) => (
+                    <MyTourItem
+                      key={index}
+                      data={tour}
+                      isCancel={false}
+                      openModal={() => {
+                        setCancelData((prev) => ({
+                          ...prev,
+                          id_book: tour.id,
+                        }));
+                        setShowModal(true);
+                      }}
+                    />
+                  ))
+                ) : (
+                  <div className="w-full flex items-center justify-center h-[300px]">
+                    <p className="my-auto">Dữ liệu rỗng</p>
+                  </div>
+                )}
             </TabPanel>
-            <TabPanel>
-              {data?.bookCancel?.length > 0 ? (
-                data?.bookCancel?.map((tour, index) => (
-                  <MyTourItem key={index} data={tour} isCancel={true} />
-                ))
-              ) : (
-                <div className="w-full flex items-center justify-center h-[300px]">
-                  <p className="my-auto">Dữ liệu rỗng</p>
-                </div>
-              )}
+            <TabPanel className="mb-7">
+                {data?.bookCancel?.length > 0 ? (
+                  data?.bookCancel?.map((tour, index) => (
+                    <MyTourItem key={index} data={tour} isCancel={true} />
+                  ))
+                ) : (
+                  <div className="w-full flex items-center justify-center h-[300px]">
+                    <p className="my-auto">Dữ liệu rỗng</p>
+                  </div>
+                )}
             </TabPanel>
           </Tabs>
         </div>
@@ -371,7 +372,7 @@ const MyTour = () => {
               >
                 <option disabled></option>
                 {banksnapas.map((e, index) => (
-                  <option className="my-1" key={index} value={e.short_name}>
+                  <option className="my-1" key={index} value={e.bin}>
                     {e.name} - {e.short_name}
                   </option>
                 ))}
