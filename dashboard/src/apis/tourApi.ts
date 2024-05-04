@@ -7,6 +7,8 @@ interface tourApi {
   delete: (id: number) => Promise<any>;
   getTours: (params?: PARAM_TYPE) => Promise<any>;
   getTour: (id: string) => Promise<any>;
+  getBookTours: () => Promise<any>;
+  refundMoney: (id: number) => Promise<any>;
 }
 
 const tourApi: tourApi = {
@@ -31,6 +33,14 @@ const tourApi: tourApi = {
     return axiosClient.get(url, { params });
   },
 
+  getBookTours: () => {
+    const url = '/auth/book';
+    return axiosClient.get(url);
+  },
+  refundMoney: (id) => {
+    const url = `/auth/book/refund/${id}`;
+    return axiosClient.put(url);
+  },
 };
 
 export default tourApi;

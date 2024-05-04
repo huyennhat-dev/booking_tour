@@ -5,10 +5,10 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { startTransition, useEffect, useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import { TOUR_TYPE } from '../../types';
-import { Empty, Image, Pagination, Tooltip } from 'antd';
+import { Empty, Image, Pagination, Popconfirm, Tooltip } from 'antd';
 import tourApi from '../../apis/tourApi';
 import provinces from '../../assets/js/province';
-
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 const ListTours = () => {
   const limit = 10;
@@ -29,7 +29,6 @@ const ListTours = () => {
     }
 
     tourApi.getTours(params).then(rs => {
-      console.log(rs);
       const modifiedTours = rs.data.map((tour: any) => {
         return {
           ...tour,
@@ -46,7 +45,7 @@ const ListTours = () => {
 
   useEffect(() => {
     getAllTour()
-  }, []);
+  }, [currentPage]);
 
   const handleDeleteTour = (id: number) => {
     tourApi.delete(id).then(rs => {
@@ -61,6 +60,11 @@ const ListTours = () => {
   const getProvinceName = (slug: string) => {
     const province = provinces.find(p => p.slug === slug);
     return province ? province.name : "Không tìm thấy tỉnh";
+  }
+
+  const handleChangePage = (page: number) => {
+    setCurrentPage(page)
+    navigate({ search: `?page=${page}` });
   }
 
   return (
@@ -145,12 +149,20 @@ const ListTours = () => {
                           </button>
                         </Tooltip>
                         <Tooltip placement="top" title={'Xóa'}>
-                          <button
-                            onClick={() => handleDeleteTour(data.id!)}
-                            className="p-2 mx-1 rounded-full border-[1px] border-red-600"
+                          <Popconfirm
+                            title="Delete the task"
+                            description="Bạn có chắc chắn xóa tour này?"
+                            onConfirm={() => handleDeleteTour(data.id!)}
+                            okText="Xóa"
+                            cancelText="Hủy"
+                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
                           >
-                            <CiTrash fill="red" />
-                          </button>
+                            <button
+                              className="p-2 mx-1 rounded-full border-[1px] border-red-600"
+                            >
+                              <CiTrash fill="red" />
+                            </button>
+                          </Popconfirm>
                         </Tooltip>
                       </div>
                     </td>
@@ -167,9 +179,7 @@ const ListTours = () => {
                 total={total}
                 showSizeChanger={false}
                 pageSize={limit}
-                onChange={(val) => {
-                  navigate({ search: `?page=${val}` });
-                }}
+                onChange={(val) => handleChangePage(val)}
               />
             </div>
           ) : null}

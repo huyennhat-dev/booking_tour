@@ -9,7 +9,6 @@ import { logout } from '../../redux/feature/authSlice';
 const DropdownUser = () => {
 
   const userInfo = useSelector((state: RootState) => state.auth.userInfo);
-  console.log(userInfo)
   const dispatch = useDispatch();
 
   const navigate = useNavigate()

@@ -8,6 +8,8 @@ const requiresToken = (url: string) => {
     '/auth/upload',
     '/auth/tour',
     '/auth/tour/:id',
+    '/auth/book',
+    '/auth/book/refund/:id',
   ];
 
   return tokenRequiredPaths.some((path) => url.startsWith(path));
