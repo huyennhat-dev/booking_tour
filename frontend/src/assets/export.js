@@ -8,6 +8,7 @@ import Tour3 from "./tour3.png";
 import Tour4 from "./tour4.png";
 import Tour5 from "./tour5.png";
 import Tour6 from "./tour6.png";
+import HomeBg from "./homg-bg.jpg";
 import Tour7 from "./tour7.png";
 import Tour8 from "./tour8.png";
 import WhyChooseTour1 from "./why-choose-tourz1.png";
@@ -64,6 +65,7 @@ export {
   Tour4,
   Tour5,
   Tour6,
+  HomeBg,
   Tour7,
   Tour8,
   WhyChooseTour1,

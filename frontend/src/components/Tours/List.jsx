@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { NotFound } from "../../assets/export";
 
 const List = ({ rs }) => {
-  const tourList = rs.data?.rows;
+  const tourList = rs.data;
   const modifiedTours = tourList?.map((tour) => {
     return {
       ...tour,
@@ -22,11 +22,12 @@ const List = ({ rs }) => {
 
   const [data, setData] = useState();
 
+
   useEffect(() => {
     setData(modifiedTours);
   }, [tourList]);
 
-  // console.log(data);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage] = useState(10);
   const [sortType, setSortType] = useState("");
@@ -89,25 +90,23 @@ const List = ({ rs }) => {
         </div>
       ) : (
         <div className="grid grid-cols-2 px-3 md:px-8 lg:px-16 xl:px-18 py-16">
-        <div>
-          <img src={NotFound} alt="" />
-        </div>
-        <div className="h-full w-full col-span-1 flex items-center">
-          <div className="text-center w-full">
-            <p className="text-xl">
-             Không tìm thấy kết quả nào
-            </p>
-            <div className="w-full py-2  my-5">
-              <Link
-                to="/"
-                className="delay-75 duration-100 ease-in-out w-[200px] px-8 py-2  my-5 border-[1px] border-[color:#eb662b] rounded-md hover:bg-[color:#eb662b] hover:text-white"
-              >
-                Trang chủ
-              </Link>
+          <div>
+            <img src={NotFound} alt="" />
+          </div>
+          <div className="h-full w-full col-span-1 flex items-center">
+            <div className="text-center w-full">
+              <p className="text-xl">Không tìm thấy kết quả nào</p>
+              <div className="w-full py-2  my-5">
+                <Link
+                  to="/"
+                  className="delay-75 duration-100 ease-in-out w-[200px] px-8 py-2  my-5 border-[1px] border-[color:#eb662b] rounded-md hover:bg-[color:#eb662b] hover:text-white"
+                >
+                  Trang chủ
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       )}
       <div className="w-full px-2 md:px-3 py-2 flex flex-col gap-4">
         {currentPosts?.map((tour, index) => (

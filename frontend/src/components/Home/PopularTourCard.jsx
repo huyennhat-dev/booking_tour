@@ -54,7 +54,7 @@ const PopularTourCard = ({ tour }) => {
           <p>
             Giảm mạnh:
             <span className="ml-1 font-semibold text-red-500  text-sm">
-              {tour.promotional * 100} %
+              {(tour.promotional * 100).toFixed(0)} %
             </span>
           </p>
         </div>
@@ -71,7 +71,7 @@ const PopularTourCard = ({ tour }) => {
             ngày
           </p>
           <p className="text-xs flex items-center">
-            Chỉ với
+            {tour.promotional>0?'Chỉ còn':'Chỉ với'}
             <span className="text-[color:#eb662b] font-semibold ml-2 text-xl">
               {formatCurrencyVND(
                 tour.initial_price - tour.initial_price * tour.promotional

@@ -1,7 +1,5 @@
 const requiresToken = (url) => {
-  const tokenRequiredPaths = [
-
-  ];
+  const tokenRequiredPaths = ["/auth/book", "/payment/book", "/auth/book/cancel-tour"];
 
   return tokenRequiredPaths.some((path) => url.startsWith(path));
 };

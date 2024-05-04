@@ -19,19 +19,36 @@ const Home = () => {
       .then((rs) => {
         const modifiedTours = {
           ...rs.data,
-          popular: rs.data.popular?.map((tour) => {
-            return {
-              ...tour,
-              photos: tour.photos?.split(","),
-            };
-          }),
-          trend: rs.data.trend?.map((tour) => {
-            return {
-              ...tour,
-              photos: tour.photos?.split(","),
-            };
-          }),
+          popular:
+            rs.data.popular?.length > 8
+              ? rs.data.popular.slice(0, 8).map((tour) => {
+                  return {
+                    ...tour,
+                    photos: tour.photos?.split(","),
+                  };
+                })
+              : rs.data.popular?.map((tour) => {
+                  return {
+                    ...tour,
+                    photos: tour.photos?.split(","),
+                  };
+                }),
+          trend:
+            rs.data.trend?.length > 8
+              ? rs.data.trend.slice(0, 8).map((tour) => {
+                  return {
+                    ...tour,
+                    photos: tour.photos?.split(","),
+                  };
+                })
+              : rs.data.trend?.map((tour) => {
+                  return {
+                    ...tour,
+                    photos: tour.photos?.split(","),
+                  };
+                }),
         };
+
         setData(modifiedTours);
       })
       .catch((err) => {

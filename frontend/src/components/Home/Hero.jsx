@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { startTransition, useState } from "react";
-import { HeroImage } from "../../assets/export";
+import { HeroImage, HomeBg } from "../../assets/export";
 // import Main from "../../assets/export";
 import Button from "../global//Button";
 import { styles } from "../../styles/styles";
@@ -29,7 +29,7 @@ const Hero = () => {
       className={`w-full h-[600px] relative  mt-2`}
     >
       <img
-        src={"https://images.unsplash.com/photo-1445272885371-027f17af0130"}
+        src={HomeBg}
         alt=""
         className="w-full h-full"
       />
