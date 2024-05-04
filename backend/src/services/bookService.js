@@ -117,9 +117,56 @@ const getBook = async (query, role = '', id_by_role) => {
       }
     }
 
+    const customizeBookSucess = booksSucess.rows.map(book => {
+      let booking_info = {}
+      try {
+        booking_info = JSON.parse(book.booking_info)
+      } catch (error) {
+        booking_info = {}
+      }
+      return {
+        id : book.id,
+        booking_info : booking_info,
+        total_price : book.total_price,
+        day_booking: book.day_booking,
+        isCheckout: book.isCheckout,
+        member : book.member,
+        tour: {
+          ...book.tourData.dataValues,
+        }
+      }
+
+    })
+
+    const customizeBookCancel = booksCancel.rows.map(book => {
+      let booking_info = {}
+      try {
+        booking_info = JSON.parse(book.booking_info)
+      } catch (error) {
+        booking_info = {}
+      }
+
+      return {
+        id : book.id,
+        booking_info : booking_info,
+        total_price : book.total_price,
+        day_booking: book.day_booking,
+        isCheckout: book.isCheckout,
+        member : book.member,
+        tour: {
+          ...book.tourData.dataValues,
+        },
+        cancel: {
+          ...book.cancelData.dataValues
+        }
+      }
+
+    })
+
+
     return {
-      'bookSuccess': booksSucess.rows,
-      'bookCancel': booksCancel.rows
+      'bookSuccess': customizeBookSucess,
+      'bookCancel': customizeBookCancel
     }
   } catch (error) {
     console.log(error)

@@ -15,7 +15,6 @@ const getStaff = async (query) => {
     // Xây dựng điều kiện tìm kiếm
     let whereClause = {}
 
-    
 
     // Áp dụng bộ lọc (nếu có)
     for (const key in filters) {
@@ -82,11 +81,64 @@ const deleteStaff = async (id_staff) => {
   }
 }
 
+const getTourBookingByStaff = async (idStaff) => {
+  try {
+    const tours = await db.Tour.findAndCountAll({
+      where: {
+        id_staff: idStaff
+      },
+      include: [
+        {
+          model: db.Staff,
+          as: 'staffData',
+          include: [
+            {
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model: db.Manager,
+          as: 'managerData',
+          include: [
+            {
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model: db.Book,
+          as: 'tourBookingData',
+          include: [
+            {
+              model: db.User,
+              as: 'userData'
+            },
+            {
+              model: db.Cancel,
+              as: 'cancelData'
+            }
+          ]
+        }
+      ]
+    })
+    return tours
+  } catch (error) {
+    console.log(error)
+    throw new ApiError(error.message)
+  }
+}
+
 const staffService = {
   getStaff,
   createStaff,
   updateStaff,
-  deleteStaff
+  deleteStaff,
+  getTourBookingByStaff
 }
 
 export default staffService
