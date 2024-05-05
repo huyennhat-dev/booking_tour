@@ -252,25 +252,6 @@ const createBook = async (body) => {
       })
 
       const { customerData, tourData, guest_number } = book.dataValues
-      console.log(book)
-      // gửi mail xác nhận đặt tour
-      console.log(`
-        <h2>Đặt tour thành công</h2>
-        <p>Xin chào ${customerData.full_name},</p>
-        <p>Cảm ơn bạn đã đặt tour "${tourData.name_tour}" tại công ty du lịch ${tourData?.managerData?.company_name}.</p>
-        <p>Thông tin chi tiết:</p>
-        <ul>
-            <li>Tên tour: ${tourData.name_tour}</li>
-            <li>Địa điểm: ${tourData.destination}</li>
-            <li>Ngày khởi hành: ${tourData.departure}</li>
-            <li>Ngày kết thúc: ${tourData.end_tour}</li>
-            <li>Số lượng khách: ${guest_number}</li>
-        </ul>
-        <p>Bạn có thể xem thông tin chi tiết của tour tại <a href="{{tour_link}}">đây</a>.</p>
-        <p>Chúng tôi rất mong chờ chuyến đi của bạn!</p>
-        <p>Trân trọng,</p>
-        <p>${tourData?.managerData?.company_name}</p>
-      `, customerData.userData.email)
 
       return book
     } else {

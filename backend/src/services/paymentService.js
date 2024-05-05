@@ -4,7 +4,7 @@ import ApiError from '~/utils/ApiError'
 import env from '~/config/environment'
 import db from '~/models'
 import moment from 'moment'
-import book from '~/models/book'
+import mailService from '~/services/mailService'
 
 const sortObject = (obj) => {
   let sorted = {}
@@ -190,18 +190,65 @@ const vnpReturn = async (query) => {
             id: parseInt(vnp_Params.vnp_TxnRef.split('_')[0])
           }
         })
+        const bookSucess = await db.Book.findOne({
+          where: {
+            isCheckout: true,
+            status: 'success'
+          },
+          include: [
+            {
+              model: db.Tour,
+              as : 'tourData',
+              include: [
+                {
+                  model: db.Manager,
+                  as : 'managerData',
+                  include: [
+                    {
+                      model: db.Account,
+                      as : 'accountData'
+                    }
+                  ]
+                },
+                {
+                  model: db.Staff,
+                  as : 'staffData',
+                  include: [
+                    {
+                      model: db.Account,
+                      as : 'accountData'
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              model: db.User,
+              as : 'userData'
+            }
+          ]
+        })
+        const htmlTemplate = `
+        <h2>Thanh toán thành công</h2>
+        <p>Xin chào ${bookSucess.userData.fullName},</p>
+        <p>Cảm ơn bạn đã đặt tour "${bookSucess.tourData.tour_name}" tại công ty du lịch ${bookSucess.tourData.managerData?.company_name}.</p>
+        <p>Thông tin chi tiết:</p>
+        <ul>
+            <li>Tên tour: ${bookSucess.tourData.tour_name}</li>
+            <li>Ngày khởi hành: ${new moment(bookSucess.tourData.departure_day).format('DD/MM/YYYY')}</li>
+            <li>Ngày kết thúc: ${new moment(bookSucess.tourData.end_tour_day).format('DD/MM/YYYY')}</li>
+            <li>Số lượng khách: ${bookSucess.member}</li>
+        </ul>
+        <p>Bạn có thể xem thông tin chi tiết của tour tại <a href="{{tour_link}}">đây</a>.</p>
+        <p>Chúng tôi rất mong chờ chuyến đi của bạn!</p>
+        <p>Trân trọng,</p>
+        `
+        await mailService.sendMailWithHtml(htmlTemplate, bookSucess.userData.email)
+
 
         return 'http://localhost:5173/payment?status=success'
       }
-
-      await db.Book.detroy({
-        where: {
-          id: parseInt(vnp_Params.vnp_TxnRef.split('_')[0])
-        }
-      })
-
       return 'http://localhost:5173/payment?status=failed'
-
     } else {
       return 'http://localhost:5173/payment?status=failed'
     }

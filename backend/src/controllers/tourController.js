@@ -111,7 +111,7 @@ const deleteTour = async (req, res, next) => {
     })
 
     if (book) {
-      return res.status(404).json({
+      return res.status(402).json({
         statusCode: 402,
         message: 'Không thể xóa tour đã có người đặt tour'
       })
