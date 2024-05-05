@@ -31,7 +31,7 @@ const PopularTourCard = ({ tour }) => {
         to={`${createSlug(`/tours/${tour.tour_name}`)}?id=${tour.id}`}
         className="w-full"
       >
-        <h4 className="hover:text-blue-800 text-base font-medium line-clamp-2 overflow-hidden">
+        <h4 className="hover:text-blue-800 min-h-[48px] text-base font-medium line-clamp-2 overflow-hidden">
           {tour?.tour_name}
         </h4>
       </Link>

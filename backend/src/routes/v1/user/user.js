@@ -179,7 +179,7 @@ const updateUser = async (req, res, next) => {
 
 router.route('/signIn').post(signInFuc)
 router.route('/login').post(authValidation.login, loginFuc)
-router.route('/').put(tokenValidation.authToken, checkRule(['customer']), updateUser)
+router.route('/update').put(tokenValidation.authToken, checkRule(['customer']), updateUser)
 
 
 export const userRouterOnly = router
