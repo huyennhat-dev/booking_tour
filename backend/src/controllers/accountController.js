@@ -99,6 +99,11 @@ const updateAccount = async (req, res, next) => {
               id: req.user.id
             }
           })
+        } else {
+          res.status(404).json({
+            statusCode : 404,
+            message : 'Vui lòng nhập mật khẩu cũ và mật khẩu mới'
+          })
         }
         if (phoneNumber || avatar || username) {
           const dataUpdate = {}
@@ -139,6 +144,11 @@ const updateAccount = async (req, res, next) => {
             where: {
               id: req.user.id
             }
+          })
+        } else {
+          res.status(404).json({
+            statusCode : 404,
+            message : 'Vui lòng nhập mật khẩu cũ và mật khẩu mới'
           })
         }
         if (phoneNumber || avatar || username) {
@@ -187,6 +197,11 @@ const updateAccount = async (req, res, next) => {
             where: {
               id: req.user.id
             }
+          })
+        } else {
+          res.status(404).json({
+            statusCode : 404,
+            message : 'Vui lòng nhập mật khẩu cũ và mật khẩu mới'
           })
         }
         if (phoneNumber || avatar || username) {
@@ -254,7 +269,7 @@ const updateAccount = async (req, res, next) => {
           company_name : user.dataValues.managerData?.company_name
         }
       })
-    }else {
+    } else {
       res.status(404).json({
         statusCode : 404,
         message : 'Vui lòng nhập thông tin cần cập nhật'
