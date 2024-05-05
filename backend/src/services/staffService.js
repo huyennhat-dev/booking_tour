@@ -116,7 +116,8 @@ const getTourBookingByStaff = async (idStaff) => {
           include: [
             {
               model: db.User,
-              as: 'userData'
+              as: 'userData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
             },
             {
               model: db.Cancel,
