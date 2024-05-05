@@ -108,62 +108,47 @@ const signInFuc = async (req, res, next) => {
 }
 
 const updateUser = async (req, res, next) => {
-  const { fullName, avatar, current_password, new_password } = req.body
-  // only update user's information
-  if (fullName || avatar) {
-    const dataInfoUpdate = {}
-    if (fullName) dataInfoUpdate.fullName = fullName
-    if (avatar) dataInfoUpdate.avatar = avatar
+  try {
+    const { fullName, avatar, current_password, new_password } = req.body
+    if ( current_password && new_password) {
+      const user = await db.User.findOne({
+        where: {
+          id: req.user.id
+        }
+      })
 
-    await db.User.update(dataInfoUpdate, {
-      where: {
-        id: req.user.id
+      if (!user) {
+        return next(new ApiError(403, 'Unauthorized'))
       }
-    })
 
-    const user = await db.User.findOne({
-      where: {
-        id: req.user.id
-      },
-      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
-    })
+      const match = await bcrypt.compare(current_password, user.dataValues.password)
 
-    const token = jwt.sign({
-      id : user.dataValues.id,
-      email : user.dataValues.email,
-      fullName : user.dataValues.fullName,
-      avatar : user.dataValues.avatar,
-      role : 'customer'
-    }, env.JWT_SECRETKEY)
-
-    return res.status(200).json({
-      statusCode: 200,
-      message: 'Update user successfully',
-      token: token,
-      data: user
-    })
-  }
-  // only update user's password
-  if ( current_password && new_password) {
-    const user = await db.User.findOne({
-      where: {
-        id: req.user.id
+      if (!match) {
+        return next(new ApiError(403, 'Mật khẩu cũ không đúng'))
       }
-    })
 
-    const match = await bcrypt.compare(current_password, user.dataValues.password)
+      const hashPassword = await bcrypt.hash(new_password, 10)
 
-    if (!match) {
-      return next(new ApiError(403, 'Mật khẩu cũ không đúng'))
+      await db.User.update({ password: hashPassword }, {
+        where: {
+          id: req.user.id
+        }
+      })
     }
 
-    const hashPassword = await bcrypt.hash(new_password, 10)
+    // only update user's information
+    if (fullName || avatar) {
+      const dataInfoUpdate = {}
+      if (fullName) dataInfoUpdate.fullName = fullName
+      if (avatar) dataInfoUpdate.avatar = avatar
 
-    await db.User.update({ password: hashPassword }, {
-      where: {
-        id: req.user.id
-      }
-    })
+      await db.User.update(dataInfoUpdate, {
+        where: {
+          id: req.user.id
+        }
+      })
+    }
+    // only update user's password
 
     const userNew = await db.User.findOne({
       where: {
@@ -186,9 +171,10 @@ const updateUser = async (req, res, next) => {
       token: token,
       data: userNew
     })
-  }
 
-  return next(new ApiError(403, 'Invalid data'))
+  } catch (error) {
+    return next(new ApiError(403, 'Update failed'))
+  }
 }
 
 router.route('/signIn').post(signInFuc)

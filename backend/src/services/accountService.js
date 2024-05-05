@@ -215,6 +215,10 @@ const createManager = async (body) => {
   }
 }
 
+const updateAccount = (dataUpdate) => {
+  
+}
+
 const accountService = {
   getAccount,
   createStaff,
