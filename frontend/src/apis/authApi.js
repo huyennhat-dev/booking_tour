@@ -13,6 +13,10 @@ const authApi = {
     const url = "/sign_in";
     return axiosClient.post(url, { ...data });
   },
+  update:(data)=>{
+    const url = "/update";
+    return axiosClient.put(url, { ...data });
+  }
 };
 
 export default authApi;

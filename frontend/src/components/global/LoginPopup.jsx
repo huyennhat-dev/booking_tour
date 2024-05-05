@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { GoogleLogo } from "../../assets/export";
 import authApi from "../../apis/authApi";
-import { loginSuccess } from "../../redux/authSlice";
+import { setToken } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 import Button from "./Button";
 
@@ -74,7 +74,7 @@ const LoginPopup = () => {
         .login(formData)
         .then((rs) => {
           console.log(rs)
-          dispatch(loginSuccess({ token: rs.token }));
+          dispatch(setToken({ token: rs.token }));
           setShowModal(!showModal);
         })
         .catch((err) => {

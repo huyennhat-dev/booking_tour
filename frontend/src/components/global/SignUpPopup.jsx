@@ -5,7 +5,7 @@ import { GoogleLogo } from "../../assets/export";
 import Button from "./Button";
 import authApi from "../../apis/authApi";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "../../redux/authSlice";
+import { setToken } from "../../redux/authSlice";
 
 const SignUpPopup = () => {
   const dispatch = useDispatch();
@@ -90,7 +90,7 @@ const SignUpPopup = () => {
       authApi
         .register(formData)
         .then((rs) => {
-          dispatch(loginSuccess({ token: rs.token }));
+          dispatch(setToken({ token: rs.token }));
           setShowModal(!showModal);
         })
         .catch((err) => {
