@@ -9,6 +9,7 @@ router.route('/').get(jwtMiddleware.authToken, checkRule(['admin']), accountCont
 router.route('/create').post(jwtMiddleware.authToken, checkRule(['admin']), accountController.createAccount)
 router.route('/create-staff').post(jwtMiddleware.authToken, checkRule(['admin']), accountController.createStaff)
 router.route('/create-manager').post(jwtMiddleware.authToken, checkRule(['admin']), accountController.createManager)
+router.route('/analytics').get(jwtMiddleware.authToken, checkRule(['admin']), accountController.getAnalytics)
 router.route('/').put(jwtMiddleware.authToken, checkRule(['admin', 'staff', 'manager']), accountController.updateAccount)
 
 export const accountRouter = router

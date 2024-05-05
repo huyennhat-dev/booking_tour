@@ -4,7 +4,6 @@ import env from '~/config/environment'
 import bcrypt from 'bcryptjs'
 import ApiError from '~/utils/ApiError'
 import jwt from 'jsonwebtoken'
-import e from 'express'
 
 const getAccount = async (req, res, next) => {
   try {
@@ -284,13 +283,63 @@ const updateAccount = async (req, res, next) => {
   }
 }
 
+const getAnalytics = async (req, res, next) => {
+  try {
+    const analytics = {
+      totalTourPost : '',
+      totalBooking : '',
+      totalUser : '',
+      totalManager : '',
+      totalStaff : '',
+      revenue : ''
+    }
+
+    const totalTourPost = await db.Tour.count()
+    const totalBooking = await db.Book.count({
+      where: {
+        status: 'success',
+        isCheckout: true
+      }
+    })
+    const totalUser = await await db.User.count()
+    const totalManager = await db.Manager.count()
+    const totalStaff = await db.Staff.count()
+    const revenue = await db.Book.sum('total_price', {
+      where: {
+        status: 'success',
+        isCheckout: true
+      }
+    })
+
+    analytics.totalTourPost = totalTourPost
+    analytics.totalBooking = totalBooking
+    analytics.totalUser = totalUser
+    analytics.totalManager = totalManager
+    analytics.totalStaff = totalStaff
+    analytics.revenue = revenue
+
+
+
+    res.status(200).json({
+      statusCode : 200,
+      data : analytics
+    })
+  } catch (error) {
+    res.status(404).json({
+      statusCode : 404,
+      message : error.message || 'Lỗi không xác định'
+    })
+  }
+}
+
 
 const accountController = {
   getAccount,
   createAccount,
   createStaff,
   createManager,
-  updateAccount
+  updateAccount,
+  getAnalytics
 }
 
 export default accountController
