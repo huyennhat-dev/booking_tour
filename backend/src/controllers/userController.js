@@ -5,15 +5,10 @@ import userService from '~/services/userService'
 const getUser = async (req, res, next) => {
   // http://localhost:8000/api/v1/user?filters[role]=admin&search=thanh&sortBy=createdAt&sortOrder=desc&page=1&limit=10
   try {
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = req.query
     const users = await userService.getUser(req.query)
-
     // Trả về kết quả
     return res.status(200).json({
       statusCode: 200,
-      page: parseInt(page),
-      totalPages: Math.ceil(users.count / limit),
-      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
       data : users.rows
     })
   } catch (error) {
