@@ -5,8 +5,9 @@ import React, { useEffect, useState } from "react";
 import authApi from "../../apis/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { loginSuccess, setToken } from "../../redux/feature/authSlice";
+import { setToken } from "../../redux/feature/authSlice";
 import { getToken } from "../../utils/tokenUtils";
+import { ToastContainer, toast } from "react-toastify";
 ;
 const LoginPage: React.FC = () => {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -17,29 +18,30 @@ const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
 
-
     useEffect(() => {
         const token = getToken()
-
         if (token) dispatch(setToken({ token }))
-
         if (isLoggedIn) navigate('/');
     }, [isLoggedIn, navigate]);
 
 
-    const handleLoginClick = async () => {
-        const rs = await authApi.login({ email, password })
-
-        if (rs.statusCode == 200) {
-            dispatch(loginSuccess({ token: rs.token }));
+    const handleLoginClick = () => {
+      authApi.login({ email, password }).then(rs => {
+            dispatch(setToken({ token: rs.token }));
             navigate('/')
-        }
+        }).catch(err => {
+            console.log(err)
+            toast.warning("Email hoặc mật khẩu không đúng!")
+        })
+
     }
 
 
 
     return (
         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            <ToastContainer autoClose={2000} />
+
             <div className="rounded-sm h-full border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="flex flex-wrap items-center">
                     <div className="hidden w-full xl:block xl:w-1/2">

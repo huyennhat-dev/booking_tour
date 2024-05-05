@@ -28,7 +28,7 @@ const PopularTourCard = ({ tour }) => {
         {getProvinceName(tour.destination)}
       </p>
       <Link
-        to={`${createSlug(`/tours/${tour.tour_name}`)}?id=${tour.id}`}
+        to={`/tours/${createSlug(tour.tour_name)}?id=${tour.id}`}
         className="w-full"
       >
         <h4 className="hover:text-blue-800 min-h-[48px] text-base font-medium line-clamp-2 overflow-hidden">

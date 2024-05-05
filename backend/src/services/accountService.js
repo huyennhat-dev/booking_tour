@@ -4,6 +4,7 @@ import ApiError from '~/utils/ApiError'
 import emailService from '~/services/mailService'
 import bcrypt from 'bcryptjs'
 import generateStrongPassword from '~/utils/generateStrongPassword'
+import randomCatAvatar from '~/utils/randomCatAvatar'
 
 const getAccount = async (query) => {
   try {
@@ -71,14 +72,8 @@ const getAccount = async (query) => {
 
 const createAccount = async (body) => {
   try {
-    const {
-      email,
-      username,
-      role,
-      phoneNumber,
-      birthday = '',
-      address = ''
-    } = body
+    const { email, username, role, phoneNumber } = body
+    const avatar = randomCatAvatar()
     // check account account
     const checkAccount = await db.Account.findOne({
       where: { email }
@@ -98,6 +93,7 @@ const createAccount = async (body) => {
       email,
       password: hashedPassword,
       role,
+      avatar,
       username,
       phoneNumber
     })
@@ -105,16 +101,12 @@ const createAccount = async (body) => {
 
     if (role == 'staff') {
       account_info = await db.Staff.create({
-        id_account: account.dataValues.id,
-        birthday,
-        address
+        id_account: account.dataValues.id
       })
     }
     if (role == 'manager') {
       account_info = await db.Manager.create({
-        id_account: account.dataValues.id,
-        birthday,
-        address
+        id_account: account.dataValues.id
       })
     }
 
@@ -215,15 +207,40 @@ const createManager = async (body) => {
   }
 }
 
-const updateAccount = (dataUpdate) => {
-  
+const getAccountInfo = async (id, role) => {
+  try {
+    // Thực hiện truy vấn
+    const accounts = await db.Account.findOne({
+      where: {
+        id: id
+      },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+      include: [
+        {
+          model: db.Manager,
+          as: 'managerData',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+        },
+        {
+          model: db.Staff,
+          as: 'staffData',
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+        }
+      ]
+    })
+
+    return accounts
+  } catch (error) {
+    throw new ApiError(error.message)
+  }
 }
 
 const accountService = {
   getAccount,
   createStaff,
   createManager,
-  createAccount
+  createAccount,
+  getAccountInfo
 }
 
 export default accountService

@@ -6,18 +6,20 @@ import { toast } from "react-toastify";
 import authApi from "../apis/authApi";
 import { setToken } from "../redux/authSlice";
 import { UploadButton } from "@bytescale/upload-widget-react";
+import { CiCamera } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   const state = useSelector((state) => state.auth);
 
   const [checked, setChecked] = useState(false);
 
   const [data, setData] = useState({
     avatar: "",
-    fullname: "",
-    curren_password: "",
+    fullName: "",
+    current_password: "",
     new_password: "",
   });
 
@@ -25,29 +27,29 @@ const Profile = () => {
     setData((prev) => ({
       ...prev,
       avatar: state?.userInfo?.avatar,
-      fullname: state?.userInfo?.fullName,
+      fullName: state?.userInfo?.fullName,
     }));
+    if (!state.isLoggedIn) navigate("/");
   }, [state]);
 
   const handleSubmit = () => {
     if (checked)
-      if (!data.curren_password || !data.new_password) {
+      if (!data.current_password || !data.new_password) {
         return toast.warning("Mật khẩu không hợp lệ!");
       }
-    if (!data.fullname) return toast.warning("Tên người dùng không hợp lệ!");
-    if (data.fullname == state?.userInfo.fullName) return;
-    else
-      authApi
-        .update(data)
-        .then((rs) => {
-          console.log(rs);
-          dispatch(setToken({ token: rs.token }));
-          toast.success("Cập nhật thành công");
-        })
-        .catch((err) => {
-          console.log(err);
-          toast.error(err);
-        });
+    if (!data.fullName) return toast.warning("Tên người dùng không hợp lệ!");
+
+    authApi
+      .update(data)
+      .then((rs) => {
+        console.log(rs);
+        dispatch(setToken({ token: rs.token }));
+        toast.success("Cập nhật thành công");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error(err.response?.data?.message);
+      });
   };
 
   const options = {
@@ -76,26 +78,37 @@ const Profile = () => {
       <div className={`w-full overflow-hidden ${styles.horizontalPadding}`}>
         <div className="w-full  my-6">
           <div className="w-full  py-2 flex flex-col gap-4">
-            <div className="w-full grid grid-cols-1 md:grid-cols-9 lg:grid-cols-9 px-2 border md:p-3 rounded-xl gap-4 hover:shadow-xl duration-200 ease-in-out">
+            <div className="w-full grid grid-cols-1 md:grid-cols-9 lg:grid-cols-9 px-2 border md:p-3 rounded-xl gap-4  duration-200 ease-in-out">
               <div className="col-span-1"></div>
               <div className="w-full h-full col-span-2 flex items-center">
-                <div className=" w-60 h-60 my-auto p-[2px] border-[4px] border-[color:#EB662B] rounded-2xl">
+                <div className="relative w-60 h-60 my-auto p-[2px] border-[4px] border-[color:#EB662B] rounded-2xl">
                   <UploadButton
                     options={options}
-                    onComplete={(files) =>
-                      setData((prev) => ({
-                        ...prev,
-                        avatar: files.map((x) => x.fileUrl).join("\n"),
-                      }))
-                    }
+                    onComplete={(files) => {
+                      if (files.map((x) => x.fileUrl).join("\n"))
+                        setData((prev) => ({
+                          ...prev,
+                          avatar: files.map((x) => x.fileUrl).join("\n"),
+                        }));
+                    }}
                   >
                     {({ onClick }) => (
-                      <img
-                        src={data.avatar}
-                        alt="tour image"
-                        onClick={onClick}
-                        className="w-full h-full cursor-pointer object-cover rounded-xl "
-                      />
+                      <div>
+                        <img
+                          src={data.avatar}
+                          alt="tour image"
+                          onClick={onClick}
+                          className="w-full h-full cursor-pointer object-cover rounded-xl "
+                        />
+                        <div className="absolute bottom-1 right-1 p-2 rounded-full bg-sky-500">
+                          <CiCamera
+                            className=" text-3xl"
+                            stroke="#fff"
+                            strokeWidth={0.4}
+                            fill="#fff"
+                          />
+                        </div>
+                      </div>
                     )}
                   </UploadButton>
                 </div>
@@ -121,11 +134,11 @@ const Profile = () => {
                   <input
                     id="name"
                     type="text"
-                    value={data.fullname}
+                    value={data.fullName}
                     onChange={(e) =>
                       setData((prev) => ({
                         ...prev,
-                        fullname: e.target.value,
+                        fullName: e.target.value,
                       }))
                     }
                     className="w-full p-3 rounded-xl border mt-1 border-slate-300 text-sm font-normal outline-none"
@@ -153,11 +166,11 @@ const Profile = () => {
                       <input
                         id="crr_password"
                         type="password"
-                        value={data.curren_password}
+                        value={data.current_password}
                         onChange={(e) =>
                           setData((prev) => ({
                             ...prev,
-                            curren_password: e.target.value,
+                            current_password: e.target.value,
                           }))
                         }
                         className="w-full p-3 rounded-xl border mt-1 border-slate-300 text-sm font-normal outline-none"

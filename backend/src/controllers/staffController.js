@@ -74,6 +74,7 @@ const getTourBooking = async (req, res, next) => {
   try {
     const staffId = req.user.id_staff
     const { idTour } = req.params
+    console.log(idTour)
     const tourBooking = await staffService.getTourBookingByStaff(staffId, idTour)
 
     // Trả về kết quả

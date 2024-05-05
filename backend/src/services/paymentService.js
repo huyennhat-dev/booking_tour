@@ -95,8 +95,7 @@ const createURLPayment = async (req, idBook) => {
     if (!tour) {
       throw new ApiError(404, 'Tour not found')
     }
-    const price_discount = tour.initial_price - (tour.initial_price * tour.promotional)
-    const total = price_discount * req.body.member
+    const total =req.body.total_price
 
     const data = {
       id_tour: idBook,

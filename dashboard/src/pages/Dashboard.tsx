@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import CardDataStats from '../components/CardDataStats';
 import ChartOne from '../components/Charts/ChartOne';
 import DefaultLayout from '../layout/DefaultLayout';
+import { RootState } from '../redux/store';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
+
+  const navigate = useNavigate();
+  const state = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (state.userInfo?.role != "admin") navigate('/calendar')
+  }, [state])
+
   return (
     <DefaultLayout>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">

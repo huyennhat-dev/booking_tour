@@ -156,7 +156,6 @@ const CancelTours = () => {
 
     return (
         <DefaultLayout>
-            <ToastContainer autoClose={2000} />
             <div className="w-full max-w-full rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
                     <div className="max-w-full overflow-x-auto">

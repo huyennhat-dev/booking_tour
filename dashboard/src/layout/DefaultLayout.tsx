@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { getToken } from '../utils/tokenUtils';
 import { logout, setToken } from '../redux/feature/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
@@ -22,7 +23,10 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
+
     <div className="dark:bg-boxdark-2 dark:text-bodydark">
+      <ToastContainer autoClose={2000} />
+
       {/* <!-- ===== Page Wrapper Start ===== --> */}
       <div className="flex h-screen overflow-hidden">
         {/* <!-- ===== Sidebar Start ===== --> */}

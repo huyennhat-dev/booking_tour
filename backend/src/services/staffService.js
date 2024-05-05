@@ -89,6 +89,8 @@ const deleteStaff = async (id_staff) => {
 
 const getTourBookingByStaff = async (idStaff, idTour) => {
   try {
+    console.log(idStaff)
+    console.log(idTour)
     const tour = await db.Tour.findOne({
       where: {
         id_staff: idStaff,
@@ -120,7 +122,7 @@ const getTourBookingByStaff = async (idStaff, idTour) => {
         {
           model: db.Book,
           as: 'tourBookingData',
-          where: { status: 'success', isCheckOut: false },
+          where: { status: 'success', isCheckOut: true },
           include: [
             {
               model: db.User,

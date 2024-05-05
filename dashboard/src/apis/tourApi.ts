@@ -9,6 +9,7 @@ interface tourApi {
   getTour: (id: string) => Promise<any>;
   getBookTours: () => Promise<any>;
   refundMoney: (id: number) => Promise<any>;
+  getBookTourDetail: (id: string) => Promise<any>;
 }
 
 const tourApi: tourApi = {
@@ -40,6 +41,10 @@ const tourApi: tourApi = {
   refundMoney: (id) => {
     const url = `/auth/book/refund/${id}`;
     return axiosClient.put(url);
+  },
+  getBookTourDetail: (id) => {
+    const url = `/auth/staff/tour-booking/${id}`;
+    return axiosClient.get(url);
   },
 };
 

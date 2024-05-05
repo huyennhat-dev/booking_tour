@@ -15,8 +15,7 @@ const createURLpayment = async (req, res, next) => {
 const vnpayReturn = async (req, res, next) => {
   try {
     const url = await paymentService.vnpReturn(req.query)
-    // return res.redirect(url)
-    return res.status(200).json({ statusCode: 200, data: url})
+    return res.redirect(url)
   } catch (error) {
     return res.status(500).json({ statusCode: 500, error : 'Bạn Đã thanh toán tour này rồi' })
   }

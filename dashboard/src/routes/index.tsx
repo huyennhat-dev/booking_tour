@@ -12,6 +12,7 @@ const EditTour = lazy(() => import("../pages/Tour/edit"));
 const ViewTour = lazy(() => import("../pages/Tour/view"));
 const StaffViewTour = lazy(() => import("../pages/Tour/StaffView"));
 const LoginPage = lazy(() => import("../pages/Auth/Login"));
+const ProfilePage = lazy(() => import("../pages/Auth/Profile"));
 const CancelTour = lazy(() => import("../pages/Book/cancel"));
 const BooksTour = lazy(() => import("../pages/Book"));
 const Calendar = lazy(() => import("../pages/Calendar/Calendar"));
@@ -96,6 +97,12 @@ export const routes = [
         page: <LoginPage />,
     },
 
+    {
+        pageTitle: " Profile Page | TailAdmin - Tailwind CSS Admin Dashboard Template",
+        url: "/profile",
+        page: <ProfilePage />,
+    },
+    
     {
         url: '/',
         pageTitle: " Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template",

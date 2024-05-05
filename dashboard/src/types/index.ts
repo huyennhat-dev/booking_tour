@@ -69,6 +69,7 @@ export type ACCOUNT_TYPE = {
   email: string;
   username: string;
   role: string;
+  avatar?: string;
   phoneNumber: string;
 };
 
