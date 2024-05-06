@@ -167,6 +167,7 @@ const CreateTour = () => {
                                             </label>
                                             <input
                                                 type="number"
+                                                min={1}
                                                 value={formData.initial_price}
                                                 onChange={(e) => {
                                                     setFormData((prevData) => ({
@@ -203,6 +204,8 @@ const CreateTour = () => {
                                             </label>
                                             <input
                                                 type="number"
+                                                min={0}
+
                                                 value={formData.max_user}
                                                 onChange={(e) => {
                                                     setFormData((prevData) => ({
