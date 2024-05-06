@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         as: 'staffData'
       })
     }
+    
   }
   Account.init({
     id: {

@@ -14,6 +14,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
+      id_manager: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       address: {
         type: Sequelize.STRING,
         allowNull: true,

@@ -7,7 +7,16 @@ import jwt from 'jsonwebtoken'
 
 const getAccount = async (req, res, next) => {
   try {
-    const data = await accountService.getAccount(req.query)
+    const role = req.user.role
+    let data = []
+    if (role == 'admin') {
+      data = await accountService.getAccount(req.query, 'admin')
+    }
+
+    if (role == 'manager') {
+      data = await accountService.getAccount(req.query, 'manager')
+    }
+
     res.status(200).json({
       statusCode : 200,
       data : data.accounts,
@@ -25,7 +34,7 @@ const getAccount = async (req, res, next) => {
 
 const createAccount = async (req, res, next) => {
   try {
-    const account = await accountService.createAccount(req.body)
+    const account = await accountService.createAccount(req.body, req.user)
     res.status(200).json({
       statusCode : 200,
       data : account
@@ -325,7 +334,6 @@ const getAnalytics = async (req, res, next) => {
     analytics.totalManager = totalManager
     analytics.totalStaff = totalStaff
     analytics.revenue = revenue
-
 
 
     res.status(200).json({

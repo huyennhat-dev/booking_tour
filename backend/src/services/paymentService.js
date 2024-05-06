@@ -227,6 +227,13 @@ const vnpReturn = async (query) => {
             }
           ]
         })
+
+        // // sử lý trừ max user bên tour
+        // const bookSucessMenber = bookSucess.member
+        // const tour = bookSucess.id_tour
+
+
+
         const htmlTemplate = `
         <h2>Thanh toán thành công</h2>
         <p>Xin chào ${bookSucess.userData.fullName},</p>

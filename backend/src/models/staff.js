@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'id_account',
         as: 'accountData'
       })
+
+      models.Staff.belongsTo(models.Manager, {
+        foreignKey: 'id_manager',
+        as: 'managerData'
+      })
+
+
     }
   }
   Staff.init({
@@ -24,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     id_account: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    id_manager: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     },
     address: {
       type: DataTypes.STRING,

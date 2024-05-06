@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs'
 import generateStrongPassword from '~/utils/generateStrongPassword'
 import randomCatAvatar from '~/utils/randomCatAvatar'
 
-const getAccount = async (query) => {
+const getAccount = async (query, role) => {
   try {
     // Đọc các tham số từ query string
     //http://localhost:8000/api/v1/user?filters[role]=admin&search=thanh&sortBy=createdAt&sortOrder=desc&page=1&limit=10
@@ -21,9 +21,19 @@ const getAccount = async (query) => {
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
+    let whereClause = {
+      role : role
+    }
+    if (role == 'admin') {
+      whereClause.role = 'manager'
+    }
+
+    if (role == 'manager') {
+      whereClause.role = 'staff'
+    }
 
     // Xây dựng điều kiện tìm kiếm
-    let whereClause = {}
+
     if (search) {
       whereClause = {
         [Op.or]: [{ email: { [Op.like]: `%${search}%` } }]
@@ -51,7 +61,13 @@ const getAccount = async (query) => {
         {
           model: db.Staff,
           as: 'staffData',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          include: {
+            model: db.Manager,
+            as: 'managerData',
+            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+
+          }
         }
       ],
       order: [[sortBy, sortOrder]],
@@ -70,9 +86,9 @@ const getAccount = async (query) => {
   }
 }
 
-const createAccount = async (body) => {
+const createAccount = async (body, user) => {
   try {
-    const { email, username, role, phoneNumber } = body
+    const { email, username, phoneNumber } = body
     const avatar = randomCatAvatar()
     // check account account
     const checkAccount = await db.Account.findOne({
@@ -89,6 +105,8 @@ const createAccount = async (body) => {
     // create account account
     const hashedPassword = await bcrypt.hash(strongPassword, 10)
 
+    let role = user.role == 'admin' ? 'manager' : 'staff'
+
     const account = await db.Account.create({
       email,
       password: hashedPassword,
@@ -99,12 +117,13 @@ const createAccount = async (body) => {
     })
     let account_info
 
-    if (role == 'staff') {
+    if (user.role == 'manager') {
       account_info = await db.Staff.create({
-        id_account: account.dataValues.id
+        id_account: account.dataValues.id,
+        id_manager: user.id_manager
       })
     }
-    if (role == 'manager') {
+    if (user.role == 'admin') {
       account_info = await db.Manager.create({
         id_account: account.dataValues.id
       })
