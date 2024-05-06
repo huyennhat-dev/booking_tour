@@ -155,7 +155,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </div>
               </li>}
 
-              {role == "admin" && <SidebarLinkGroup
+              {(role == "admin" || role == "manager") && <SidebarLinkGroup
                 activeCondition={
                   pathname.includes('/account')
                 }
@@ -193,11 +193,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 'bg-graydark dark:bg-meta-4'
                                 }`}
                             >
-                              Tài khoản quản trị
+                              Tài khoản {role == "admin" ? "đối tác" : "hướng dẫn viên"}
                             </div>
                           </li>
 
-                          <li onClick={() => handleClickNavigate('/account/user')}
+                          {role == "admin" && <li onClick={() => handleClickNavigate('/account/user')}
                           >
                             <div
                               className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
@@ -207,7 +207,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             >
                               Tài khoản người dùng
                             </div>
-                          </li>
+                          </li>}
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
