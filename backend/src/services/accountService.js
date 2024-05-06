@@ -22,11 +22,23 @@ const getAccount = async (query, role, id_manager) => {
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
     let whereClause = {
-      role : role
+      role: role
     }
     let whereClauseStaff = {}
+    let includeQuery = {
+      model: db.Staff,
+      as: 'staffData',
+      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+      where: whereClauseStaff,
+      include: {
+        model: db.Manager,
+        as: 'managerData',
+        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+      }
+    }
     if (role == 'admin') {
       whereClause.role = 'manager'
+      delete includeQuery.where
     }
 
     if (role == 'manager') {
@@ -49,7 +61,7 @@ const getAccount = async (query, role, id_manager) => {
         whereClause[key] = filters[key]
       }
     }
-
+    console.log(whereClause)
     // Thực hiện truy vấn
     const accounts = await db.Account.findAndCountAll({
       where: whereClause,
@@ -60,18 +72,7 @@ const getAccount = async (query, role, id_manager) => {
           as: 'managerData',
           attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
         },
-        {
-          model: db.Staff,
-          as: 'staffData',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
-          where: whereClauseStaff,
-          include: {
-            model: db.Manager,
-            as: 'managerData',
-            attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
-
-          }
-        }
+        includeQuery
       ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit) == 1000 ? null : parseInt(limit),
