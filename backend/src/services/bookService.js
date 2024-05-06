@@ -110,64 +110,64 @@ const getBook = async (query, role = '', id_by_role) => {
       booksCancel.rows = booksCancel.rows.filter(book => book.tourData.id_staff === id_by_role)
     }
 
-    if (role === 'admin') {
+    // if (role === 'admin') {
       return {
         'bookSuccess': booksSucess.rows,
         'bookCancel': booksCancel.rows
       }
-    }
+    // }
 
-    const customizeBookSucess = booksSucess.rows.map(book => {
-      let booking_info = {}
-      try {
-        booking_info = JSON.parse(book.booking_info)
-      } catch (error) {
-        booking_info = {}
-      }
-      return {
-        id : book.id,
-        booking_info : booking_info,
-        total_price : book.total_price,
-        day_booking: book.day_booking,
-        isCheckout: book.isCheckout,
-        member : book.member,
-        tour: {
-          ...book.tourData.dataValues,
-        }
-      }
+    // const customizeBookSucess = booksSucess.rows.map(book => {
+    //   let booking_info = {}
+    //   try {
+    //     booking_info = JSON.parse(book.booking_info)
+    //   } catch (error) {
+    //     booking_info = {}
+    //   }
+    //   return {
+    //     id : book.id,
+    //     booking_info : booking_info,
+    //     total_price : book.total_price,
+    //     day_booking: book.day_booking,
+    //     isCheckout: book.isCheckout,
+    //     member : book.member,
+    //     tour: {
+    //       ...book.tourData.dataValues,
+    //     }
+    //   }
 
-    })
+    // })
 
-    const customizeBookCancel = booksCancel.rows.map(book => {
-      let booking_info = {}
-      try {
-        booking_info = JSON.parse(book.booking_info)
-      } catch (error) {
-        booking_info = {}
-      }
+    // const customizeBookCancel = booksCancel.rows.map(book => {
+    //   let booking_info = {}
+    //   try {
+    //     booking_info = JSON.parse(book.booking_info)
+    //   } catch (error) {
+    //     booking_info = {}
+    //   }
 
-      return {
-        id : book.id,
-        booking_info : booking_info,
-        total_price : book.total_price,
-        day_booking: book.day_booking,
-        isCheckout: book.isCheckout,
-        member : book.member,
-        tour: {
-          ...book.tourData.dataValues,
-        },
-        cancel: {
-          ...book.cancelData.dataValues
-        }
-      }
+    //   return {
+    //     id : book.id,
+    //     booking_info : booking_info,
+    //     total_price : book.total_price,
+    //     day_booking: book.day_booking,
+    //     isCheckout: book.isCheckout,
+    //     member : book.member,
+    //     tour: {
+    //       ...book.tourData.dataValues,
+    //     },
+    //     cancel: {
+    //       ...book.cancelData.dataValues
+    //     }
+    //   }
 
-    })
+    // })
 
 
-    return {
-      'bookSuccess': customizeBookSucess,
-      'bookCancel': customizeBookCancel
-    }
+    // return {
+    //   'bookSuccess': customizeBookSucess,
+    //   'bookCancel': customizeBookCancel
+    // }
   } catch (error) {
     console.log(error)
     throw new ApiError(error.message)

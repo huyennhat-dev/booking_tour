@@ -82,7 +82,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to="/">
-          <img src={Logo} alt="Logo" />
+          <div className="w-full text-center">
+            <div className="w-full flex items-center">
+              <img src="./logo.png" alt="" className=" mx-2" />
+              <p className="text-3xl text-[color:#EB662B] font-bold">VTour</p>
+            </div>
+          </div>
         </NavLink>
 
         <button
@@ -286,7 +291,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 }}
               </SidebarLinkGroup>}
 
-              {role == "admin" && <SidebarLinkGroup
+              {(role == "admin" || role == "manager") && <SidebarLinkGroup
                 activeCondition={
                   pathname.includes('/book')
                 }
@@ -328,17 +333,19 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </div>
                           </li>
 
-                          <li onClick={() => handleClickNavigate('/book/cancel')}
-                          >
-                            <div
-                              className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
-                                pathname === "/book/cancel") &&
-                                'bg-graydark dark:bg-meta-4'
-                                }`}
+                          {
+                            role == "admin" && <li onClick={() => handleClickNavigate('/book/cancel')}
                             >
-                              Danh sách tour hủy
-                            </div>
-                          </li>
+                              <div
+                                className={`group cursor-pointer relative flex items-center gap-2.5 rounded-lg px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
+                                  pathname === "/book/cancel") &&
+                                  'bg-graydark dark:bg-meta-4'
+                                  }`}
+                              >
+                                Danh sách tour hủy
+                              </div>
+                            </li>
+                          }
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}

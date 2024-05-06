@@ -32,7 +32,10 @@ const BooksTour = () => {
 
     useEffect(() => {
         tourApi.getBookTours().then(rs => {
+            console.log(rs.data.bookSuccess)
+
             const modifyData = rs.data?.bookSuccess.map((e: any) => {
+                console.log(JSON.parse(JSON.stringify(e.booking_info)))
                 return {
                     ...e,
                     booking_info: JSON.parse(e.booking_info)

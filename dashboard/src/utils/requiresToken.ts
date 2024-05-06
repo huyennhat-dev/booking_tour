@@ -12,7 +12,8 @@ const requiresToken = (url: string) => {
     '/auth/book/refund/:id',
     '/auth/account/info',
     'auth/account/update',
-    '/auth/staff/tour-booking/:id'
+    '/auth/staff/tour-booking/:id',
+    '/auth/account/analytics'
   ];
 
   return tokenRequiredPaths.some((path) => url.startsWith(path));
