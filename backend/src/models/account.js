@@ -18,7 +18,6 @@ module.exports = (sequelize, DataTypes) => {
         as: 'staffData'
       })
     }
-    
   }
   Account.init({
     id: {
@@ -56,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: ''
-    
     },
     updatedAt: {
       type: DataTypes.DATE,

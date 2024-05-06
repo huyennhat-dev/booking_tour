@@ -14,7 +14,7 @@ const getAccount = async (req, res, next) => {
     }
 
     if (role == 'manager') {
-      data = await accountService.getAccount(req.query, 'manager')
+      data = await accountService.getAccount(req.query, 'manager', req.user.id_manager)
     }
 
     res.status(200).json({

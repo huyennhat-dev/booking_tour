@@ -2,7 +2,7 @@ import db from '~/models'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
 
-const getStaff = async (query) => {
+const getStaff = async (query , id_manager) => {
   try {
     // Đọc các tham số từ query string
     const {
@@ -17,7 +17,9 @@ const getStaff = async (query) => {
     const skip = (page - 1) * limit
 
     // Xây dựng điều kiện tìm kiếm
-    let whereClause = {}
+    let whereClause = {
+      id_manager: id_manager
+    }
 
     // Áp dụng bộ lọc (nếu có)
     for (const key in filters) {

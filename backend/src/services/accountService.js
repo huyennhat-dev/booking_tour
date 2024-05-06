@@ -1,12 +1,12 @@
 import db from '~/models'
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import ApiError from '~/utils/ApiError'
 import emailService from '~/services/mailService'
 import bcrypt from 'bcryptjs'
 import generateStrongPassword from '~/utils/generateStrongPassword'
 import randomCatAvatar from '~/utils/randomCatAvatar'
 
-const getAccount = async (query, role) => {
+const getAccount = async (query, role, id_manager) => {
   try {
     // Đọc các tham số từ query string
     //http://localhost:8000/api/v1/user?filters[role]=admin&search=thanh&sortBy=createdAt&sortOrder=desc&page=1&limit=10
@@ -24,12 +24,14 @@ const getAccount = async (query, role) => {
     let whereClause = {
       role : role
     }
+    let whereClauseStaff = {}
     if (role == 'admin') {
       whereClause.role = 'manager'
     }
 
     if (role == 'manager') {
       whereClause.role = 'staff'
+      whereClauseStaff.id_manager = id_manager
     }
 
     // Xây dựng điều kiện tìm kiếm
@@ -62,6 +64,7 @@ const getAccount = async (query, role) => {
           model: db.Staff,
           as: 'staffData',
           attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+          where: whereClauseStaff,
           include: {
             model: db.Manager,
             as: 'managerData',
@@ -82,6 +85,7 @@ const getAccount = async (query, role) => {
       page: parseInt(page)
     }
   } catch (error) {
+    console.error(error)
     throw new ApiError(error.message)
   }
 }
