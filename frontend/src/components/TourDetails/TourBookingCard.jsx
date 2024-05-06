@@ -2,6 +2,7 @@ import React from "react";
 import Button from "../global/Button";
 import { styles } from "../../styles/styles";
 import { GiCheckMark } from "react-icons/gi";
+import { formatCurrencyVND } from "../../utils";
 const TourBookingCard = ({
   tourGuide,
   meal,
@@ -18,19 +19,19 @@ const TourBookingCard = ({
       <p className="text-base">
         Giá gốc:
         <span className="ml-2 font-medium line-through text-gray-600 italic">
-          {price} đ
+          {formatCurrencyVND(parseInt(price))}
         </span>
       </p>
       <p className="text-base">
         Khuyến mãi:
         <span className={`${styles.orangeText} ml-2 font-semibold text-[24px]`}>
-          {promotional * 100} %
+          {(promotional * 100).toFixed(0)} %
         </span>
       </p>
       <p className="text-base">
         Giá mới chỉ:
         <span className={`${styles.orangeText} ml-2 font-semibold text-[29px]`}>
-          {price - price * promotional} đ
+          {formatCurrencyVND(price - price * promotional)} 
         </span>
       </p>
       {tourGuide || meal || insurance ? (

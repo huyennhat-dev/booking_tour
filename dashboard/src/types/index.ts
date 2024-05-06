@@ -22,11 +22,11 @@ export type USER_TYPE = {
   id: number;
   email: string;
   name: string;
-  photo: string;
+  avatar: string;
 };
 
 export type BOOK_INFO = {
-  full_name: string;
+  name: string;
   email: string;
   phone_number: string;
   address: string;
@@ -35,28 +35,41 @@ export type BOOK_INFO = {
 
 export type BOOK_TYPE = {
   id: number;
-  user: USER_TYPE;
-  tour: TOUR_TYPE;
+  userData: USER_TYPE;
+  tourData: TOUR_TYPE;
   status: string;
-  book_info: BOOK_INFO;
+  booking_info: BOOK_INFO;
   member: number;
   total_price: number;
-  createdAt: string;
+  createdAt?: string;
 };
 
 export type CANCEL_TOUR_TYPE = {
   id: number;
-  book_tour: BOOK_TYPE;
-  is_refund: boolean;
-  reason_cancel: string;
-  stk: string;
-  createdAt: string;
+  userData: USER_TYPE;
+  tourData: TOUR_TYPE;
+  status: string;
+  booking_info: BOOK_INFO;
+  member: number;
+  total_price: number;
+  cancelData: {
+    id?: number;
+    is_refund: boolean;
+    reason: string;
+    stk: {
+      name: string;
+      bank: string;
+      stk: string;
+    };
+    createdAt: string;
+  };
 };
 
 export type ACCOUNT_TYPE = {
   email: string;
   username: string;
   role: string;
+  avatar?: string;
   phoneNumber: string;
 };
 

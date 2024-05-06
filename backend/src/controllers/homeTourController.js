@@ -24,9 +24,8 @@ const getTourSearch = async (req, res, next) => {
 
     if (departure_day) {
       let searchDate = moment(departure_day, 'YYYY-MM-DD').toDate()
-      const searchDateLimit = moment(searchDate).add(7, 'days').toDate()
-      console.log(searchDate)
-      console.log(searchDateLimit)
+      const searchDateLimit = moment(searchDate).add(60, 'days').toDate()
+  
       whereClause = {
         [Op.and]: [
           {
@@ -53,7 +52,6 @@ const getTourSearch = async (req, res, next) => {
       }
     }
 
-    console.log(whereClause)
     // Thực hiện truy vấn
     const tours = await db.Tour.findAndCountAll({
       where: whereClause, // điều kiện tìm kiếm

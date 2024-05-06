@@ -1,3 +1,4 @@
+import db from '~/models'
 import tourService from '~/services/tourService'
 import ApiError from '~/utils/ApiError'
 
@@ -6,7 +7,7 @@ const getTour = async (req, res, next) => {
     const {
       page = 1,
       limit = 1000,
-      search = '',
+      search = ''
     } = req.query
 
     if (search) {
@@ -29,11 +30,11 @@ const getTour = async (req, res, next) => {
       tours = await tourService.getTour(req.query)
     }
 
-    // else if (req.user.role === 'staff') {
-    //   req.query.filters = {}
-    //   req.query.filters.id_staff = req.user.id_staff
-    //   tours = await tourService.getTour(req.query)
-    // }
+    else if (req.user.role === 'staff') {
+      req.query.filters = {}
+      req.query.filters.id_staff = req.user.id_staff
+      tours = await tourService.getTour(req.query)
+    }
 
 
     // Trả về kết quả
@@ -81,6 +82,9 @@ const createTour = async (req, res, next) => {
 const updateTour = async (req, res, next) => {
   try {
     const id = req.params.id
+    // check id_tour in table book
+
+
     const { ...updateData } = req.body
     updateData.id = id
     const updatedTour = await tourService.updateTour(updateData)
@@ -100,6 +104,18 @@ const updateTour = async (req, res, next) => {
 const deleteTour = async (req, res, next) => {
   try {
     const id = req.params.id
+    const book = await db.Book.findOne({
+      where: {
+        id_tour: id
+      }
+    })
+
+    if (book) {
+      return res.status(402).json({
+        statusCode: 402,
+        message: 'Không thể xóa tour đã có người đặt tour'
+      })
+    }
     const deletedTour = await tourService.deleteTour(id)
     return res.status(200).json({
       statusCode: 200,

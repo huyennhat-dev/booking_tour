@@ -29,7 +29,14 @@ const AccountUser = () => {
             limit: limit
         }
         userApi.getAllUser(params).then(rs => {
-            setAccounts(rs.data)
+
+            const modifyData = rs.data.map((e: any) => {
+                return {
+                    ...e,
+                    username: e.fullName
+                }
+            })
+            setAccounts(modifyData)
             setTotal(rs.total)
 
         })
@@ -78,7 +85,7 @@ const AccountUser = () => {
                                         </td>
                                         <td className="border-b  border-[#eee] py-5 px-4  dark:border-strokedark text-center ">
                                             <img
-                                                src="https://robohash.org/6f49be23f61180df2143e26d8a8397ab?set=set4&bgset=&size=400x400"
+                                                src={data.avatar}
                                                 alt=""
                                                 className="w-[80px] h-[80px] mx-auto rounded-sm"
                                             />
@@ -86,8 +93,6 @@ const AccountUser = () => {
                                         <td className="border-b border-[#eee] text-black py-5 px-4  dark:border-strokedark ">
                                             <h4 className="font-semibold text-base">{data.username}</h4>
                                             <h6 className="text-sm mt-1">Email: {data.email}</h6>
-                                            <h6 className="text-sm mt-1">Sdt: {data.phoneNumber}</h6>
-                                            <h6 className="text-sm mt-1">Vai trò: {data.role}</h6>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4  dark:border-strokedark ">
                                             <div>Bình thường</div>

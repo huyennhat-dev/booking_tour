@@ -211,7 +211,7 @@ const AccountManager = () => {
                                         </td>
                                         <td className="border-b  border-[#eee] py-5 px-4  dark:border-strokedark text-center ">
                                             <img
-                                                src="https://robohash.org/6f49be23f61180df2143e26d8a8397ab?set=set4&bgset=&size=400x400"
+                                                src={data.avatar!}
                                                 alt=""
                                                 className="w-[80px] h-[80px] mx-auto rounded-sm"
                                             />

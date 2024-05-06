@@ -1,21 +1,23 @@
 import db from '~/models'
-import { Op, where } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
-import moment from 'moment'
 
 const getStaff = async (query) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', filters = {} } = query
+    const {
+      page = 1,
+      limit = 1000,
+      sortBy = 'createdAt',
+      sortOrder = 'desc',
+      filters = {}
+    } = query
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
     // Xây dựng điều kiện tìm kiếm
     let whereClause = {}
-
-    
 
     // Áp dụng bộ lọc (nếu có)
     for (const key in filters) {
@@ -58,7 +60,9 @@ const createStaff = async (body) => {
 
 const updateStaff = async (updateData) => {
   try {
-    const updatedStaff = await apifeature(db.Staff, 'update', { ...updateData })
+    const updatedStaff = await apifeature(db.Staff, 'update', {
+      ...updateData
+    })
     return updatedStaff
   } catch (error) {
     throw new ApiError(error.message)
@@ -67,10 +71,9 @@ const updateStaff = async (updateData) => {
 
 const deleteStaff = async (id_staff) => {
   try {
+    const staff = await db.Staff.findOne({ where: { id: id_staff } })
 
-    const staff = await db.Staff.findOne({ where: { id : id_staff } })
-
-    const deletedStaff = await apifeature(db.Staff, 'delete', { id : id_staff })
+    const deletedStaff = await apifeature(db.Staff, 'delete', { id: id_staff })
 
     const deleteStaffAccount = await db.Account.destroy({
       where: { id: staff.id_account }
@@ -82,11 +85,69 @@ const deleteStaff = async (id_staff) => {
   }
 }
 
+const getTourBookingByStaff = async (idStaff, idTour) => {
+  try {
+    console.log(idStaff)
+    console.log(idTour)
+    const tour = await db.Tour.findOne({
+      where: {
+        id_staff: idStaff,
+        id: idTour
+      },
+      include: [
+        {
+          model: db.Staff,
+          as: 'staffData',
+          include: [
+            {
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model: db.Manager,
+          as: 'managerData',
+          include: [
+            {
+              model: db.Account,
+              as: 'accountData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            }
+          ]
+        },
+        {
+          model: db.Book,
+          as: 'tourBookingData',
+          where: { status: 'success', isCheckOut: true },
+          include: [
+            {
+              model: db.User,
+              as: 'userData',
+              attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+            },
+            {
+              model: db.Cancel,
+              as: 'cancelData'
+            }
+          ]
+        }
+      ]
+    })
+    return tour
+  } catch (error) {
+    console.log(error)
+    throw new ApiError(error.message)
+  }
+}
+
 const staffService = {
   getStaff,
   createStaff,
   updateStaff,
-  deleteStaff
+  deleteStaff,
+  getTourBookingByStaff
 }
 
 export default staffService

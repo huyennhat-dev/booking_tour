@@ -18,12 +18,6 @@ const authSlice = createSlice({
       const decodedToken = jwtDecode(action.payload.token);
       state.userInfo = decodedToken;
       state.token = action.payload.token;
-    },
-    loginSuccess(state, action) {
-      state.isLoggedIn = true;
-      const decodedToken = jwtDecode(action.payload.token);
-      state.userInfo = decodedToken;
-      state.token = action.payload.token;
       saveToken(action.payload.token);
     },
     logout(state) {
@@ -35,6 +29,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout, setToken } = authSlice.actions;
+export const { logout, setToken } = authSlice.actions;
 
 export default authSlice.reducer;

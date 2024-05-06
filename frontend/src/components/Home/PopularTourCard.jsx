@@ -28,10 +28,10 @@ const PopularTourCard = ({ tour }) => {
         {getProvinceName(tour.destination)}
       </p>
       <Link
-        to={`${createSlug(`/tours/${tour.tour_name}`)}?id=${tour.id}`}
+        to={`/tours/${createSlug(tour.tour_name)}?id=${tour.id}`}
         className="w-full"
       >
-        <h4 className="hover:text-blue-800 text-base font-medium line-clamp-2 overflow-hidden">
+        <h4 className="hover:text-blue-800 min-h-[48px] text-base font-medium line-clamp-2 overflow-hidden">
           {tour?.tour_name}
         </h4>
       </Link>
@@ -54,7 +54,7 @@ const PopularTourCard = ({ tour }) => {
           <p>
             Giảm mạnh:
             <span className="ml-1 font-semibold text-red-500  text-sm">
-              {tour.promotional * 100} %
+              {(tour.promotional * 100).toFixed(0)} %
             </span>
           </p>
         </div>
@@ -71,7 +71,7 @@ const PopularTourCard = ({ tour }) => {
             ngày
           </p>
           <p className="text-xs flex items-center">
-            Chỉ với
+            {tour.promotional>0?'Chỉ còn':'Chỉ với'}
             <span className="text-[color:#eb662b] font-semibold ml-2 text-xl">
               {formatCurrencyVND(
                 tour.initial_price - tour.initial_price * tour.promotional

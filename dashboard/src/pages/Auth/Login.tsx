@@ -5,8 +5,9 @@ import React, { useEffect, useState } from "react";
 import authApi from "../../apis/authApi";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { loginSuccess, setToken } from "../../redux/feature/authSlice";
+import { setToken } from "../../redux/feature/authSlice";
 import { getToken } from "../../utils/tokenUtils";
+import { ToastContainer, toast } from "react-toastify";
 ;
 const LoginPage: React.FC = () => {
     const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
@@ -17,42 +18,42 @@ const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
 
-
     useEffect(() => {
         const token = getToken()
-
         if (token) dispatch(setToken({ token }))
-
         if (isLoggedIn) navigate('/');
     }, [isLoggedIn, navigate]);
 
 
-    const handleLoginClick = async () => {
-        const rs = await authApi.login({ email, password })
-
-        if (rs.statusCode == 200) {
-            dispatch(loginSuccess({ token: rs.token }));
+    const handleLoginClick = () => {
+        authApi.login({ email, password }).then(rs => {
+            dispatch(setToken({ token: rs.token }));
             navigate('/')
-        }
+        }).catch(err => {
+            console.log(err)
+            toast.warning("Email hoặc mật khẩu không đúng!")
+        })
+
     }
 
 
 
     return (
         <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            <ToastContainer autoClose={2000} />
+
             <div className="rounded-sm h-full border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="flex flex-wrap items-center">
                     <div className="hidden w-full xl:block xl:w-1/2">
                         <div className="py-17.5 px-26 text-center">
                             <Link className="mb-5.5 inline-block" to="/">
-                                <img className="hidden dark:block" src={Logo} alt="Logo" />
-                                <img className="dark:hidden" src={LogoDark} alt="Logo" />
+                                <div className="w-full flex items-center">
+                                    <img src="./logo.png" alt="" className=" mx-2"/>
+                                    <p className="text-3xl text-[color:#EB662B] font-bold">Tourz Admin</p>
+                                </div>
                             </Link>
 
-                            <p className="2xl:px-20">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                                suspendisse.
-                            </p>
+                  
 
                             <span className="mt-15 inline-block">
                                 <svg
@@ -181,9 +182,8 @@ const LoginPage: React.FC = () => {
 
                     <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
                         <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-                            <span className="mb-1.5 block font-medium">Start for free</span>
                             <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                                Sign In to TailAdmin
+                                Đăng nhập vào Tourz Admin
                             </h2>
 
                             <div className="mb-4">
@@ -221,7 +221,7 @@ const LoginPage: React.FC = () => {
 
                             <div className="mb-6">
                                 <label className="mb-2.5 block font-medium text-black dark:text-white">
-                                    Password
+                                    Mật khẩu
                                 </label>
                                 <div className="relative">
                                     <input
@@ -262,16 +262,6 @@ const LoginPage: React.FC = () => {
                                 >
                                     Đăng Nhập
                                 </button>
-                            </div>
-
-
-                            <div className="mt-6 text-center">
-                                <p>
-                                    Don’t have any account?{' '}
-                                    <Link to="/auth/signup" className="text-primary">
-                                        Sign Up
-                                    </Link>
-                                </p>
                             </div>
                         </div>
                     </div>

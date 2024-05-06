@@ -20,6 +20,8 @@ const env = {
   FRONTEND_PORT : process.env.FRONTEND_PORT,
   DASHBOARD_PORT : process.env.DASHBOARD_PORT,
   HOST : process.env.HOST
+
+  
 }
 
 export default env

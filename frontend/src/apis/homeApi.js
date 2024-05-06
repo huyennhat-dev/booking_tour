@@ -13,13 +13,17 @@ const homeApi = {
     const url = `/auth/tour/${id}`;
     return axiosClient.get(url);
   },
+  getBookTours:()=>{
+    const url = `/auth/book`;
+    return axiosClient.get(url);
+  },
   bookTour: (data) => {
     const url = `/payment/book`;
     return axiosClient.post(url, { ...data });
   },
   cancelTour: (data) => {
-    const url = `/book/cancel`;
-    return axiosClient.post(url, { ...data });
+    const url = `/auth/book/cancel-tour`;
+    return axiosClient.put(url, { ...data });
   },
 };
 

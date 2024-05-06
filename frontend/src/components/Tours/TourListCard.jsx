@@ -99,7 +99,7 @@ const TourListCard = ({ tour }) => {
               <strong
                 className={`font-semibold ${styles.orangeText} text-base ml-1`}
               >
-                {tour?.promotional * 100}%
+                {(tour?.promotional * 100).toFixed(0)}%
               </strong>
             </div>
           </div>

@@ -5,10 +5,11 @@ import { jwtDecode } from 'jwt-decode';
 
 export type UserInfo = {
   id: string;
+  avatar?: string;
   username: string;
   role: string;
   email: string;
-  id_manager:number;
+  id_manager: number;
   phoneNumber: string;
 };
 
@@ -32,15 +33,9 @@ const authSlice = createSlice({
       const decodedToken: UserInfo = jwtDecode(action.payload.token);
       state.userInfo = decodedToken;
       state.token = action.payload.token;
-    },
-    loginSuccess(state, action: PayloadAction<{ token: string }>) {
-      state.isLoggedIn = true;
-
-      const decodedToken: UserInfo = jwtDecode(action.payload.token);
-      state.userInfo = decodedToken;
-      state.token = action.payload.token;
       saveToken(action.payload.token);
     },
+
     logout(state) {
       state.isLoggedIn = false;
       state.token = null;
@@ -50,6 +45,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout, setToken } = authSlice.actions;
+export const { logout, setToken } = authSlice.actions;
 
 export default authSlice.reducer;

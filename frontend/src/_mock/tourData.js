@@ -29,3 +29,5 @@ export const tourDetail = {
   createdAt: "2024-04-23T14:39:43.000Z",
   updatedAt: "2024-04-23T14:39:43.000Z",
 };
+
+

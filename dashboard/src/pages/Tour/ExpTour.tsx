@@ -47,7 +47,7 @@ const ExpListTours = () => {
 
   useEffect(() => {
     getAllTour()
-  }, []);
+  }, [currentPage]);
 
   const handleDeleteTour = (id: number) => {
     tourApi.delete(id).then(rs => {
@@ -63,6 +63,12 @@ const ExpListTours = () => {
     const province = provinces.find(p => p.slug === slug);
     return province ? province.name : "Không tìm thấy tỉnh";
   }
+
+  const handleChangePage = (page:number) => {
+    setCurrentPage(page)
+    navigate({ search: `?page=${page}` });
+  }
+
   return (
     <DefaultLayout>
       <ToastContainer autoClose={2000} />
@@ -162,14 +168,12 @@ const ExpListTours = () => {
           </div>
           {total > 10 ? (
             <div className="w-full my-3 text-center">
-              <Pagination
+                      <Pagination
                 defaultCurrent={currentPage}
                 total={total}
                 showSizeChanger={false}
                 pageSize={limit}
-                onChange={(val) => {
-                  navigate({ search: `?page=${val}` });
-                }}
+                onChange={(val) => handleChangePage(val)}
               />
             </div>
           ) : null}

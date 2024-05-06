@@ -2,19 +2,19 @@ import db from '~/models'
 import { Op, where } from 'sequelize'
 import apifeature from '~/helpers/apifeature'
 import ApiError from '~/utils/ApiError'
+import book from '~/models/book'
 
-const getBook = async (query, role = '') => {
+const getBook = async (query, role = '', id_by_role) => {
   try {
     // Đọc các tham số từ query string
-    const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', filters = {} } = query
+    const { sortBy = 'createdAt', sortOrder = 'desc' } = query
 
-    // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
-    const skip = (page - 1) * limit
 
     // Thực hiện truy vấn
-    const books = await db.Book.findAndCountAll({
+    const booksSucess = await db.Book.findAndCountAll({
       where: {
         isCheckout: true,
+        status: 'success'
       },
       include: [
         {
@@ -48,13 +48,126 @@ const getBook = async (query, role = '') => {
           as : 'userData'
         }
       ],
-      order: [[sortBy, sortOrder]],
-      limit: parseInt(limit) == 1000 ? null : parseInt(limit),
-      offset: parseInt(skip)
+      order: [[sortBy, sortOrder]]
     })
 
+    const booksCancel = await db.Book.findAndCountAll({
+      where: {
+        isCheckout: true,
+        status: 'cancel'
+      },
+      include: [
+        {
+          model: db.Tour,
+          as : 'tourData',
+          include: [
+            {
+              model: db.Manager,
+              as : 'managerData',
+              include: [
+                {
+                  model: db.Account,
+                  as : 'accountData'
+                }
+              ]
+            },
+            {
+              model: db.Staff,
+              as : 'staffData',
+              include: [
+                {
+                  model: db.Account,
+                  as : 'accountData'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          model: db.User,
+          as : 'userData'
+        },
+        {
+          model: db.Cancel,
+          as : 'cancelData'
+        }
+      ],
+      order: [[sortBy, sortOrder]]
+    })
 
-    return books
+    if (role === 'customer') {
+      booksSucess.rows = booksSucess.rows.filter(book => book.id_user === id_by_role)
+      booksCancel.rows = booksCancel.rows.filter(book => book.id_user === id_by_role)
+    }
+
+    if (role === 'manager') {
+      booksSucess.rows = booksSucess.rows.filter(book => book.tourData.id_manager === id_by_role)
+      booksCancel.rows = booksCancel.rows.filter(book => book.tourData.id_manager === id_by_role)
+    }
+
+    if (role === 'staff') {
+      booksSucess.rows = booksSucess.rows.filter(book => book.tourData.id_staff === id_by_role)
+      booksCancel.rows = booksCancel.rows.filter(book => book.tourData.id_staff === id_by_role)
+    }
+
+    // if (role === 'admin') {
+      return {
+        'bookSuccess': booksSucess.rows,
+        'bookCancel': booksCancel.rows
+      }
+    // }
+
+    // const customizeBookSucess = booksSucess.rows.map(book => {
+    //   let booking_info = {}
+    //   try {
+    //     booking_info = JSON.parse(book.booking_info)
+    //   } catch (error) {
+    //     booking_info = {}
+    //   }
+    //   return {
+    //     id : book.id,
+    //     booking_info : booking_info,
+    //     total_price : book.total_price,
+    //     day_booking: book.day_booking,
+    //     isCheckout: book.isCheckout,
+    //     member : book.member,
+    //     tour: {
+    //       ...book.tourData.dataValues,
+    //     }
+    //   }
+
+    // })
+
+    // const customizeBookCancel = booksCancel.rows.map(book => {
+    //   let booking_info = {}
+    //   try {
+    //     booking_info = JSON.parse(book.booking_info)
+    //   } catch (error) {
+    //     booking_info = {}
+    //   }
+
+    //   return {
+    //     id : book.id,
+    //     booking_info : booking_info,
+    //     total_price : book.total_price,
+    //     day_booking: book.day_booking,
+    //     isCheckout: book.isCheckout,
+    //     member : book.member,
+    //     tour: {
+    //       ...book.tourData.dataValues,
+    //     },
+    //     cancel: {
+    //       ...book.cancelData.dataValues
+    //     }
+    //   }
+
+    // })
+
+
+    // return {
+    //   'bookSuccess': customizeBookSucess,
+    //   'bookCancel': customizeBookCancel
+    // }
   } catch (error) {
     console.log(error)
     throw new ApiError(error.message)
@@ -139,25 +252,6 @@ const createBook = async (body) => {
       })
 
       const { customerData, tourData, guest_number } = book.dataValues
-      console.log(book)
-      // gửi mail xác nhận đặt tour
-      console.log(`
-        <h2>Đặt tour thành công</h2>
-        <p>Xin chào ${customerData.full_name},</p>
-        <p>Cảm ơn bạn đã đặt tour "${tourData.name_tour}" tại công ty du lịch ${tourData?.managerData?.company_name}.</p>
-        <p>Thông tin chi tiết:</p>
-        <ul>
-            <li>Tên tour: ${tourData.name_tour}</li>
-            <li>Địa điểm: ${tourData.destination}</li>
-            <li>Ngày khởi hành: ${tourData.departure}</li>
-            <li>Ngày kết thúc: ${tourData.end_tour}</li>
-            <li>Số lượng khách: ${guest_number}</li>
-        </ul>
-        <p>Bạn có thể xem thông tin chi tiết của tour tại <a href="{{tour_link}}">đây</a>.</p>
-        <p>Chúng tôi rất mong chờ chuyến đi của bạn!</p>
-        <p>Trân trọng,</p>
-        <p>${tourData?.managerData?.company_name}</p>
-      `, customerData.userData.email)
 
       return book
     } else {
@@ -189,8 +283,7 @@ const deleteBook = async (id_booked_tour) => {
 }
 
 
-
-const cancelTour = async (idBook , infoCancel) => {
+const cancelTour = async (idBook, infoCancel) => {
   try {
     const book = await db.Book.findOne({
       where: {
@@ -198,7 +291,6 @@ const cancelTour = async (idBook , infoCancel) => {
         status: 'success'
       }
     })
-
 
 
     if (book) {
@@ -218,7 +310,7 @@ const cancelTour = async (idBook , infoCancel) => {
 
       return newBookCancel
     } else {
-      throw new ApiError(.404,'Không tìm thấy book')
+      throw new ApiError(.404, 'Không tìm thấy book')
     }
   } catch (error) {
     console.log(error)
@@ -226,7 +318,7 @@ const cancelTour = async (idBook , infoCancel) => {
   }
 }
 
-const refundTour = async (idCancel , res) => {
+const refundTour = async (idCancel, res) => {
   try {
     console.log(idCancel)
     const cancel = await db.Cancel.findOne({
@@ -234,7 +326,7 @@ const refundTour = async (idCancel , res) => {
         id: idCancel
       }
     })
-    if(cancel.is_refund) {
+    if (cancel.is_refund) {
       throw new ApiError('Đã hoàn tiền rồi')
     }
 

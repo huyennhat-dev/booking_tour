@@ -10,7 +10,6 @@ const router = express.Router()
 const loginFuc = async (req, res, next) => {
   const { email, password } = req.body
 
-
   if (!email || !password) {
     return next(new ApiError(404, 'Email and password are required.'))
   }
@@ -32,7 +31,7 @@ const loginFuc = async (req, res, next) => {
         }
       ]
     })
-
+    console.log(user)
     // Nếu không tìm thấy người dùng
     if (!user) {
       return next(new ApiError(403, 'Unauthorized'))
@@ -46,28 +45,23 @@ const loginFuc = async (req, res, next) => {
       return next(new ApiError(403, 'Unauthorized'))
     }
 
-    const token = jwt.sign({
-      id : user.dataValues.id,
-      email : user.dataValues.email,
-      username : user.dataValues.username,
-      phoneNumber : user.dataValues.phone_number,
-      role : user.dataValues.role,
-      id_staff : user.dataValues.staffData?.id,
-      id_manager : user.dataValues.managerData?.id
-    }, env.JWT_SECRETKEY)
+    const token = jwt.sign(
+      {
+        id: user.dataValues.id,
+        email: user.dataValues.email,
+        username: user.dataValues.username,
+        phoneNumber: user.dataValues.phone_number,
+        role: user.dataValues.role,
+        avatar: user.dataValues.avatar,
+        id_staff: user.dataValues.staffData?.id,
+        id_manager: user.dataValues.managerData?.id
+      },
+      env.JWT_SECRETKEY
+    )
 
     return res.status(200).json({
       statusCode: 200,
-      token: token,
-      data: {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-        phoneNumber: user.phone_number,
-        role: user.dataValues.role,
-        id_staff: user.dataValues.staffData?.id,
-        id_manager: user.dataValues.managerData?.id
-      }
+      token: token
     })
   } catch (error) {
     return next(new ApiError(403, 'Unauthorized'))
