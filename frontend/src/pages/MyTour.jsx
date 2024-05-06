@@ -22,27 +22,27 @@ const MyTourItem = ({ data, openModal, isCancel }) => {
     <div className="w-full  py-2 flex flex-col gap-4">
       <div className="w-full grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 px-2 border md:p-3 rounded-xl gap-4 hover:shadow-xl duration-200 ease-in-out">
         <img
-          src={data?.tour?.photos[0]}
+          src={data?.tourData.photos[0]}
           alt="tour image"
           className="mx-auto md:mx-0 rounded"
         />
         <div className="md:px-2 flex flex-col col-span-2 justify-center items-start">
           <Link
-            to={`/tours/${createSlug(data?.tour?.tour_name)}?id=${
-              data?.tour?.id
+            to={`/tours/${createSlug(data?.tourData.tour_name)}?id=${
+              data?.tourData.id
             }`}
           >
             <p className="text-base line-clamp-2 overflow-visible font-semibold hover:text-[color:#EB662B] cursor-pointer duration-100 ease-in-out">
-              {data?.tour?.tour_name}
+              {data?.tourData.tour_name}
             </p>
           </Link>
           <div className="text-xs font-normal flex items-center justify-between w-full">
             <div className="flex items-center">
               <CiLocationOn className="mr-1" />
-              {getProvinceName(data?.tour?.destination)}
+              {getProvinceName(data?.tourData.destination)}
             </div>
-            <span>Ngày đi: {data?.tour?.departure_day}</span>
-            <span className="ml-5">Ngày về: {data?.tour?.end_tour_day}</span>
+            <span>Ngày đi: {data?.tourData.departure_day}</span>
+            <span className="ml-5">Ngày về: {data?.tourData.end_tour_day}</span>
             <p className="text-xs font-normal flex items-center">
               <CiClock1 className="mr-1" />
               {calculateDateDifference(
@@ -93,15 +93,15 @@ const MyTourItem = ({ data, openModal, isCancel }) => {
           <p className="text-sm font-medium flex items-center">
             <span className="flex items-center">
               Giá gốc:
-              {data.tour.promotional > 0 && (
+              {data.tourData.promotional > 0 && (
                 <span className="text-slate-500 line-through  mx-1">
-                  {formatCurrencyVND(data.tour.initial_price)}
+                  {formatCurrencyVND(data.tourData.initial_price)}
                 </span>
               )}
               <span className="text-[color:#EB662B] text-base font-semibold  mx-1">
                 {formatCurrencyVND(
-                  data.tour.initial_price -
-                    data.tour.initial_price * data.tour.promotional
+                  data.tourData.initial_price -
+                    data.tourData.initial_price * data.tourData.promotional
                 )}
               </span>
               / vé
@@ -157,24 +157,26 @@ const MyTour = () => {
     homeApi
       .getBookTours()
       .then((rs) => {
+
+        console.log(rs)
         // Chỉnh sửa dữ liệu nhận được từ API trước khi lưu vào state
         const modifyData = {
           ...rs.data,
           bookSuccess: rs.data.bookSuccess.map((e) => {
             return {
               ...e,
-              tour: {
-                ...e.tour,
-                photos: e.tour.photos?.split(","), // Chuyển đổi chuỗi ảnh thành mảng
+              tourData: {
+                ...e.tourData,
+                photos: e.tourData.photos?.split(","), 
               },
             };
           }),
           bookCancel: rs.data.bookCancel.map((e) => {
             return {
               ...e,
-              tour: {
-                ...e.tour,
-                photos: e.tour.photos?.split(","), // Chuyển đổi chuỗi ảnh thành mảng
+              tourData: {
+                ...e.tourData,
+                photos: e.tourData.photos?.split(","), // Chuyển đổi chuỗi ảnh thành mảng
               },
             };
           }),
@@ -256,7 +258,7 @@ const MyTour = () => {
                       openModal={() => {
                         setCancelData((prev) => ({
                           ...prev,
-                          id_book: tour.id,
+                          id_book: data.id,
                         }));
                         setShowModal(true);
                       }}
