@@ -80,6 +80,11 @@ module.exports = {
         allowNull: true,
         defaultValue: 10
       },
+      total_sale : {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        defaultValue: 0
+      },
       point_rating : {
         type: Sequelize.FLOAT,
         allowNull: true,
