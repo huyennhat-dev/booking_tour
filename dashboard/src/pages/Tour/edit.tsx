@@ -161,6 +161,7 @@ const EditTour = () => {
                                             </label>
                                             <input
                                                 type="number"
+                                                min={1}
                                                 value={formData.initial_price}
                                                 onChange={(e) => {
                                                     const value = parseInt(e.target.value);

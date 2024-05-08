@@ -111,10 +111,10 @@ const getBook = async (query, role = '', id_by_role) => {
     }
 
     // if (role === 'admin') {
-      return {
-        'bookSuccess': booksSucess.rows,
-        'bookCancel': booksCancel.rows
-      }
+    return {
+      'bookSuccess': booksSucess.rows,
+      'bookCancel': booksCancel.rows
+    }
     // }
 
     // const customizeBookSucess = booksSucess.rows.map(book => {
@@ -353,6 +353,17 @@ const refundTour = async (idCancel, res) => {
             id: cancel.id_book
           }
         })
+
+
+        const book_member = book.member
+        await db.Tour.update({
+          total_sale: db.sequelize.literal(`total_sale - ${book_member}`)
+        }, {
+          where: {
+            id: book.id_tour
+          }
+        })
+
 
         return cancel
       } else {

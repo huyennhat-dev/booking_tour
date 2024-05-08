@@ -68,7 +68,7 @@ export type CANCEL_TOUR_TYPE = {
 export type ACCOUNT_TYPE = {
   email: string;
   username: string;
-  role: string;
+  role?: string;
   avatar?: string;
   phoneNumber: string;
 };

@@ -1,12 +1,12 @@
 import db from '~/models'
-import { Op } from 'sequelize'
+import { Op, where } from 'sequelize'
 import ApiError from '~/utils/ApiError'
 import emailService from '~/services/mailService'
 import bcrypt from 'bcryptjs'
 import generateStrongPassword from '~/utils/generateStrongPassword'
 import randomCatAvatar from '~/utils/randomCatAvatar'
 
-const getAccount = async (query) => {
+const getAccount = async (query, role, id_manager) => {
   try {
     // Đọc các tham số từ query string
     //http://localhost:8000/api/v1/user?filters[role]=admin&search=thanh&sortBy=createdAt&sortOrder=desc&page=1&limit=10
@@ -21,9 +21,33 @@ const getAccount = async (query) => {
 
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
+    let whereClause = {
+      role: role
+    }
+    let whereClauseStaff = {}
+    let includeQuery = {
+      model: db.Staff,
+      as: 'staffData',
+      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+      where: whereClauseStaff,
+      include: {
+        model: db.Manager,
+        as: 'managerData',
+        attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
+      }
+    }
+    if (role == 'admin') {
+      whereClause.role = 'manager'
+      delete includeQuery.where
+    }
+
+    if (role == 'manager') {
+      whereClause.role = 'staff'
+      whereClauseStaff.id_manager = id_manager
+    }
 
     // Xây dựng điều kiện tìm kiếm
-    let whereClause = {}
+
     if (search) {
       whereClause = {
         [Op.or]: [{ email: { [Op.like]: `%${search}%` } }]
@@ -37,7 +61,7 @@ const getAccount = async (query) => {
         whereClause[key] = filters[key]
       }
     }
-
+    console.log(whereClause)
     // Thực hiện truy vấn
     const accounts = await db.Account.findAndCountAll({
       where: whereClause,
@@ -48,11 +72,7 @@ const getAccount = async (query) => {
           as: 'managerData',
           attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
         },
-        {
-          model: db.Staff,
-          as: 'staffData',
-          attributes: { exclude: ['createdAt', 'updatedAt', 'password'] }
-        }
+        includeQuery
       ],
       order: [[sortBy, sortOrder]],
       limit: parseInt(limit) == 1000 ? null : parseInt(limit),
@@ -66,13 +86,14 @@ const getAccount = async (query) => {
       page: parseInt(page)
     }
   } catch (error) {
+    console.error(error)
     throw new ApiError(error.message)
   }
 }
 
-const createAccount = async (body) => {
+const createAccount = async (body, user) => {
   try {
-    const { email, username, role, phoneNumber } = body
+    const { email, username, phoneNumber } = body
     const avatar = randomCatAvatar()
     // check account account
     const checkAccount = await db.Account.findOne({
@@ -89,6 +110,8 @@ const createAccount = async (body) => {
     // create account account
     const hashedPassword = await bcrypt.hash(strongPassword, 10)
 
+    let role = user.role == 'admin' ? 'manager' : 'staff'
+
     const account = await db.Account.create({
       email,
       password: hashedPassword,
@@ -99,12 +122,13 @@ const createAccount = async (body) => {
     })
     let account_info
 
-    if (role == 'staff') {
+    if (user.role == 'manager') {
       account_info = await db.Staff.create({
-        id_account: account.dataValues.id
+        id_account: account.dataValues.id,
+        id_manager: user.id_manager
       })
     }
-    if (role == 'manager') {
+    if (user.role == 'admin') {
       account_info = await db.Manager.create({
         id_account: account.dataValues.id
       })

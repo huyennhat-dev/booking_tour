@@ -4,7 +4,8 @@ import ApiError from '~/utils/ApiError'
 const getStaff = async (req, res, next) => {
   try {
     const { page = 1, limit = 1000, sortBy = 'createdAt', sortOrder = 'desc', search = '', filters = {} } = req.query
-    const staffs = await staffService.getStaff(req.query)
+    const id_manager = req.user.id_manager
+    const staffs = await staffService.getStaff(req.query , id_manager)
 
     // Trả về kết quả
     return res.status(200).json({

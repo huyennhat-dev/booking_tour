@@ -105,6 +105,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: 10
     },
+    total_sale : {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
+    },
     point_rating : {
       type: DataTypes.FLOAT,
       allowNull: true,

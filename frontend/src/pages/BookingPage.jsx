@@ -73,6 +73,7 @@ const BookingPage = () => {
         if (rs.vnpUrl) window.location.href = rs.vnpUrl;
       })
       .catch((err) => {
+        toast.warning(err.response?.data?.message);
         console.log(err);
       });
   };

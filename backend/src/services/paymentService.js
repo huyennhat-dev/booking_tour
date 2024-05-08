@@ -181,6 +181,7 @@ const vnpReturn = async (query) => {
 
     if (secureHash === signed) {
       const rsCode = vnp_Params['vnp_ResponseCode']
+      const idBook = vnp_Params['vnp_TxnRef'].split('_')[0]
       if (rsCode == '00') {
         await db.Book.update({
           isCheckout: true
@@ -192,7 +193,8 @@ const vnpReturn = async (query) => {
         const bookSucess = await db.Book.findOne({
           where: {
             isCheckout: true,
-            status: 'success'
+            status: 'success',
+            id: idBook
           },
           include: [
             {
@@ -227,6 +229,27 @@ const vnpReturn = async (query) => {
             }
           ]
         })
+
+        // sử lý vé đã bán
+        const tour = await db.Tour.findOne({
+          where: {
+            id: bookSucess.tourData.id
+          }
+        })
+
+        if (tour) {
+          await db.Tour.update({
+            total_sale: tour.total_sale + bookSucess.member
+          }, {
+            where: {
+              id: tour.id
+            }
+          })
+        }
+
+
+
+
         const htmlTemplate = `
         <h2>Thanh toán thành công</h2>
         <p>Xin chào ${bookSucess.userData.fullName},</p>

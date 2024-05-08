@@ -55,7 +55,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: ''
-    
     },
     updatedAt: {
       type: DataTypes.DATE,

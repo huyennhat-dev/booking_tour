@@ -19,7 +19,7 @@ const getTour = async (query) => {
     // Tính skip (bỏ qua) - phần bắt đầu của kết quả phân trang
     const skip = (page - 1) * limit
 
-    const oneDaysLater = moment().add(1, 'days').toDate()
+    const oneDaysLater = moment().add(0, 'days').toDate()
 
     let whereClause = {}
 
